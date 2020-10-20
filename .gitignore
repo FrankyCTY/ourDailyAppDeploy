@@ -29,5 +29,6 @@ yarn-error.log*
 
 /ourDailyApp/.env
 /ourDailyAppBackend/config/config.env
+/docker-compose.yml
 
 

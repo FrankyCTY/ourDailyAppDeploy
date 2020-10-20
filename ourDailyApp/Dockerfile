@@ -3,7 +3,7 @@ FROM node:alpine
 WORKDIR '/app'
 
 # no need volumns since it is static not dynamic
-COPY ./package.json .
+COPY package*.json ./
 RUN npm install
 
 COPY . .
