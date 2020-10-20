@@ -1,0 +1,280 @@
+.text-xs {
+  font-size: 0.75rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-xs-sm {
+    font-size: 0.75rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-xs-md {
+    font-size: 0.75rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-xs-lg {
+    font-size: 0.75rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-xs-xl {
+    font-size: 0.75rem;
+  }
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-sm-sm {
+    font-size: 0.875rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-sm-md {
+    font-size: 0.875rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-sm-lg {
+    font-size: 0.875rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-sm-xl {
+    font-size: 0.875rem;
+  }
+}
+
+.text-base {
+  font-size: 1rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-base-sm {
+    font-size: 1rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-base-md {
+    font-size: 1rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-base-lg {
+    font-size: 1rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-base-xl {
+    font-size: 1rem;
+  }
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-lg-sm {
+    font-size: 1.125rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-lg-md {
+    font-size: 1.125rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-lg-lg {
+    font-size: 1.125rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-lg-xl {
+    font-size: 1.125rem;
+  }
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-xl-sm {
+    font-size: 1.25rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-xl-md {
+    font-size: 1.25rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-xl-lg {
+    font-size: 1.25rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-xl-xl {
+    font-size: 1.25rem;
+  }
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-2xl-sm {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-2xl-md {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-2xl-lg {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-2xl-xl {
+    font-size: 1.5rem;
+  }
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-3xl-sm {
+    font-size: 1.875rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-3xl-md {
+    font-size: 1.875rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-3xl-lg {
+    font-size: 1.875rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-3xl-xl {
+    font-size: 1.875rem;
+  }
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-4xl-sm {
+    font-size: 2.25rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-4xl-md {
+    font-size: 2.25rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-4xl-lg {
+    font-size: 2.25rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-4xl-xl {
+    font-size: 2.25rem;
+  }
+}
+
+.text-5xl {
+  font-size: 3rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-5xl-sm {
+    font-size: 3rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-5xl-md {
+    font-size: 3rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-5xl-lg {
+    font-size: 3rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-5xl-xl {
+    font-size: 3rem;
+  }
+}
+
+.text-6xl {
+  font-size: 4rem;
+}
+
+@media only screen and (min-width: 576px) {
+  .text-6xl-sm {
+    font-size: 4rem;
+  }
+}
+
+@media only screen and (min-width: 720px) {
+  .text-6xl-md {
+    font-size: 4rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .text-6xl-lg {
+    font-size: 4rem;
+  }
+}
+
+@media only screen and (min-width: 1140px) {
+  .text-6xl-xl {
+    font-size: 4rem;
+  }
+}
+/*# sourceMappingURL=App.css.map */

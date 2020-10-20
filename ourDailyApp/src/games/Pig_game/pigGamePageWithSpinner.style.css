@@ -1,0 +1,20 @@
+.pop-enter {
+  opacity: 0;
+}
+
+.pop-enter-active {
+  opacity: 1;
+  -webkit-transition: all 500ms;
+  transition: all 500ms;
+}
+
+.pop-exit {
+  opacity: 1;
+}
+
+.pop-exit-active {
+  opacity: 0;
+  -webkit-transition: all 500ms;
+  transition: all 500ms;
+}
+/*# sourceMappingURL=pigGamePageWithSpinner.style.css.map */

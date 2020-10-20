@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,WAAW,CAAA;EACP,OAAO,EAAE,CAAC;CACX;;AACD,AAAA,kBAAkB,CAAA;EAChB,OAAO,EAAE,CAAC;CACX;;AACD,AAAA,UAAU,CAAA;EACR,OAAO,EAAE,CAAC;CACX;;AACD,AAAA,iBAAiB,CAAA;EACf,OAAO,EAAE,CAAC;CACX;;AACD,AAAA,kBAAkB;AAClB,iBAAiB,CAAC;EAChB,UAAU,EAAE,aAAa;CAC1B",
+    "sources": [
+        "ApplicationDetailTemplateWithPreloader.style.scss"
+    ],
+    "names": [],
+    "file": "ApplicationDetailTemplateWithPreloader.style.css"
+}

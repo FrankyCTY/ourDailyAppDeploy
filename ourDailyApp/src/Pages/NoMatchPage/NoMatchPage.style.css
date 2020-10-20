@@ -1,0 +1,14 @@
+.noMatch-page {
+  min-height: calc(100vh - var(--nav-height));
+  background: var(--mainpage-bg);
+  width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+/*# sourceMappingURL=NoMatchPage.style.css.map */

@@ -1,0 +1,36 @@
+.tab {
+  position: absolute;
+  top: 2rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.tab-primary-enter {
+  transform: translateX(-110%);
+}
+.tab-primary-enter-active {
+  transform: translateX(0%);
+  transition: all 300ms ease;
+}
+// .tab-primary-exit {
+// }
+.tab-primary-exit-active {
+  transition: all 300ms ease;
+  transform: translateX(-110%);
+}
+
+.tab-secondary-enter {
+  transform: translateX(110%);
+}
+.tab-secondary-enter-active {
+  transform: translateX(0%);
+  transition: all 300ms ease;
+}
+// .tab-secondary-exit {
+// }
+.tab-secondary-exit-active {
+  transition: all 300ms ease;
+  transform: translateX(110%);
+}

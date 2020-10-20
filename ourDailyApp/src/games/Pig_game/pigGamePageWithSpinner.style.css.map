@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,UAAU,CAAA;EACN,OAAO,EAAE,CAAC;CACX;;AACD,AAAA,iBAAiB,CAAA;EACf,OAAO,EAAE,CAAC;EACV,UAAU,EAAE,SAAS;CACtB;;AACD,AAAA,SAAS,CAAA;EACP,OAAO,EAAE,CAAC;CACX;;AACD,AAAA,gBAAgB,CAAA;EACd,OAAO,EAAE,CAAC;EACV,UAAU,EAAE,SAAS;CACtB",
+    "sources": [
+        "pigGamePageWithSpinner.style.scss"
+    ],
+    "names": [],
+    "file": "pigGamePageWithSpinner.style.css"
+}

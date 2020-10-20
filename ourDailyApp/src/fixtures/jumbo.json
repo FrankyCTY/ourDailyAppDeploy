@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "title": "To Do List",
+    "subTitle": "Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.",
+    "image": "/images/assets/todolistDemo.jpg",
+    "alt": "Tiger King on Netflix",
+    "direction": "row"
+  },
+  {
+    "id": 2,
+    "title": "Netflix clone",
+    "subTitle": "Save your data and watch all your favourites offline.",
+    "image": "/images/assets/netflixDemo.jpg",
+    "alt": "Watch on mobile",
+    "direction": "row-reverse"
+  },
+  {
+    "id": 3,
+    "title": "Ecommerce demo",
+    "subTitle": "Stream unlimited films and TV programmes on your phone, tablet, laptop and TV without paying more.",
+    "image": "/images/assets/ecommerce.jpg",
+    "alt": "Ecommerce demo",
+    "direction": "row"
+  },
+  {
+    "id": 4,
+    "title": "Franky Venus Auckland Trip",
+    "subTitle": "Stream unlimited films and TV programmes on your phone, tablet, laptop and TV without paying more.",
+    "image": "/images/assets/ourTrip.jpg",
+    "alt": "Franky Venus Auckland Trip",
+    "direction": "row-reverse"
+  }
+]

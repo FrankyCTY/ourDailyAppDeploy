@@ -1,0 +1,16 @@
+// For react-transition-group
+
+.pop-enter{
+    opacity: 0;
+  }
+  .pop-enter-active{
+    opacity: 1;
+    transition: all 500ms;
+  }
+  .pop-exit{
+    opacity: 1;
+  }
+  .pop-exit-active{
+    opacity: 0;
+    transition: all 500ms;
+  }

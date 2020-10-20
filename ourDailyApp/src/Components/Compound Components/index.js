@@ -1,0 +1,17 @@
+// For tree shaking purpose, to help buddling
+export { default as Form } from "./Form/Form.component";
+export { default as Header } from "./Header/Header.component";
+export { default as Jumbotron } from "./Jumbotron/Jumbotron.component";
+export { default as CompanyWall } from "./CompanyWall/CompanyWall.component";
+export { default as Typography } from "./Typography/Typography.component";
+export { default as ContentCounter } from "./ContentCounter/ContentCounter.component";
+export { default as WebsiteIntroVideo } from "./WebsiteIntroVideo/WebsiteIntroVideo.component";
+export { default as Player } from "./Player/Player.component";
+export { default as AboutMe } from "./AboutMe/AboutMe.component";
+export { default as Accordion } from "./Accordion/Accordion.component";
+export { default as Decoration } from "./Decoration/Decoration.component";
+export { default as Footer } from "./Footer/Footer.component";
+export { default as UploadAvatar } from "./UploadAvatar/UploadAvatar.component";
+export { default as PageNotFound } from "./PageNotFound/PageNotFound.component";
+export { default as Formik } from "./Formik/Formik.component";
+export { default as Notification } from "./Notification/Notification.component";

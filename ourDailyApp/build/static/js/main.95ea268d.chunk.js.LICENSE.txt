@@ -1,0 +1,1 @@
+//!!Each application can be bought once and added once only

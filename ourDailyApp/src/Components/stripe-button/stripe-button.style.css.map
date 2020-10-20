@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "stripe-button.style.scss"
+    ],
+    "names": [],
+    "file": "stripe-button.style.css"
+}

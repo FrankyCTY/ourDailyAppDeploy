@@ -1,9 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/ourDailyApp/node_modules
-/ourDailyAppBackend/node_modules
-
+/node_modules
 /.pnp
 .pnp.js
 
@@ -26,8 +24,4 @@ yarn-error.log*
 
 
 /node_modules/*
-
-/ourDailyApp/.env
-/ourDailyAppBackend/config/config.env
-
-
+/config/config.env
