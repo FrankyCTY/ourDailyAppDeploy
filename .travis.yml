@@ -1,0 +1,36 @@
+sudo: required
+services:
+  - docker
+# test -> build -> push to docker hub and wait for hosting
+before_install:
+  #Build Context in ./client
+  - docker build -t frankyda111/ourdailyapp-test -f ./ourDailyApp/Dockerfile.dev ./ourDailyApp
+
+script:
+  - docker run -e CI=true frankyda111/ourdailyapp-test npm test
+
+after_success:
+  - docker build -t frankypassword123/ourdailyapp-client ./ourDailyApp
+  - docker build -t frankypassword123/ourdailyapp-nginx ./nginx
+  - docker build -t frankypassword123/ourdailyapp-server ./ourDailyAppBackend
+
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take those images and push them to docker hub
+  - docker push frankypassword123/ourdailyapp-client
+  - docker push frankypassword123/ourdailyapp-nginx
+  - docker push frankypassword123/ourdailyapp-server
+
+# Config of aws for deploying image to to AWS Elastic Beanstalk
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-southeast-2"
+  app: "ourdailyapp"
+  env: "Ourdailyapp-env"
+  bucket_name: "elasticbeanstalk-ap-southeast-2-073032805649"
+  bucket_path: "ourdailyapp"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

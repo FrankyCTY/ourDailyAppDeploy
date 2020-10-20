@@ -1,0 +1,34 @@
+version: "3"
+services:
+  nginx:
+    depends_on:
+      - client
+      - api
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4050:80"
+  client:
+    stdin_open: true
+    build:
+      context: ./ourDailyApp
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./ourDailyApp:/app
+    env_file:
+      - ./ourDailyApp/.env
+  api:
+    build:
+      context: ./ourDailyAppBackend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./ourDailyAppBackend:/app
+    env_file:
+      - ./ourDailyAppBackend/config/config.env
+  # mongodb:
+  #   image: "mongo:latest"
+  #   restart: always
