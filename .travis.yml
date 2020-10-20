@@ -1,7 +1,6 @@
 sudo: required
 services:
   - docker
-  #hi
 # test -> build -> push to docker hub and wait for hosting
 before_install:
   #Build Context in ./client
