@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import ProfileContainer from "../../Containers/ProfileForm.container";
 import TestContainer from "../../Containers/Test.container";
 import SettingToolBar from "../../Containers/SettingToolBarContainer";
-import {SideMenu} from "../../Components/Compound Components";
+import {SideMenu, Formik} from "../../Components/Compound Components";
 import { useMediaQuery } from "react-responsive";
 
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -38,12 +38,45 @@ const SettingsPage = () => {
           <Switch>
             <Route exact path={`${router.matchPath}`}><Redirect to={{pathname: `${router.matchPath}/profile`}}/></Route>
             <Route exact path={`${router.matchPath}/profile`}><ProfileContainer/></Route>
-            <Route exact path={`${router.matchPath}/test`}><TestContainer/></Route>
+            <Route exact path={`${router.matchPath}/changePassword`}><ChangePasswordForm/></Route>
+            <Route exact path={`${router.matchPath}/deleteMe`}><TestContainer/></Route>
           </Switch>
         </div>
       </div>
     </div>
   );
 };
+
+const ChangePasswordForm = () => {
+
+  const [changePwFormDetails, setChangePwFormDetails] = useState({password: "", newPassword: "", confirmNewPassword: ""});
+
+  const {password, newPassword, confirmNewPassword} = changePwFormDetails;
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setChangePwFormDetails((prevProfileDetails) => ({
+      ...prevProfileDetails,
+      [name]: value,
+    }));
+  };
+
+
+  return (
+  <Formik>
+    <Formik.Group>
+      <Formik.Label htmlFor="password">Current password</Formik.Label>
+      <Formik.Input value={password} className="w-full" type="password" id="password" name="password" onChange={handleInputChange}></Formik.Input>
+    </Formik.Group>
+    <Formik.Group>
+      <Formik.Label htmlFor="newPassword">New password</Formik.Label>
+      <Formik.Input value={newPassword} className="w-full" type="password" id="newPassword" name="newPassword" onChange={handleInputChange}></Formik.Input>
+    </Formik.Group>
+    <Formik.Group>
+      <Formik.Label htmlFor="confirmNewPassword">Confirm new password</Formik.Label>
+      <Formik.Input value={confirmNewPassword} className="w-full" type="password" id="confirmNewPassword" name="confirmNewPassword" onChange={handleInputChange}></Formik.Input>
+    </Formik.Group>
+  </Formik>)
+}
 
 export default SettingsPage;
