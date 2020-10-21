@@ -27,10 +27,10 @@ after_success:
 deploy:
   provider: elasticbeanstalk
   region: "ap-southeast-2"
-  app: "ourdailyapp"
-  env: "Ourdailyapp-env"
+  app: "ourdailyapp-fullstack"
+  env: "OurdailyappFullstack-env"
   bucket_name: "elasticbeanstalk-ap-southeast-2-073032805649"
-  bucket_path: "ourdailyapp"
+  bucket_path: "ourdailyapp-fullstack"
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
