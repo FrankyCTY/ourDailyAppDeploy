@@ -72,7 +72,7 @@ const LoggedInRouter = () => {
         <Route exact isLogged={isUserLogged} path="/pigGame">
         <PigGamePageWithSpinner />
         </Route>
-        <ProtectedRoute exact isLogged={isUserLogged} path="/settings">
+        <ProtectedRoute isLogged={isUserLogged} path="/settings">
         <SettingsPage />
         </ProtectedRoute>
         <ProtectedRoute exact isLogged={isUserLogged} path="/cart">

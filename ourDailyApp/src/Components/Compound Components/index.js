@@ -15,3 +15,4 @@ export { default as UploadAvatar } from "./UploadAvatar/UploadAvatar.component";
 export { default as PageNotFound } from "./PageNotFound/PageNotFound.component";
 export { default as Formik } from "./Formik/Formik.component";
 export { default as Notification } from "./Notification/Notification.component";
+export { default as ToolBar } from "./ToolBar/ToolBar.component";

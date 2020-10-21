@@ -14,7 +14,7 @@ const ProfileFormContainer = () => {
     const {name, email, birthday, bio, gender, personalWebsite} = profileDetails;
 
     return <UploadAvatarProvider>
-        <Formik className="px-4 pt-10 max-w-xl mx-auto md:grid md:grid-cols-2 md:grid-gap md:gap-x-8 md:pt-20">
+        <Formik className="px-4 max-w-xl mx-auto md:grid md:grid-cols-2 md:grid-gap md:gap-x-8 md:pt-20">
                 <Formik.AvatarContainer src={`data:image/jpg;base64,${_arrayBufferToBase64(userAvatar)}`} 
                 className="mx-auto md:col-span-2 md:mb-12"/>
 

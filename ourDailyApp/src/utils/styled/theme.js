@@ -184,6 +184,10 @@ export const lightTheme = {
     input_background: rootStyles.primary_m1,
     text_color: rootStyles.gray_m1,
     label_color: rootStyles.primary_old,
+  },
+  ToolBar: {
+    bg: rootStyles.primary_m1,
+    icon_color: rootStyles.gray_m1,
   }
 };
 
