@@ -4,6 +4,8 @@ import UserActionTypes from "./user.types";
 const INITIATE_STATE = {
     isUploadingAvatar: false,
     isUpdatingUserDetails: false,
+    isChangingUserPassword: false,
+    isDeletingMe: false,
 };
 
 const UserReducer = (state = INITIATE_STATE, action) => {
@@ -27,6 +29,26 @@ const UserReducer = (state = INITIATE_STATE, action) => {
         return {
             ...state,
             isUpdatingUserDetails: false,
+        }
+    case UserActionTypes.IS_CHANGING_USER_PASSWORD_TRUE:
+        return {
+            ...state,
+            isChangingUserPassword: true,
+        }
+    case UserActionTypes.IS_CHANGING_USER_PASSWORD_FALSE:
+        return {
+            ...state,
+            isChangingUserPassword: false,
+        }
+    case UserActionTypes.IS_DELETE_ME_TRUE:
+        return {
+            ...state,
+            isDeletingMe: true,
+        }
+    case UserActionTypes.IS_DELETE_ME_FALSE:
+        return {
+            ...state,
+            isDeletingMe: false,
         }
     default:
       return state;

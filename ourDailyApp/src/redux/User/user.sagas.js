@@ -1,6 +1,7 @@
-import { takeLeading, takeLatest, call, put, all } from "redux-saga/effects";
+import { takeLeading, takeLatest, take, fork, cancel, call, put, all } from "redux-saga/effects";
 
 import UserActionTypes from "./user.types";
+import AuthActionTypes from "../Auth/auth.types";
 
 import {
     updateUserDetailsSuccess,
@@ -11,6 +12,10 @@ import {
     setIsUploadingAvatarFalse,
     setIsUpdatingUserDetailsTrue,
     setIsUpdatingUserDetailsFalse,
+    changeUserPasswordSuccess,
+    changeUserPasswordFailure,
+    setIsChangingUserPasswordTrue,
+    setIsChangingUserPasswordFalse,
 } from "./user.actions";
 
 import {changeAuthPage} from "../AuthPage/AuthPage.actions";
@@ -23,7 +28,28 @@ import {
 
 import {requestAndUpdateAvatar} from "./user.generatorFn";
 
+import {changeUserPassword} from "./user.requests";
+
 // ================= Sagas ==================
+
+function* onChangeUserPasswordStart() {
+  while(true) {
+      // 1) wait for Update User Password start
+      const {changePasswordObj} = yield take(UserActionTypes.CHANGE_USER_PASSWORD_START);
+      
+      // 2) implement Update User Password logic
+      const changeUserPasswordTask = yield fork(fn_changeUserPasswordStart, {changePasswordObj});
+      
+      // 3) check if add app to wishlist started
+      const action = yield take([AuthActionTypes.SIGN_OUT_START]);
+      // 4) cancel the add app logic if user clciked add app to checklist
+      if(action.type === AuthActionTypes.SIGN_OUT_START) {
+          console.log("cancelling changeUserPasswordTask");
+          yield cancel(changeUserPasswordTask);
+      }
+  }
+}
+
 function* onUpdateUserDetailsStart() {
     yield takeLeading(UserActionTypes.UPDATE_USER_DETAILS_START, updateUserDetailsStart);
   }
@@ -46,10 +72,29 @@ function* onUpdateUserDetailsStart() {
       call(onUpdateUserDetailsSuccess),
       call(onUpdateUserAvatarStart),
       call(onUpdateUserAvatarSuccess),
+      call(onChangeUserPasswordStart),
     ]);
   }
 
   // =========== Update User Details ===========
+
+function* fn_changeUserPasswordStart({changePasswordObj}) {
+  try {
+    // Loading -> true
+    console.log({changePasswordObj});
+    yield put(setIsChangingUserPasswordTrue())
+
+    // 2) Change user Password Logic in Backend
+    const res = yield call(changeUserPassword, changePasswordObj);
+    //@planToImplement
+
+    // Loading -> false
+    yield put(setIsChangingUserPasswordFalse())
+  } catch (error) {
+    // Loading -> false
+    yield put(setIsChangingUserPasswordFalse())
+  }
+}
 
 function* updateUserDetailsStart({formData}) {
     try {

@@ -4,9 +4,13 @@ import TestContainer from "../../Containers/Test.container";
 import SettingToolBar from "../../Containers/SettingToolBarContainer";
 import {SideMenu, Formik} from "../../Components/Compound Components";
 import { useMediaQuery } from "react-responsive";
+import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
+
 
 import { Route, Switch, Redirect } from "react-router-dom";
 import useRouter from "../../hooks/useRouter.hooks";
+import { useSelector, useDispatch } from "react-redux";
+import {changeUserPasswordStart} from "../../redux/User/user.actions";
 
 const SettingsPage = () => {
 
@@ -49,33 +53,44 @@ const SettingsPage = () => {
 
 const ChangePasswordForm = () => {
 
+  const dispatch = useDispatch();
+  const isChangingUserPassword = useSelector(state => state.user.isChangingUserPassword);
   const [changePwFormDetails, setChangePwFormDetails] = useState({password: "", newPassword: "", confirmNewPassword: ""});
 
   const {password, newPassword, confirmNewPassword} = changePwFormDetails;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setChangePwFormDetails((prevProfileDetails) => ({
-      ...prevProfileDetails,
+    setChangePwFormDetails((prevChangePwFormDetails) => ({
+      ...prevChangePwFormDetails,
       [name]: value,
     }));
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    dispatch(changeUserPasswordStart(changePwFormDetails));
+  }
 
   return (
   <Formik>
     <Formik.Group>
       <Formik.Label htmlFor="password">Current password</Formik.Label>
-      <Formik.Input value={password} className="w-full" type="password" id="password" name="password" onChange={handleInputChange}></Formik.Input>
+      <Formik.Input value={password} type="password" id="password" name="password" onChange={handleInputChange}/>
+      <Formik.InputDecoIcon className="iconfont icon-eye1"/>
     </Formik.Group>
     <Formik.Group>
       <Formik.Label htmlFor="newPassword">New password</Formik.Label>
-      <Formik.Input value={newPassword} className="w-full" type="password" id="newPassword" name="newPassword" onChange={handleInputChange}></Formik.Input>
+      <Formik.Input value={newPassword} type="password" id="newPassword" name="newPassword" onChange={handleInputChange}/>
+      <Formik.InputDecoIcon className="iconfont icon-eye1"/>
     </Formik.Group>
     <Formik.Group>
       <Formik.Label htmlFor="confirmNewPassword">Confirm new password</Formik.Label>
-      <Formik.Input value={confirmNewPassword} className="w-full" type="password" id="confirmNewPassword" name="confirmNewPassword" onChange={handleInputChange}></Formik.Input>
+      <Formik.Input value={confirmNewPassword} type="password" id="confirmNewPassword" name="confirmNewPassword" onChange={handleInputChange}/>
     </Formik.Group>
+    <Formik.CustomSubmitBtn onSubmit={handleSubmit} disabled={isChangingUserPassword} type="submit" variant="contained" color="primary" 
+             className="col-span-2 justify-self-start mt-5">Save{isChangingUserPassword && <PixelSpinner size={1.2} animationDuration={1500} style={{marginLeft: "4px"}}/>}</Formik.CustomSubmitBtn>
   </Formik>)
 }
 

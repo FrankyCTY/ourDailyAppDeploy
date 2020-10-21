@@ -40,6 +40,7 @@ S.FormikForm = styled.form`
 
 S.FormikGroup = styled.div`
 margin-bottom: 10px;
+position: relative;
 
 .react-datepicker,
 .react-datepicker__header {
@@ -61,6 +62,14 @@ margin-bottom: 10px;
 
 S.FormikInput = styled.input`
 ${inputStyles}
+padding-right: 50px;
+`;
+
+S.FormikInputDecoIcon = styled.span`
+    position: absolute;
+    right: 10px;
+    bottom: 8%;
+    color: ${({theme}) => theme.Formik.text_color};
 `;
 
 S.FormikTextarea = styled.textarea`

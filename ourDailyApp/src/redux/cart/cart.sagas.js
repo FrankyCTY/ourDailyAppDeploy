@@ -30,8 +30,6 @@ import {
     updateAllAppsInWishlistFailure,
 } from "./cart.actions";
 
-import {selectCartItemExist, selectWishlistItemExist} from "./cart.selectors";
-
 import {addAppToCartBackEnd, getCartApps, deleteAppFromCart, addAppToWishlistBackEnd
 , deleteAppFromWishlist, getWishlistApps, updateAllAppsInCart, updateAllAppsInWishlist} from "./cart.requests";
 

@@ -18,3 +18,21 @@ export const updateUserInfo = async(formData, imgName) => {
 
     return res;
 }
+
+export const changeUserPassword = async(changePasswordObj, url) => {
+
+    const {password, newPassword, confirmNewPassword} = changePasswordObj;
+
+    const backEndResponse = await axios({
+        method: "PATCH",
+        url,
+        data: {
+            password,
+            newPassword,
+            confirmNewPassword
+        },
+        withCredentials: true,
+      });
+    
+      return backEndResponse;
+}

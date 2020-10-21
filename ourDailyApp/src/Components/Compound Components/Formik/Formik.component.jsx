@@ -35,8 +35,16 @@ Formik.Label = function FormikLabel({children, ...restProps}) {
     return <S.FormikLabel {...restProps}>{children}</S.FormikLabel>
 }
 
+Formik.InputDecoIcon = function FormikInputDecoIcon({children, ...restProps}) {
+    return <S.FormikInputDecoIcon {...restProps}>{children}</S.FormikInputDecoIcon>
+}
+
 Formik.Group = function FormikGroup({children, ...restProps}) {
     return <S.FormikGroup {...restProps}>{children}</S.FormikGroup>
+}
+
+Formik.CustomSubmitBtn = function FormikCustomSubmitBtn({children, ...restProps}) {
+    return <S.FormikSubmitBtn {...restProps}>{children}</S.FormikSubmitBtn>
 }
 
 Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, ...restProps}) {
@@ -45,7 +53,7 @@ Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, ...restProps
 
     const {file, cropData} = useContext(UploadAvatarContext);
 
-    const {name, email, bio, personalWebsite, gender, birthday, isAvatarChanged} = formDetails;
+    const {name, email, bio, personalWebsite, gender, birthday} = formDetails;
 
     const onSubmit = (e) => {
        e.preventDefault();
@@ -73,7 +81,7 @@ Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, ...restProps
     }
 
 
-    return <S.FormikSubmitBtn {...restProps} onClick={onSubmit}>{children}</S.FormikSubmitBtn>
+    return <S.FormikSubmitBtn onClick={onSubmit} {...restProps}>{children}</S.FormikSubmitBtn>
 }
 
 Formik.AvatarContainer = function AvatarContainer({src, ...restProps}) {

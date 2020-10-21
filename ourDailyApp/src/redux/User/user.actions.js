@@ -16,6 +16,21 @@ export const setIsUpdatingUserDetailsFalse = () => ({
     type: UserActionTypes.IS_UPDATING_USER_DETAILS_FALSE,
 })
 
+export const setIsChangingUserPasswordTrue = () => ({
+    type: UserActionTypes.IS_CHANGING_USER_PASSWORD_TRUE,
+})
+
+export const setIsChangingUserPasswordFalse = () => ({
+    type: UserActionTypes.IS_CHANGING_USER_PASSWORD_FALSE,
+})
+export const isDeletingMeTrue = () => ({
+    type: UserActionTypes.IS_DELETE_ME_TRUE,
+})
+
+export const isDeletingMeFalse = () => ({
+    type: UserActionTypes.IS_DELETE_ME_FALSE,
+})
+
 export const updateUserDetailsStart = (formData) => ({
     type: UserActionTypes.UPDATE_USER_DETAILS_START,
     formData,
@@ -38,5 +53,30 @@ type: UserActionTypes.UPDATE_USER_AVATAR_SUCCESS,
 export const updateUserAvatarFailure = () => ({
 type: UserActionTypes.UPDATE_USER_AVATAR_FAILURE,
 })
+
+export const changeUserPasswordStart = (changePasswordDetails) => ({
+type: UserActionTypes.CHANGE_USER_PASSWORD_START,
+changePasswordDetails,
+})
+
+export const changeUserPasswordSuccess = () => ({
+type: UserActionTypes.CHANGE_USER_PASSWORD_START,
+})
+export const changeUserPasswordFailure = () => ({
+type: UserActionTypes.CHANGE_USER_PASSWORD_FAILURE,
+})
+
+export const deleteMeStart = (changePasswordDetails) => ({
+type: UserActionTypes.DELETE_ME_START,
+changePasswordDetails,
+})
+
+export const deleteMeSuccess = () => ({
+type: UserActionTypes.DELETE_ME_SUCCESS,
+})
+export const deleteMeFailure = () => ({
+type: UserActionTypes.DELETE_ME_FAILURE,
+})
+
   
   
