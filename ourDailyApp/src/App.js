@@ -28,7 +28,7 @@ const LoggedInRouter = React.lazy(() => import ("./Routers/LoggedInRouter/Logged
 
 const App = () => {
   const isUserLogged = useSelector((state) => state.auth_P.isLogged);
-  // const showNavUIComponents = useSelector(state => state.UIComponents.showNavUIComponents);
+  //const showNavUIComponents = useSelector(state => state.UIComponents.showNavUIComponents);
 
   return (
     <ThemeProvider theme={lightTheme}>
