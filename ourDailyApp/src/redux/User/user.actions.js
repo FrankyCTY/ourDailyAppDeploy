@@ -12,8 +12,8 @@ export const setIsUpdatingUserDetailsTrue = () => ({
     type: UserActionTypes.IS_UPDATING_USER_DETAILS_TRUE,
 })
 
-export const setIsUpdatingUserDetailsFales = () => ({
-    type: UserActionTypes.IS_UPLOADING_AVATAR_FALSE,
+export const setIsUpdatingUserDetailsFalse = () => ({
+    type: UserActionTypes.IS_UPDATING_USER_DETAILS_FALSE,
 })
 
 export const updateUserDetailsStart = (formData) => ({

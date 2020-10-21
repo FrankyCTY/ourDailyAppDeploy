@@ -10,6 +10,7 @@ transform: translateX(-50%);
 border-radius: 5px;
 background: ${({theme}) => theme.ToolBar.bg};
 box-shadow: 0 0 10px 5px rgba(0, 0, 0, .2);
+z-index: 15;
 `;
 
 S.ToolBarBtn = styled.button`

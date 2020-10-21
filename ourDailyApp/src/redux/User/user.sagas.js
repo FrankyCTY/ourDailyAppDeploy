@@ -10,7 +10,7 @@ import {
     setIsUploadingAvatarTrue,
     setIsUploadingAvatarFalse,
     setIsUpdatingUserDetailsTrue,
-    setIsUpdatingUserDetailsFales,
+    setIsUpdatingUserDetailsFalse,
 } from "./user.actions";
 
 import {changeAuthPage} from "../AuthPage/AuthPage.actions";
@@ -63,17 +63,18 @@ function* updateUserDetailsStart({formData}) {
       
       // 2) set react state user details
       yield put(setUserDetails(updatedUser));
-      // yield 
       // Loading -> false
+      yield put(setIsUpdatingUserDetailsFalse());
       yield put(updateUserDetailsSuccess());
     } catch (error) {
       // Loading -> false
-      yield put(setIsUpdatingUserDetailsFales());
+      yield put(setIsUpdatingUserDetailsFalse());
       yield put(updateUserDetailsFailure());
     }
   }
+
   function* afterUpdateUserDetailsSuccess() {
-    yield put(setIsUpdatingUserDetailsFales());
+    yield put(setIsUpdatingUserDetailsFalse());
   }
   
   function* updateUserAvatarStart({formData}) {

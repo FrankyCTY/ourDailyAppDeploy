@@ -61,6 +61,10 @@ export const lightTheme = {
   buttonText: rootStyles.primary_old,
   shopNavText_Hover: rootStyles.gray2,
   cartIcon: rootStyles.primary_old,
+  wrapper_border: rootStyles.white_p2,
+  wrapper_background: rootStyles.primary_m1,
+  general_text: rootStyles.primary_old,
+  attract_color: rootStyles.blue_m2,
   mainPage: {
     app_Hover: `rgba(222, 222, 223, 0.3)`,
     appAccessBtnText: rootStyles.primary_old,
@@ -180,14 +184,15 @@ export const lightTheme = {
     errorIcon: rootStyles.blue_m1,
   },
   Formik: {
-    input_border: rootStyles.white_p2,
-    input_background: rootStyles.primary_m1,
     text_color: rootStyles.gray_m1,
     label_color: rootStyles.primary_old,
   },
   ToolBar: {
     bg: rootStyles.primary_m1,
     icon_color: rootStyles.gray_m1,
+  },
+  SideMenu: {
+    hover_item_bg: rootStyles.gray_m2,
   }
 };
 

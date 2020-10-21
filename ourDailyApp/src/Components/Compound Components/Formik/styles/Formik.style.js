@@ -9,12 +9,17 @@ border-radius: .25rem;
 padding: .375rem .75rem;
 font-weight: 400;
 line-height: 1.429;
-border: 1px solid ${({theme}) => theme.Formik.input_border};;
+border: 1px solid ${({theme}) => theme.wrapper_border};;
 border-radius: .25rem;
 transition border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-background: ${({theme}) => theme.Formik.input_background};
+background: ${({theme}) => theme.wrapper_background};
 color: ${({theme}) => theme.Formik.text_color};
 font-size: 0.75rem;
+width: 100%;
+
+&:disabled {
+    filter: brightness(.5);
+}
 
 &:focus {
     border: 1px solid #5678af;
@@ -81,7 +86,18 @@ font-size: 0.875rem;
 }
 `;
 
-S.FormikSubmitBtn = styled(Button)``;
+S.FormikSubmitBtn = styled(Button)`
+    background: ${({theme}) => theme.attract_color} !important;
+
+    &:hover {
+        filter: brightness(1.2);
+    }
+
+    &:disabled {
+        background: gray !important;
+        color: white !important;
+    }
+`;
 
 S.AvatarContainer = styled.div`
     --size: 6rem;

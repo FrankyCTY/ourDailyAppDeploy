@@ -1,33 +1,33 @@
 {
-    "AWSEBDockerrunVersion": 2,
-    "containerDefinitions": [
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "frankypassword123/ourdailyapp-client",
+      "hostname": "client",
+      "essential": false,
+      "memory": 400
+    },
+    {
+      "name": "server",
+      "image": "frankypassword123/ourdailyapp-server",
+      "hostname": "api",
+      "essential": false,
+      "memory": 350
+    },
+    {
+      "name": "nginx",
+      "image": "frankypassword123/ourdailyapp-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
         {
-            "name": "client",
-            "image": "frankypassword123/ourdailyapp-client",
-            "hostname": "client",
-            "essential": false,
-            "memory": 400
-        },
-        {
-            "name": "server",
-            "image": "frankypassword123/ourdailyapp-server",
-            "hostname": "api",
-            "essential": false,
-            "memory": 350
-        },
-        {
-            "name": "nginx",
-            "image": "frankypassword123/ourdailyapp-nginx",
-            "essential": true,
-            "hostname": "nginx",
-            "portMappins": [
-                {
-                    "hostPort": 80,
-                    "containerPort": 80
-                }
-            ],
-            "links": ["client", "server"],
-            "memory": 128
+          "hostPort": 80,
+          "containerPort": 80
         }
-    ]
+      ],
+      "links": ["client", "server"],
+      "memory": 128
+    }
+  ]
 }

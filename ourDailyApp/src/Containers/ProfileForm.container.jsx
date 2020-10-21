@@ -1,7 +1,8 @@
 import React from "react";
-import bg from "../assets/images/uploadAvatarPage/male.png"
+import PixelSpinner from "../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import {Formik, UploadAvatar} from "../Components/Compound Components";
 import {UploadAvatarProvider,} from "../context/uploadAvatar.context";
+import {useSelector} from "react-redux";
 // import {useFormik} from "formik";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
 import useProfileForm from "../hooks/useProfileForm.hooks";
@@ -10,11 +11,12 @@ import { parse } from 'date-fns';
 
 
 const ProfileFormContainer = () => {
+    const isUploadingUserDetails = useSelector(state => state.user.isUpdatingUserDetails);
     const { profileDetails, handleInputChange, handleDateChange, userAvatar } = useProfileForm();
     const {name, email, birthday, bio, gender, personalWebsite} = profileDetails;
 
     return <UploadAvatarProvider>
-        <Formik className="px-4 max-w-xl mx-auto md:grid md:grid-cols-2 md:grid-gap md:gap-x-8 md:pt-20">
+        <Formik className="px-4 md:grid md:grid-cols-2 md:grid-gap md:gap-x-8">
                 <Formik.AvatarContainer src={`data:image/jpg;base64,${_arrayBufferToBase64(userAvatar)}`} 
                 className="mx-auto md:col-span-2 md:mb-12"/>
 
@@ -22,7 +24,7 @@ const ProfileFormContainer = () => {
                 <Formik.Group>
                     <Formik.Label htmlFor="name">Name</Formik.Label>
                     <Formik.Group>
-                        <Formik.Input value={name} onChange={handleInputChange} className="w-full" type="text" id="name" name="name"></Formik.Input>
+                        <Formik.Input disabled={isUploadingUserDetails} value={name} onChange={handleInputChange} className="w-full" type="text" id="name" name="name"></Formik.Input>
                     </Formik.Group>
                 </Formik.Group>
 
@@ -30,7 +32,7 @@ const ProfileFormContainer = () => {
                 <Formik.Group>
                     <Formik.Label htmlFor="email">E-mail</Formik.Label>
                     <Formik.Group>
-                        <Formik.Input value={email} onChange={handleInputChange} className="w-full" type="text" id="email" name="email"></Formik.Input>
+                        <Formik.Input disabled={isUploadingUserDetails} value={email} onChange={handleInputChange} className="w-full" type="text" id="email" name="email"></Formik.Input>
                     </Formik.Group>
                 </Formik.Group>
 
@@ -40,7 +42,7 @@ const ProfileFormContainer = () => {
             <Formik.Group className="md:col-span-2">
                 <Formik.Label htmlFor="bio">Bio</Formik.Label>
                 <Formik.Group>
-                    <Formik.Textarea value={bio} onChange={handleInputChange} rows="4" placeholder="e.g., Independent software developer focused on clean and elegant web designs. Avid reader. Active writer. Enthusiastic traveler." className="w-full" type="text" id="bio" name="bio"></Formik.Textarea>
+                    <Formik.Textarea disabled={isUploadingUserDetails} value={bio} onChange={handleInputChange} rows="4" placeholder="e.g., Independent software developer focused on clean and elegant web designs. Avid reader. Active writer. Enthusiastic traveler." className="w-full" type="text" id="bio" name="bio"></Formik.Textarea>
                 </Formik.Group>
             </Formik.Group>
 
@@ -49,7 +51,7 @@ const ProfileFormContainer = () => {
             <Formik.Group>
                 <Formik.Label htmlFor="website">Personal Website</Formik.Label>
                 <Formik.Group>
-                    <Formik.Input value={personalWebsite} onChange={handleInputChange} className="w-full" type="text" id="personalWebsite" name="personalWebsite"></Formik.Input>
+                    <Formik.Input disabled={isUploadingUserDetails} value={personalWebsite} onChange={handleInputChange} className="w-full" type="text" id="personalWebsite" name="personalWebsite"></Formik.Input>
                 </Formik.Group>
             </Formik.Group>
 
@@ -57,7 +59,7 @@ const ProfileFormContainer = () => {
             <Formik.Group>
                 <Formik.Label htmlFor="gender">Gender</Formik.Label>
                 <Formik.Group>
-                    <Formik.Select value={gender} onChange={handleInputChange} className="w-full" name="gender" id="gender">
+                    <Formik.Select disabled={isUploadingUserDetails} value={gender} onChange={handleInputChange} className="w-full" name="gender" id="gender">
                         <option disabled value="Please Select">Please select</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -69,11 +71,11 @@ const ProfileFormContainer = () => {
             <Formik.Group>
                 <Formik.Label htmlFor="birthday">Birthday</Formik.Label>
                 <Formik.Group>
-                    <Formik.DatePicker onChange={handleDateChange} selected={parse(birthday, 'dd/MM/yyyy', new Date())}  className="frankyda111"></Formik.DatePicker>
+                    <Formik.DatePicker disabled={isUploadingUserDetails} onChange={handleDateChange} selected={parse(birthday, 'dd/MM/yyyy', new Date())}  className="frankyda111"></Formik.DatePicker>
                 </Formik.Group>
             </Formik.Group>
-            <Formik.SubmitBtn type="submit" variant="contained" color="primary" 
-            formDetails={profileDetails} className="col-span-2 justify-self-start mt-5">Save</Formik.SubmitBtn>
+            <Formik.SubmitBtn disabled={isUploadingUserDetails} type="submit" variant="contained" color="primary" 
+            formDetails={profileDetails} className="col-span-2 justify-self-start mt-5">Save{isUploadingUserDetails && <PixelSpinner size={1.2} animationDuration={1500} style={{marginLeft: "4px"}}/>}</Formik.SubmitBtn>
         </Formik>
         <UploadAvatar.CropImageContainer/>
         </UploadAvatarProvider>
