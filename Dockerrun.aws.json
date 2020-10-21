@@ -6,14 +6,14 @@
             "image": "frankypassword123/ourdailyapp-client",
             "hostname": "client",
             "essential": false,
-            "memory": 128
+            "memory": 400
         },
         {
             "name": "server",
             "image": "frankypassword123/ourdailyapp-server",
             "hostname": "api",
             "essential": false,
-            "memory": 128
+            "memory": 350
         },
         {
             "name": "nginx",
