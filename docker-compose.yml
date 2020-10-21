@@ -29,6 +29,3 @@ services:
       - ./ourDailyAppBackend:/app
     env_file:
       - ./ourDailyAppBackend/config/config.env
-  # mongodb:
-  #   image: "mongo:latest"
-  #   restart: always

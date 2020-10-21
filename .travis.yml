@@ -1,13 +1,14 @@
 sudo: required
+language: generic
 services:
   - docker
 # test -> build -> push to docker hub and wait for hosting
 before_install:
   #Build Context in ./client
-  - docker build -t frankyda111/ourdailyapp-test -f ./ourDailyApp/Dockerfile.dev ./ourDailyApp
+  - docker build -t frankypassword123/ourdailyapp-test -f ./ourDailyApp/Dockerfile.dev ./ourDailyApp
 
 script:
-  - docker run -e CI=true frankyda111/ourdailyapp-test npm test
+  - docker run -e CI=true frankypassword123/ourdailyapp-test npm test
 
 after_success:
   - docker build -t frankypassword123/ourdailyapp-client ./ourDailyApp
