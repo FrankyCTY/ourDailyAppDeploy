@@ -78,9 +78,10 @@ exports.logIn = withCatchErrAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // 1) DATABASE - check if the user email is in the database
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password").select("+active");
 
-  if (!user || !(await user.correctPassword(password, user.password))) {
+  // 2) if account doesn't exist
+  if (!user) {
     return next(
       new OperationalErr(
         "form{SEPERATE}Incorrect email or password",
@@ -90,7 +91,28 @@ exports.logIn = withCatchErrAsync(async (req, res, next) => {
     );
   }
 
-  // 2) If everything goes fine, send token to client
+  // 3) Only active user to log in
+  if(!user.active) {
+    return next(
+      new OperationalErr(
+        "form{SEPERATE}This account has been deleted, please contact us via email for more details.",
+        401, "local"
+      )
+    )
+  }
+
+  // 4) Compare user password to see if valid
+  if (!(await user.correctPassword(password, user.password))) {
+    return next(
+      new OperationalErr(
+        "form{SEPERATE}Incorrect email or password",
+        401,
+        "local"
+      )
+    );
+  }
+
+  // 4) If everything goes fine, send token to client
   return authUtils.createSendToken(user, 200, res);
 });
 

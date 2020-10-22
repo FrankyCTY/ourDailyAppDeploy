@@ -203,6 +203,37 @@ exports.getAppInWishlist = withCatchErrAsync(async (req, res, next) => {
   })
 })
 
+exports.deleteMe = withCatchErrAsync(async(req, res, next) => {
+  const {_id} = req.user;
+
+  const deletedUserName = `user-${_id}`;
+
+  // 1) deny action if target account is already inactive
+  const userDoc = await User.findById(_id).select("+active");
+  console.log(userDoc)
+  if(!(userDoc.active)) {
+    return next(new OperationalErr("Target account is inactive.", 401, "local"));
+  }
+
+  // 2) Update target user doc ot inactive and other stuff
+  userDoc.active = false;
+  userDoc.name = deletedUserName;
+  userDoc.photo = "default.jpeg";
+
+  await userDoc.save();
+
+
+  // 3) delete user cookie
+  res.clearCookie("jwt");
+
+  return res.status(200).json({
+    status: "success",
+    data: {
+      user: userDoc,
+    }
+  })
+})
+
 // @desc Allow admin to see the birthday data of the users
 // @private
 // @restrictTo only admin

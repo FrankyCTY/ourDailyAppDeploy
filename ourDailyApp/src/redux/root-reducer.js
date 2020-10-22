@@ -17,6 +17,7 @@ import authPageReducer from "./AuthPage/AuthPage.reducer";
 import signUpFormReducer from "./signUpForm/signUpForm.reducer";
 import logInFormReducer from "./logInForm/logInForm.reducer";
 import UIComponentsReducer from "./UIComponents/uiComponents.reducer";
+import WholePageLoaderReducer from "./WholePageLoader/wholePageLoader.reducer";
 import UserReducer from "./User/user.reducer";
 
 // =========== Applications ===========
@@ -48,6 +49,7 @@ const topLevelReducers = combineReducers({
   authPage: authPageReducer,
   signUpForm: signUpFormReducer,
   logInForm: logInFormReducer,
+  wholePageLoader: WholePageLoaderReducer,
   // =========== Applications ===========
   pigGame: pigGameReducer,
   pigGameModals: pigGameModalsReducer,

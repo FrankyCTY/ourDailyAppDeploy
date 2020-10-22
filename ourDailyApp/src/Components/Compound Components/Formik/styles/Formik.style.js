@@ -108,6 +108,38 @@ S.FormikSubmitBtn = styled(Button)`
     }
 `;
 
+S.CustomCheckBox = styled.span`
+    --size: 1rem;
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 0.25em;
+    border: 0.1em solid currentColor;
+    margin-right: 1rem;
+
+    svg {
+        transition: transform 0.1s ease-in 25ms;
+        transform: scale(0);
+        transform-origin: bottom left;
+        color: white;
+        transform: ${({checked}) => {
+            if(checked) {
+                return "scale(1);";
+            } else {
+                return "scale(0);";
+            }
+        }}
+    }
+
+    color: ${({theme}) => theme.general_text};
+`;
+
+S.CheckBoxLabel = styled.span`
+user-select: none;
+font-size: .9rem;
+color: ${({theme}) => theme.general_text};
+`;
+
 S.AvatarContainer = styled.div`
     --size: 6rem;
     height: var(--size);
@@ -140,6 +172,9 @@ S.UploadIcon = styled.span`
 color: white;
 font-size: 1.4rem;
 `;
+
+
+
 
 S.Avatar = styled.img`
 width: 100%;

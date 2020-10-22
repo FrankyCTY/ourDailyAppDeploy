@@ -14,7 +14,7 @@ const S = {};
 
 S.FloatContainer = styled.div`
 opacity: 0;
-pointer-event: none; 
+pointer-events: none; 
 position: fixed;
 bottom: 4%;
 left: 50%;

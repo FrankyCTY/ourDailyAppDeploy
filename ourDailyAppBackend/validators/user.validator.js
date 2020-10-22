@@ -95,5 +95,4 @@ exports.changePasswordValidation = [
   body("confirmNewPassword").not().isEmpty().withMessage("confirmNewPassword{SEPERATE} Confirm New Password must be provided.").isLength({
     min:8
   })
-
 ]

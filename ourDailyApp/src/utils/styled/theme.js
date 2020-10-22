@@ -194,6 +194,10 @@ export const lightTheme = {
   },
   SideMenu: {
     hover_item_bg: rootStyles.gray_m2,
+  },
+  WholePageLoader: {
+    bg: "rgba(48, 48, 48, 0.8)",
+    color: rootStyles.primary_old,
   }
 };
 

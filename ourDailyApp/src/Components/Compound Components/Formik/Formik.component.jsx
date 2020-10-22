@@ -7,9 +7,7 @@ import { format } from 'date-fns';
 import {useDispatch} from "react-redux";
 
 
-export default function Formik({children, ...restProps}) {
-
-    
+export default function Formik({children, ...restProps}) { 
     return <S.FormikForm {...restProps}>{children}</S.FormikForm>
 }
 
@@ -63,6 +61,19 @@ Formik.Group = function FormikGroup({children, ...restProps}) {
 
 Formik.CustomSubmitBtn = function FormikCustomSubmitBtn({children, ...restProps}) {
     return <S.FormikSubmitBtn {...restProps}>{children}</S.FormikSubmitBtn>
+}
+
+Formik.CustomCheckBox = function FormikCustomCheckBox({onClick, className, children, ...restProps }) {
+    
+    return (
+        <div>
+            <S.CustomCheckBox onClick={onClick} {...restProps} className={className}>
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' aria-hidden="true" focusable="false">
+          <path fill='none' stroke='currentColor' strokeWidth='3' d='M1.73 12.91l6.37 6.37L22.79 4.59' /></svg>
+            </S.CustomCheckBox>
+            <S.CheckBoxLabel onClick={onClick} className={className}>{children}</S.CheckBoxLabel>
+        </div>
+    )
 }
 
 Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, ...restProps}) {

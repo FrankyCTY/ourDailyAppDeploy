@@ -48,6 +48,10 @@ router.patch(
 // @access private
 router.patch('/changePassword', authController.protect, changePasswordValidation, validate, userController.changePassword);
 
+// @desc User delete his own account
+// @access private
+router.patch('/deleteMe', authController.protect, userController.deleteMe);
+
 // @Private
 router.get("/getAppInCart", authController.protect, userController.getAppInCart);
 router.get("/getAppInWishlist", authController.protect, userController.getAppInWishlist);

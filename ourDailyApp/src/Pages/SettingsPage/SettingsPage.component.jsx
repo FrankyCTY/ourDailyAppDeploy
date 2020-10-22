@@ -1,16 +1,16 @@
 import React, {useState} from "react";
+import "./SettingsPage.scss";
 import ProfileContainer from "../../Containers/ProfileForm.container";
-import TestContainer from "../../Containers/Test.container";
+import { CSSTransition } from "react-transition-group";
 import SettingToolBar from "../../Containers/SettingToolBarContainer";
-import {SideMenu, Formik, Notification} from "../../Components/Compound Components";
+import {SideMenu, Formik, Notification, WholePageLoader} from "../../Components/Compound Components";
 import { useMediaQuery } from "react-responsive";
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
-
 
 import { Route, Switch, Redirect } from "react-router-dom";
 import useRouter from "../../hooks/useRouter.hooks";
 import { useSelector, useDispatch } from "react-redux";
-import {changeUserPasswordStart} from "../../redux/User/user.actions";
+import {changeUserPasswordStart, deleteMeStart, isDeletingMeTrue} from "../../redux/User/user.actions";
 
 const SettingsPage = () => {
 
@@ -41,7 +41,7 @@ const SettingsPage = () => {
             <Route exact path={`${router.matchPath}`}><Redirect to={{pathname: `${router.matchPath}/profile`}}/></Route>
             <Route exact path={`${router.matchPath}/profile`}><ProfileContainer/></Route>
             <Route exact path={`${router.matchPath}/changePassword`}><ChangePasswordForm/></Route>
-            <Route exact path={`${router.matchPath}/deleteMe`}><TestContainer/></Route>
+            <Route exact path={`${router.matchPath}/deleteMe`}><DeleteMeForm/></Route>
           </Switch>
         </div>
       </div>
@@ -82,7 +82,7 @@ const ChangePasswordForm = () => {
     <Formik.PasswordInput htmlFor="password"
     value={password} id="newPassword" id="password" name="password" onChange={handleInputChange}
     >Password</Formik.PasswordInput>
-    
+
     <Formik.PasswordInput htmlFor="newPassword"
     value={newPassword} id="newPassword" name="newPassword" onChange={handleInputChange}
     >New password</Formik.PasswordInput>
@@ -98,6 +98,50 @@ const ChangePasswordForm = () => {
      className={`${showChangePasswordMsg && "show"}`}>{changePasswordAlert}
      </Notification>
   </Formik>)
+}
+
+const DeleteMeForm = () => {
+
+  const isDeletingMe = useSelector(state => state.user.isDeletingMe);
+  const wholePageLoaderBigText = useSelector(state => state.wholePageLoader.bigText);
+
+  const [isChecked, toggleIsChecked] = useState(false);
+  const [deleteMeWithoutChecked, setDeleteMeWithoutChecked] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleDeleteMe = () => {
+    // Start Deleting User only if checkbox is checked
+    if(isChecked) {
+      dispatch(deleteMeStart());
+    }
+    else {
+      // Notification logic
+      setDeleteMeWithoutChecked(true);
+      setTimeout(() => {
+        setDeleteMeWithoutChecked(false);
+      }, 2500);
+    }
+  }
+
+  return (<div>
+    <h2 className="text-2xl mb-4" style={{color: "red"}}>WARNING</h2>
+    <ul>
+      <li className="mb-2"><span className="iconfont icon-cc-pointer-right text-gray-200 mr-2"/><span className="text-gray-500 text-sm">You will no longer be able to log in this account</span></li>
+      <li className="mb-16 md:mb-32"><span className="iconfont icon-cc-pointer-right text-gray-200 mr-2"/><span className="text-gray-500 text-sm">You will not be able to register a new account with the same email address</span></li>
+    </ul>
+    <Formik.CustomCheckBox onClick={() => toggleIsChecked(!isChecked)} checked={isChecked}>I understand the risk of deleting my account.</Formik.CustomCheckBox>
+    <Formik.CustomSubmitBtn onClick={handleDeleteMe} className="mt-6 text-gray-200 px-4" style={{background: "red !important"}}>Delete Me</Formik.CustomSubmitBtn>
+    <Notification type="error"
+      className={`${deleteMeWithoutChecked && "show"}`}>Please check the checkbox to proceed.
+      </Notification>
+    {/* Delete Me Process Loader */}
+    <CSSTransition in={isDeletingMe} timeout={250} classNames="loader-primary" unmountOnExit>
+      <div className="loader">
+        <WholePageLoader.DefaultLoader size={5} animationDuration={1000}>{wholePageLoaderBigText}</WholePageLoader.DefaultLoader>
+      </div>
+    </CSSTransition>
+    </div>
+  )
 }
 
 export default SettingsPage;

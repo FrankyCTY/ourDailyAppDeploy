@@ -17,3 +17,4 @@ export { default as Formik } from "./Formik/Formik.component";
 export { default as Notification } from "./Notification/Notification.component";
 export { default as ToolBar } from "./ToolBar/ToolBar.component";
 export { default as SideMenu } from "./SideMenu/SideMenu.component";
+export { default as WholePageLoader } from "./WholePageLoader/WholePageLoader.component";

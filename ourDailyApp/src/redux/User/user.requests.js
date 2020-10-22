@@ -36,3 +36,13 @@ export const changeUserPassword = async(changePasswordDetails, url) => {
     
       return backEndResponse;
 }
+
+export const deleteMe = async(url) => {
+    const backEndResponse = await axios({
+        method: "PATCH",
+        url,
+        withCredentials: true,
+      });
+    
+      return backEndResponse;
+}
