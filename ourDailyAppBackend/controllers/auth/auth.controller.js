@@ -1,5 +1,5 @@
 // const { s3 } = require("../../config/AWS");
-const {getFromS3} = require("../../utils/s3Utils");
+const S3 = require("../../helpers/S3");
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const User = require("../../models/user/user.model");
 const authUtils = require("./auth.utils");
@@ -132,8 +132,10 @@ exports.signUp = withCatchErrAsync(async (req, res, next) => {
 
   // Get the default jpeg from s3 and send it back to user for react state
   try {
-    await getFromS3("default.jpeg", 
-    (imgBuffer) => authUtils.createSendToken(newUser, 201, res, imgBuffer));
+    const S3Instance = new S3("default.jpeg");
+    await S3Instance.getFromS3((imgBuffer) => authUtils.createSendToken(newUser, 201, res, imgBuffer));
+    // await getFromS3("default.jpeg", 
+    // (imgBuffer) => authUtils.createSendToken(newUser, 201, res, imgBuffer));
   } catch (error) {
     console.log(error);
     return next(new OperationalErr("Error getting image from aws", 500, "local"));

@@ -10,12 +10,17 @@ const userRouter = require("./routers/user.router");
 const applicationRouter = require("./routers/application.router");
 const globalErrorHandler = require("./controllers/globalErrController");
 const OperationalErr = require("./helpers/OperationalErr");
+const path = require('path');
 const cors = require("cors");
 // const { logger } = require("winston");
 
 const app = express();
 
 app.use(cors({credentials: true, origin: true}));
+
+// app.use(express.static(path.join(__dirname, '/views')));
+app.enable('trust proxy');
+app.set('views', path.join(__dirname, 'views'));
 
 console.log(process.env.NODE_ENV);
 

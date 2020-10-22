@@ -1,5 +1,5 @@
 const User = require("../../models/user/user.model");
-const {getFromS3} = require("../../utils/s3Utils");
+const S3 = require("../../helpers/S3");
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const OperationalErr = require("../../helpers/OperationalErr");
 const { filterObj, upload, deleteOldAvatarFromS3, uploadAvatarToS3 } = require("./user.utils");
@@ -127,7 +127,14 @@ exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
     let retry = false;
     // 1) Get image using my aws confidentials
     try {
-        await getFromS3(imageId, (imgBuffer) => res.status(200).json({
+        // await getFromS3(imageId, (imgBuffer) => res.status(200).json({
+        //   status: "success",
+        //   data: {
+        //     image: imgBuffer,
+        //   }
+        // }));
+        const S3Instance = new S3(imageId);
+        await S3Instance.getFromS3((imgBuffer) => res.status(200).json({
           status: "success",
           data: {
             image: imgBuffer,
@@ -148,13 +155,20 @@ exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
         return next(new OperationalErr("Error getting image from aws", 500, "local"));
       } else {
         // 3) if can't find the specific avatar, then we retry with the default jpeg
-        try {        
-          return getFromS3("default.jpeg", (imgBuffer) => res.status(200).json({
-            status: "success",
-            data: {
-              image: imgBuffer,
-            }
-          }), next);
+        try {
+          const S3Instance = new S3("default.jpeg");
+          await S3Instance.getFromS3((imgBuffer) => res.status(200).json({
+              status: "success",
+              data: {
+                image: imgBuffer,
+              }
+            }));
+          // return getFromS3("default.jpeg", (imgBuffer) => res.status(200).json({
+          //   status: "success",
+          //   data: {
+          //     image: imgBuffer,
+          //   }
+          // }), next);
         } catch (error) {
           console.log(error);
           return next(new OperationalErr("Error getting image from aws", 500, "local"));
