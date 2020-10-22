@@ -11,8 +11,6 @@ import {
   setIsLoggedTrue,
   setUserDetails,
   setUserAvatar,
-  // signOutSuccess,
-  // signOutFailure,
   signOut,
 } from "./auth.actions";
 
@@ -138,7 +136,7 @@ function* signInWithGoogle({ authorizeServerRes }) {
     const googleLogInRes = yield call(
       checkAuthInfoFromDB,
       authorizeServerRes,
-      `http://localhost:5000/api/v1/users/googlelogin`
+      `${process.env.REACT_APP_URL}/users/googlelogin`
     );
 
     yield put(setUserDetails(googleLogInRes.data.data.user));

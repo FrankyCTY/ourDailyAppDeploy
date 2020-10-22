@@ -1,6 +1,7 @@
-export const allocateSignUpAlerts = (alertArray) => {
-  // @desc Spliting alert string into array of [:targetName, :alertMsg]
-  const tupleArray = alertArray.map((alert) => alert.split("{SEPERATE}"));
+
+
+export const allocateSignUpAlerts = (tupleAlertArray) => {
+  // @desc tupleAlertArray [:targetName, :alertMsg]
 
   let newSignUpAlert = {
     nameAlerts: [],
@@ -12,22 +13,22 @@ export const allocateSignUpAlerts = (alertArray) => {
 
   // Loop through each alertTuple and distribute them into the corresponding
   // alert array
-  tupleArray.forEach((alertTuple) => {
-    switch (alertTuple[0]) {
+  tupleAlertArray.forEach((tupleAlert) => {
+    switch (tupleAlertArray[0]) {
       case "name":
-        newSignUpAlert.nameAlerts.push(alertTuple[1]);
+        newSignUpAlert.nameAlerts.push(tupleAlert[1]);
         break;
       case "email":
-        newSignUpAlert.emailAlerts.push(alertTuple[1]);
+        newSignUpAlert.emailAlerts.push(tupleAlert[1]);
         break;
       case "password":
-        newSignUpAlert.passwordAlerts.push(alertTuple[1]);
+        newSignUpAlert.passwordAlerts.push(tupleAlert[1]);
         break;
       case "gender":
-        newSignUpAlert.genderAlerts.push(alertTuple[1]);
+        newSignUpAlert.genderAlerts.push(tupleAlert[1]);
         break;
       case "birthday":
-        newSignUpAlert.birthdayAlerts.push(alertTuple[1]);
+        newSignUpAlert.birthdayAlerts.push(tupleAlert[1]);
         break;
       default:
         break;
@@ -37,22 +38,20 @@ export const allocateSignUpAlerts = (alertArray) => {
   return newSignUpAlert;
 };
 
-export const allocateLogInAlerts = (alertArray) => {
-  // @desc Spliting alert string into array of [:targetName, :alertMsg]
-  const tupleArray = alertArray.map((alert) => alert.split("{SEPERATE}"));
-
+export const allocateLogInAlerts = (tupleAlertArray) => {
+  // @desc tupleAlertArray [:targetName, :alertMsg]
   let newLogInAlert = {
     emailAlerts: [],
     formAlerts: [],
   };
 
-  tupleArray.forEach((alertTuple) => {
-    switch (alertTuple[0]) {
+  tupleAlertArray.forEach((tupleAlert) => {
+    switch (tupleAlert[0]) {
       case "email":
-        newLogInAlert.emailAlerts.push(alertTuple[1]);
+        newLogInAlert.emailAlerts.push(tupleAlert[1]);
         break;
       case "form":
-        newLogInAlert.formAlerts.push(alertTuple[1]);
+        newLogInAlert.formAlerts.push(tupleAlert[1]);
         break;
       default:
         break;

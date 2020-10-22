@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import S from "./styles/Formik.style";
 import "react-datepicker/dist/react-datepicker.css";
 import {UploadAvatarContext} from "../../../context/uploadAvatar.context";
@@ -27,12 +27,30 @@ Formik.Select = function FormikSelect({children, ...restProps}) {
 }
 
 Formik.DatePicker = function FormikDatePicker({children, ...restProps}) {
-    return <S.FormikDatePicker {...restProps} dateFormat="dd/MM/yyyy">
+    return <S.FormikDatePicker {...restProps}>
         {children}</S.FormikDatePicker>
 }
 
 Formik.Label = function FormikLabel({children, ...restProps}) {
     return <S.FormikLabel {...restProps}>{children}</S.FormikLabel>
+}
+
+Formik.PasswordInput = function FormikPasswordInput({htmlFor, children, ...restProps}) {
+
+    const [isHidePassword, toggleIsHidePassword] = useState(true);
+
+    const onEyeIconClick = () => {
+        toggleIsHidePassword(!isHidePassword);
+    }
+
+    return     <Formik.Group>
+        <Formik.Label htmlFor={htmlFor}>{children}</Formik.Label>
+        <Formik.Input type={`${isHidePassword ? "password" : "text"}`} {...restProps}/>
+        {
+            isHidePassword ? <Formik.InputDecoIcon className="iconfont icon-eye1" onClick={onEyeIconClick}/>
+            : <Formik.InputDecoIcon className="iconfont icon-eye" onClick={onEyeIconClick}/>
+        }        
+  </Formik.Group>
 }
 
 Formik.InputDecoIcon = function FormikInputDecoIcon({children, ...restProps}) {
@@ -61,7 +79,7 @@ Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, ...restProps
 
        // Combine the edited avatar file with the update user details
        // into formData and send back to bkEnd
-       const newBirthday = format(new Date(birthday), 'dd/MM/yyyy');
+    //    const newBirthday = format(new Date(birthday), 'dd/MM/yyyy');
 
        // Update avatar only if user changed it
        if(cropData) {
@@ -73,9 +91,10 @@ Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, ...restProps
        formData.append('bio', bio);
        formData.append('personalWebsite', personalWebsite);
        formData.append('gender', gender);
-       formData.append('birthday', newBirthday);
+    //    formData.append('birthday', newBirthday);
+       formData.append('birthday', birthday);
 
-       console.log({birthday})
+    //    console.log({birthday})
        console.log({gender})
         dispatch(updateUserDetailsStart(formData));
     }

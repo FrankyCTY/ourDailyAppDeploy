@@ -5,6 +5,7 @@ const OperationalErr = require("../../helpers/OperationalErr");
 const { filterObj, upload, deleteOldAvatarFromS3, uploadAvatarToS3 } = require("./user.utils");
 const sharp = require("sharp");
 const factory = require("../controllerFactory");
+const authUtils = require("../auth/auth.utils");
 
 exports.uploadUserAvatar = upload.single("avatar");
 
@@ -41,7 +42,7 @@ exports.updateMe = withCatchErrAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new OperationalErr(
-        "Please use /users/updatePassword to update password",
+        "Please use /users/changePassword to change password",
         400,
         "local"
       )
@@ -93,6 +94,31 @@ exports.updateMe = withCatchErrAsync(async (req, res, next) => {
     });
   // }
 });
+
+exports.changePassword = withCatchErrAsync(async(req, res, next) => {
+  const {password, newPassword} = req.body;
+  const {_id} = req.user;
+
+  const userDoc = await User.findById(_id).select("+password");
+  // 1) Check if user password is correct
+  if (!(await userDoc.correctPassword(password, userDoc.password))) {
+    return next(
+      new OperationalErr(
+        "password{SEPERATE}Incorrect password",
+        401,
+        "local"
+      )
+    );
+  }
+  
+  // 2) After validation, update user password
+  userDoc.password = newPassword;
+
+  await userDoc.save();
+
+  // 3) update user jwt
+  return authUtils.createSendToken(userDoc, 200, res);
+})
 
 exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
     const {imageId} = req.params;

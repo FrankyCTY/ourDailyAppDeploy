@@ -22,12 +22,12 @@ const authReducer = (state = INITIATE_STATE, action) => {
     case AuthActionTypes.SET_SIGNUP_ALERT:
       return {
         ...state,
-        signUpAlert: allocateSignUpAlerts(action.alert),
+        signUpAlert: allocateSignUpAlerts(action.tupleAlertArray),
       };
     case AuthActionTypes.SET_LOGIN_ALERT:
       return {
         ...state,
-        logInAlert: allocateLogInAlerts(action.alert),
+        logInAlert: allocateLogInAlerts(action.tupleAlertArray),
       };
     case AuthActionTypes.CLEAR_LOGIN_ALERT:
     case AuthActionTypes.CLEAR_SIGNUP_ALERT:

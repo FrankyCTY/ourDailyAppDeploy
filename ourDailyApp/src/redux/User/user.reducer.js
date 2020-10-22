@@ -5,7 +5,9 @@ const INITIATE_STATE = {
     isUploadingAvatar: false,
     isUpdatingUserDetails: false,
     isChangingUserPassword: false,
+    showChangePasswordMsg: false,
     isDeletingMe: false,
+    changePasswordAlert: "Successfully",
 };
 
 const UserReducer = (state = INITIATE_STATE, action) => {
@@ -49,6 +51,26 @@ const UserReducer = (state = INITIATE_STATE, action) => {
         return {
             ...state,
             isDeletingMe: false,
+        }
+    case UserActionTypes.SET_CHANGE_PASSWORD_ALERT:
+        return {
+            ...state,
+            changePasswordAlert: action.alert
+        }
+    case UserActionTypes.CLEAR_CHANGE_PASSWORD_ALERT:
+        return {
+            ...state,
+            changePasswordAlert: INITIATE_STATE.changePasswordAlert,
+        }
+    case UserActionTypes.SHOW_CHANGE_PASSWORD_MSG:
+        return {
+            ...state,
+            showChangePasswordMsg: true,
+        }
+    case UserActionTypes.HIDE_CHANGE_PASSWORD_MSG:
+        return {
+            ...state,
+            showChangePasswordMsg: false,
         }
     default:
       return state;

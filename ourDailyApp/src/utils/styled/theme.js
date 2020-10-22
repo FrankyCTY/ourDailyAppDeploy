@@ -181,7 +181,8 @@ export const lightTheme = {
   Notification: {
     floatContainer_bg: rootStyles.primary_m1,
     errorText: rootStyles.primary_old,
-    errorIcon: rootStyles.blue_m1,
+    errorIcon: rootStyles.orange_dark,
+    successIcon: rootStyles.blue_m1,
   },
   Formik: {
     text_color: rootStyles.gray_m1,

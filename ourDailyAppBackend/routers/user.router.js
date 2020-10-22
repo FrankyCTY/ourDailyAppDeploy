@@ -8,6 +8,7 @@ const {
   signUpValidation,
   logInValidation,
   resetPasswordValidation,
+  changePasswordValidation,
 } = require("../validators/user.validator");
 
 const router = express.Router();
@@ -42,6 +43,10 @@ router.patch(
   // updateMe itself will not return any response
   userController.updateMe,
 );
+
+// @desc Logged in user change their password
+// @access private
+router.patch('/changePassword', authController.protect, changePasswordValidation, validate, userController.changePassword);
 
 // @Private
 router.get("/getAppInCart", authController.protect, userController.getAppInCart);

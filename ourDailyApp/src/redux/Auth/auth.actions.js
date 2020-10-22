@@ -56,14 +56,14 @@ export const signUpFailure = (error, targetComponent) => ({
   targetComponent,
 });
 
-export const setSignUpAlert = (alert) => ({
+export const setSignUpAlert = (tupleAlertArray) => ({
   type: AuthActionTypes.SET_SIGNUP_ALERT,
-  alert,
+  tupleAlertArray,
 });
 
-export const setLogInAlert = (alert) => ({
+export const setLogInAlert = (tupleAlertArray) => ({
   type: AuthActionTypes.SET_LOGIN_ALERT,
-  alert,
+  tupleAlertArray,
 });
 
 export const clearSignUpAlert = () => ({

@@ -44,7 +44,7 @@ position: relative;
 
 .react-datepicker,
 .react-datepicker__header {
-    background: ${({theme}) => theme.Formik.input_background};
+    background: ${({theme}) => theme.wrapper_background};
 }
 .react-datepicker__day {
     color: white !important;

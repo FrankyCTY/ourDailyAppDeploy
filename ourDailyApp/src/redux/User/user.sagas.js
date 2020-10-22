@@ -1,4 +1,4 @@
-import { takeLeading, takeLatest, take, fork, cancel, call, put, all } from "redux-saga/effects";
+import { takeLeading, takeLatest, take, fork, cancel, call, put, all, delay } from "redux-saga/effects";
 
 import UserActionTypes from "./user.types";
 import AuthActionTypes from "../Auth/auth.types";
@@ -16,9 +16,14 @@ import {
     changeUserPasswordFailure,
     setIsChangingUserPasswordTrue,
     setIsChangingUserPasswordFalse,
+    setChangePasswordAlert,
+    showChangePasswordMsg,
+    hideChangePasswordMsg,
 } from "./user.actions";
 
 import {changeAuthPage} from "../AuthPage/AuthPage.actions";
+
+import globalErrHandler from "../../utils/globalErrHandler";
 
 import {
     setIsLoggedTrue,
@@ -35,19 +40,27 @@ import {changeUserPassword} from "./user.requests";
 function* onChangeUserPasswordStart() {
   while(true) {
       // 1) wait for Update User Password start
-      const {changePasswordObj} = yield take(UserActionTypes.CHANGE_USER_PASSWORD_START);
+      const {changePasswordDetails} = yield take(UserActionTypes.CHANGE_USER_PASSWORD_START);
       
       // 2) implement Update User Password logic
-      const changeUserPasswordTask = yield fork(fn_changeUserPasswordStart, {changePasswordObj});
+      const changeUserPasswordTask = yield fork(fn_changeUserPasswordStart, changePasswordDetails);
       
       // 3) check if add app to wishlist started
-      const action = yield take([AuthActionTypes.SIGN_OUT_START]);
+      const action = yield take([AuthActionTypes.SIGN_OUT_START, UserActionTypes.CHANGE_USER_PASSWORD_SUCCESS, UserActionTypes.CHANGE_USER_PASSWORD_FAILURE]);
       // 4) cancel the add app logic if user clciked add app to checklist
       if(action.type === AuthActionTypes.SIGN_OUT_START) {
           console.log("cancelling changeUserPasswordTask");
           yield cancel(changeUserPasswordTask);
       }
   }
+}
+
+function* onChangeUserPasswordFail() {
+  yield takeLeading(UserActionTypes.CHANGE_USER_PASSWORD_FAILURE, fn_changeUserPasswordFailure);
+}
+
+function* onChangeUserPasswordSuccess() {
+  yield takeLeading(UserActionTypes.CHANGE_USER_PASSWORD_SUCCESS, fn_changeUserPasswordSuccess);
 }
 
 function* onUpdateUserDetailsStart() {
@@ -73,27 +86,42 @@ function* onUpdateUserDetailsStart() {
       call(onUpdateUserAvatarStart),
       call(onUpdateUserAvatarSuccess),
       call(onChangeUserPasswordStart),
+      call(onChangeUserPasswordFail),
+      call(onChangeUserPasswordSuccess),
     ]);
   }
 
   // =========== Update User Details ===========
 
-function* fn_changeUserPasswordStart({changePasswordObj}) {
+function* fn_changeUserPasswordStart(changePasswordDetails) {
   try {
     // Loading -> true
-    console.log({changePasswordObj});
-    yield put(setIsChangingUserPasswordTrue())
+    console.log({changePasswordDetails});
+    yield put(setIsChangingUserPasswordTrue());
 
     // 2) Change user Password Logic in Backend
-    const res = yield call(changeUserPassword, changePasswordObj);
+    yield call(changeUserPassword, changePasswordDetails, `${process.env.REACT_APP_URL}/users/changePassword`);
     //@planToImplement
 
     // Loading -> false
-    yield put(setIsChangingUserPasswordFalse())
+    yield put(setIsChangingUserPasswordFalse());
+    yield put(changeUserPasswordSuccess("Successfully changed password"));
   } catch (error) {
     // Loading -> false
-    yield put(setIsChangingUserPasswordFalse())
+    yield put(setIsChangingUserPasswordFalse());
+    yield put(changeUserPasswordFailure(error));
   }
+}
+
+function* fn_changeUserPasswordFailure({error}) {
+  yield globalErrHandler(error, "changePasswordAlert");
+}
+
+function* fn_changeUserPasswordSuccess({message}) {
+  yield put(setChangePasswordAlert(message));
+  yield put(showChangePasswordMsg());
+  yield delay(2500);
+  yield put(hideChangePasswordMsg());
 }
 
 function* updateUserDetailsStart({formData}) {

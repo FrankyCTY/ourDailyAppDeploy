@@ -59,11 +59,14 @@ type: UserActionTypes.CHANGE_USER_PASSWORD_START,
 changePasswordDetails,
 })
 
-export const changeUserPasswordSuccess = () => ({
-type: UserActionTypes.CHANGE_USER_PASSWORD_START,
+export const changeUserPasswordSuccess = (message) => ({
+type: UserActionTypes.CHANGE_USER_PASSWORD_SUCCESS,
+message
 })
-export const changeUserPasswordFailure = () => ({
+
+export const changeUserPasswordFailure = (error) => ({
 type: UserActionTypes.CHANGE_USER_PASSWORD_FAILURE,
+error
 })
 
 export const deleteMeStart = (changePasswordDetails) => ({
@@ -78,5 +81,16 @@ export const deleteMeFailure = () => ({
 type: UserActionTypes.DELETE_ME_FAILURE,
 })
 
-  
-  
+export const setChangePasswordAlert = (alert) => ({
+type: UserActionTypes.SET_CHANGE_PASSWORD_ALERT,
+alert
+})
+export const clearChangePasswordAlert = () => ({
+type: UserActionTypes.CLEAR_CHANGE_PASSWORD_ALERT,
+})
+export const showChangePasswordMsg = () => ({
+type: UserActionTypes.SHOW_CHANGE_PASSWORD_MSG,
+})
+export const hideChangePasswordMsg = () => ({
+type: UserActionTypes.HIDE_CHANGE_PASSWORD_MSG,
+})

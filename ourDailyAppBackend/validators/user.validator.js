@@ -71,3 +71,29 @@ exports.resetPasswordValidation = [
     return true;
   }),
 ];
+
+exports.changePasswordValidation = [
+  body("password").not().isEmpty().withMessage("password{SEPERATE}Password must be provided."),
+  body("newPassword").not().isEmpty().withMessage("newPassword{SEPERATE}New password must be provided.").isLength({
+    min: 8,
+  }).withMessage("newPassword{SEPERATE}New Password must be at least 8 chars long")
+  .custom((value, {req}) => {
+    // new password must match confirm new password
+    if(value !== req.body.confirmNewPassword) {
+      throw new Error (
+        "newPassword{SEPERATE}New password confimation does not match confirm password."
+      );
+    }
+    // user's new password is same as password
+    if (value === req.body.password) {
+      throw new Error (
+        "newPassword{SEPERATE}You are updating with the current password."
+      );
+    }
+    return true;
+  }),
+  body("confirmNewPassword").not().isEmpty().withMessage("confirmNewPassword{SEPERATE} Confirm New Password must be provided.").isLength({
+    min:8
+  })
+
+]
