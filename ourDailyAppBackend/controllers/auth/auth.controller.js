@@ -238,7 +238,7 @@ exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
   });
 });
 
-exports.resetPassword = withCatchErrAsync(async (req, res, next) => {
+exports.resetPassword = withCatchErrAsync(async (req, res, next) => {  
   // 1) Get user based on the token
   const hashToken = crypto
     .createHash("sha256")
@@ -248,9 +248,19 @@ exports.resetPassword = withCatchErrAsync(async (req, res, next) => {
   const user = await User.findOne({
     passwordResetToken: hashToken,
     passwordResetExpires: { $gt: Date.now() },
-  });
-
-  // 2) If token has not expired, and there is a user, set the new password
+  }).select("+active");
+  console.log({active: user.active});
+  // 2) Check if user is inactive
+  if(!user.active) {
+    return next(
+      new OperationalErr(
+        "Invalid Target.",
+        400,
+        "local"
+      )
+    );
+  }
+  // 3) If token has not expired, and there is a user, set the new password
   // No user, throw error
   if (user === null) {
     return next(

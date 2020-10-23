@@ -37,7 +37,7 @@ function ForgotPasswordPage() {
 
   return (
     <>
-    {isForgotPwEmailSent ? <SuccessFail.SuccessContainer primaryText="Email sent to" secondaryText="frankychantssssssakyu@yahoo.com.hk{email}"/> :
+    {isForgotPwEmailSent ? <SuccessFail.SuccessContainer primaryText="Email sent to" secondaryText={`${email}`}/> :
     <S.ForgotPasswordContainer>
       <Form>
         <Form.TextGroup>

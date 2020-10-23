@@ -63,7 +63,7 @@ exports.resetPasswordValidation = [
     })
     .withMessage("password{SEPERATE}Password must be at least 8 chars long"),
   body("confirmPassword").custom((value, { req }) => {
-    if (value !== req.body.password) {
+    if (value !== req.body.newPassword) {
       throw new Error(
         "password{SEPERATE}Password confimation does not match password"
       );
