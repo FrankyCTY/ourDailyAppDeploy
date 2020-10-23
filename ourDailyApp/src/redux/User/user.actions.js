@@ -30,6 +30,27 @@ export const isDeletingMeTrue = () => ({
 export const isDeletingMeFalse = () => ({
     type: UserActionTypes.IS_DELETE_ME_FALSE,
 })
+export const isSendingForgotPwEmailTrue = () => ({
+    type: UserActionTypes.IS_SENDING_FORGOT_PW_EMAIL_TRUE,
+})
+
+export const isSendingForgotPwEmailFalse = () => ({
+    type: UserActionTypes.IS_SENDING_FORGOT_PW_EMAIL_FALSE,
+})
+export const isForgotPwEmailSentTrue = () => ({
+    type: UserActionTypes.IS_FORGOT_PW_EMAIL_SENT_TRUE,
+})
+
+export const isForgotPwEmailSentFalse = () => ({
+    type: UserActionTypes.IS_FORGOT_PW_EMAIL_SENT_FALSE,
+})
+export const isResettingPwTrue = () => ({
+    type: UserActionTypes.IS_RESETTING_PW_TRUE,
+})
+
+export const isResettingPwFalse = () => ({
+    type: UserActionTypes.IS_RESETTING_PW_FALSE,
+})
 
 export const updateUserDetailsStart = (formData) => ({
     type: UserActionTypes.UPDATE_USER_DETAILS_START,
@@ -81,6 +102,34 @@ export const deleteMeFailure = () => ({
 type: UserActionTypes.DELETE_ME_FAILURE,
 })
 
+export const sendForgotPwEmailStart = (email) => ({
+type: UserActionTypes.SEND_FORGOT_PW_EMAIL_START,
+email,
+})
+export const sendForgotPwEmailSuccess = () => ({
+type: UserActionTypes.SEND_FORGOT_PW_EMAIL_SUCCESS
+})
+export const sendForgotPwEmailFailure = (error, targetComponent) => ({
+type: UserActionTypes.SEND_FORGOT_PW_EMAIL_FAILURE,
+error,
+targetComponent,
+})
+export const resetPasswordStart = (resetPwObj, param) => ({
+type: UserActionTypes.RESET_PW_START,
+resetPwObj,
+param,
+})
+export const resetPasswordSuccess = () => ({
+type: UserActionTypes.RESET_PW_SUCCESS
+})
+export const resetPasswordFailure = () => ({
+type: UserActionTypes.RESET_PW_FAILURE,
+})
+export const setSendForgotPwEmailAlert = (alert) => ({
+    type: UserActionTypes.SET_SEND_FOTGOT_PW_EMAIL_ALERT,
+    alert,
+})
+
 export const setChangePasswordAlert = (alert) => ({
 type: UserActionTypes.SET_CHANGE_PASSWORD_ALERT,
 alert
@@ -93,4 +142,9 @@ type: UserActionTypes.SHOW_CHANGE_PASSWORD_MSG,
 })
 export const hideChangePasswordMsg = () => ({
 type: UserActionTypes.HIDE_CHANGE_PASSWORD_MSG,
+})
+
+export const changeResetPasswordState = (state) => ({
+    type: UserActionTypes.CHANGE_RESET_PW_STATE,
+    state
 })

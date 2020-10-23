@@ -7,7 +7,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const OperationalErr = require("../../helpers/OperationalErr");
-const { sendEmail } = require("../../utils/mailer");
+const Email = require("../../utils/mailer");
 const { promisify } = require("util");
 
 const client = new OAuth2Client(
@@ -132,6 +132,12 @@ exports.signUp = withCatchErrAsync(async (req, res, next) => {
 
   // Get the default jpeg from s3 and send it back to user for react state
   try {
+    // Send email to user to welcome them
+    // @planToImplement url should point to change avatar page
+    const url = `${req.protocol}://${req.get('host')}/mainPage`;
+    console.log(url);
+    await new Email(newUser, url).sendWelcome();
+
     const S3Instance = new S3("default.jpeg");
     await S3Instance.getFromS3((imgBuffer) => authUtils.createSendToken(newUser, 201, res, imgBuffer));
     // await getFromS3("default.jpeg", 
@@ -193,27 +199,22 @@ exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
 
   if (!user) {
     return next(
-      new OperationalErr("No User with this email address found.", 404, "local")
+      new OperationalErr("Email{SEPERATE}No User with this email address found.", 404, "local")
     );
   }
 
   // 2) Generate the random reset token
-  // Also added the passwordResetToken and passwordResetExpires into the doc.
+  // * Also added the passwordResetToken and passwordResetExpires into the doc.
   const resetToken = user.createPasswordResetToken();
   await user.save();
 
-  const resetURL = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/users/resetPassword/${resetToken}`;
-
-  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL} \nIf you didn't forget your password, please ignore this email.`;
-
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Your password reset token (valid for 10 mins)",
-      message,
-    });
+    //3) Send reset token via email
+    const resetURL = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/resetPassword/${resetToken}`;
+    await new Email(user, resetURL).sendPasswordReset();
+
   } catch (error) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
@@ -261,9 +262,9 @@ exports.resetPassword = withCatchErrAsync(async (req, res, next) => {
     );
   }
 
-  const { password, passwordConfirm } = req.body;
-  user.password = password;
-  user.passwordConfirm = passwordConfirm;
+  const { newPassword, confirmPassword } = req.body;
+  user.password = newPassword;
+  user.passwordConfirm = confirmPassword;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
 

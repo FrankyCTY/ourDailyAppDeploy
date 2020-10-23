@@ -6,11 +6,11 @@ import useRouter from "../../hooks/useRouter.hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { changeAuthPage} from "../../redux/AuthPage/AuthPage.actions";
 import {setIsLoggedTrue} from "../../redux/Auth/auth.actions";
-import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
 
 import LogInPage from "../../Pages/LogInPage/LogIn.page";
 import SignUpPage from "../../Pages/SignUpPage/SignUp.page";
 import ForgotPasswordPage from "../../Pages/ForgotPasswordPage/ForgotPassword.page";
+import ResetPasswordPage from "../../Pages/ResetPasswordPage/ResetPassword.page";
 
 import SocialContactPair from "../../Components/SocialContact/SocialContactPair.component";
 import { ReactComponent as LinkedInSvg } from "../../assets/svg/LinkedIn2.svg";
@@ -22,12 +22,12 @@ const AuthRouter = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const currentAuthPage = useSelector((state) => state.authPage.authPage);
-  const isUserLogged = useSelector((state) => state.auth_P.isLogged);
-
+console.log(router.pathName)
+// /auth/resetPassword
   return (
     <S.AuthPageContainer className="AuthRouter-page">
       <S.LogInPageHazyBg className="S_LogInPageHazyBg"></S.LogInPageHazyBg>
-      <S.LogInPageContent>
+      <S.LogInPageContent className="overflow-x-hidden">
         {currentAuthPage !== "uploadAvatar" && (
           <S.LogoWrapper
             className={`${currentAuthPage === "signup" ? "shrink" : ""}`}
@@ -51,14 +51,14 @@ const AuthRouter = () => {
           <Route exact path={"/auth/forgotPassword"}>
             <ForgotPasswordPage />
           </Route>
-          <Route
-              component={NoMatch}
-            />
+          <Route exact path={"/auth/resetPassword/:resetToken"}>
+            <ResetPasswordPage />
+          </Route>
+          <Route><Redirect to={{ pathname: "/404"}} /></Route>
         </Switch>
         {currentAuthPage && (
           <S.FooterWrapper>
-            {/* // ============== Create Account Btn ==============  */}
-            {(currentAuthPage === "uploadAvatar") &&<S.ChangeAuthPageLink
+            {(currentAuthPage === "uploadAvatar") && <S.ChangeAuthPageLink
                 to="/main"
                 onClick={() => {
                   dispatch(setIsLoggedTrue());

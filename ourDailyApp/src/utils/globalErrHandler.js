@@ -1,14 +1,16 @@
 import { store } from "../redux/store";
 
 import { setSignUpAlert, setLogInAlert } from "../redux/Auth/auth.actions";
-import { hideChangePasswordMsg, setChangePasswordAlert, showChangePasswordMsg } from "../redux/User/user.actions";
+import { hideChangePasswordMsg, setChangePasswordAlert, showChangePasswordMsg, setSendForgotPwEmailAlert } from "../redux/User/user.actions";
 
 import splitError from "./splitError";
 
 function globalErrHandler(err, target) {
   const { scope, message } = err.response.data.error;
   // @desc Spliting alert string into array of [:targetName, :alertMsg]
+  console.log({message});
   const tupleArray = splitError(message);
+  console.log({tupleArray})
 
   // 1) Depends on err.scope to determine -> globalError reducer || local alert
   if (scope === "global") {
@@ -27,6 +29,9 @@ function globalErrHandler(err, target) {
         setTimeout(() => {
           store.dispatch(hideChangePasswordMsg());
         }, 2500);
+        break;
+      case "sendForgotPwAlert":
+        store.dispatch(setSendForgotPwEmailAlert(tupleArray[0][1]));
       default:
         console.log("Scope === local but not being handled!");
         break;

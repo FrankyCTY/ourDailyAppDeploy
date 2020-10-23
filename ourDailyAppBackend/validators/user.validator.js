@@ -57,12 +57,12 @@ exports.logInValidation = [
 ];
 
 exports.resetPasswordValidation = [
-  body("password")
+  body("newPassword")
     .isLength({
       min: 8,
     })
     .withMessage("password{SEPERATE}Password must be at least 8 chars long"),
-  body("passwordConfirm").custom((value, { req }) => {
+  body("confirmPassword").custom((value, { req }) => {
     if (value !== req.body.password) {
       throw new Error(
         "password{SEPERATE}Password confimation does not match password"

@@ -7,7 +7,13 @@ const INITIATE_STATE = {
     isChangingUserPassword: false,
     showChangePasswordMsg: false,
     isDeletingMe: false,
+    isSendingForgotPwEmail: false,
+    isForgotPwEmailSent: false,
+    isResettingPw: false,
+    // success / fail / ""
+    resetPwState: "",
     changePasswordAlert: "Successfully",
+    sendForgotPwAlert: "",
 };
 
 const UserReducer = (state = INITIATE_STATE, action) => {
@@ -32,6 +38,16 @@ const UserReducer = (state = INITIATE_STATE, action) => {
             ...state,
             isUpdatingUserDetails: false,
         }
+    case UserActionTypes.IS_FORGOT_PW_EMAIL_SENT_TRUE:
+        return {
+            ...state,
+            isForgotPwEmailSent: true,
+        }
+    case UserActionTypes.IS_FORGOT_PW_EMAIL_SENT_FALSE:
+        return {
+            ...state,
+            isForgotPwEmailSent: false,
+        }
     case UserActionTypes.IS_CHANGING_USER_PASSWORD_TRUE:
         return {
             ...state,
@@ -51,6 +67,36 @@ const UserReducer = (state = INITIATE_STATE, action) => {
         return {
             ...state,
             isDeletingMe: false,
+        }
+    case UserActionTypes.IS_SENDING_FORGOT_PW_EMAIL_TRUE:
+        return {
+            ...state,
+            isSendingForgotPwEmail: true,
+        }
+    case UserActionTypes.IS_SENDING_FORGOT_PW_EMAIL_FALSE:
+        return {
+            ...state,
+            isSendingForgotPwEmail: false,
+        }
+    case UserActionTypes.IS_RESETTING_PW_TRUE:
+        return {
+            ...state,
+            isResettingPw: true,
+        }
+    case UserActionTypes.IS_RESETTING_PW_FALSE:
+        return {
+            ...state,
+            isResettingPw: false,
+        }
+    case UserActionTypes.CHANGE_RESET_PW_STATE:
+        return {
+            ...state,
+            resetPwState: action.state,
+        }
+    case UserActionTypes.SET_SEND_FOTGOT_PW_EMAIL_ALERT:
+        return {
+            ...state,
+            sendForgotPwAlert: action.alert,
         }
     case UserActionTypes.SET_CHANGE_PASSWORD_ALERT:
         return {

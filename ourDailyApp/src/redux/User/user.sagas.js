@@ -23,6 +23,17 @@ import {
     isDeletingMeFalse,
     deleteMeSuccess,
     deleteMeFailure,
+    isSendingForgotPwEmailTrue,
+    isSendingForgotPwEmailFalse,
+    sendForgotPwEmailSuccess,
+    sendForgotPwEmailFailure,
+    isForgotPwEmailSentTrue,
+    isForgotPwEmailSentFalse,
+    resetPasswordSuccess,
+    resetPasswordFailure,
+    isResettingPwTrue,
+    isResettingPwFalse,
+    changeResetPasswordState,
 } from "./user.actions";
 
 import {setWholePageLoaderBigText} from "../WholePageLoader/wholePageLoader.action";
@@ -40,9 +51,29 @@ import {
 
 import {requestAndUpdateAvatar} from "./user.generatorFn";
 
-import {changeUserPassword, deleteMe} from "./user.requests";
+import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword} from "./user.requests";
 
 // ================= Sagas ==================
+
+function* onResetPasswordStart() {
+  yield takeLeading(UserActionTypes.RESET_PW_START, fn_resetPasswordStart);
+}
+function* onResetPasswordSuccess() {
+  yield takeLeading(UserActionTypes.RESET_PW_SUCCESS, fn_resetPasswordSuccess);
+}
+function* onResetPasswordFailure() {
+  yield takeLeading(UserActionTypes.RESET_PW_FAILURE, fn_resetPasswordFailure);
+}
+function* onSendForgotPwEmailStart() {
+  yield takeLeading(UserActionTypes.SEND_FORGOT_PW_EMAIL_START, fn_sendForgotPwEmailStart);
+}
+
+function* onSendForgotPwEmailFailure() {
+  yield takeLeading(UserActionTypes.SEND_FORGOT_PW_EMAIL_FAILURE, fn_sendForgotPwEmailFailure);
+}
+function* onSendForgotPwEmailSuccess() {
+  yield takeLeading(UserActionTypes.SEND_FORGOT_PW_EMAIL_SUCCESS, fn_sendForgotPwEmailSuccess);
+}
 
 function* onDeleteMeStart() {
   yield takeLeading(UserActionTypes.DELETE_ME_START, fn_deleteMeStart);
@@ -105,8 +136,73 @@ function* onUpdateUserDetailsStart() {
       call(onChangeUserPasswordSuccess),
       call(onDeleteMeStart),
       call(onDeleteMeSuccess),
+      call(onSendForgotPwEmailStart),
+      call(onSendForgotPwEmailFailure),
+      call(onSendForgotPwEmailSuccess),
+      call(onResetPasswordStart),
+      call(onResetPasswordSuccess),
+      call(onResetPasswordFailure),
     ]);
   }
+
+  function* fn_resetPasswordStart({resetPwObj, param}) {
+    try {
+      // Start Spinner
+      yield put(isResettingPwTrue());
+      yield delay(3000);
+      // 1) Request Backend to resetPassword
+      console.log("ready to reset password", {param})
+      const res = yield call(resetPassword, resetPwObj, `${process.env.REACT_APP_URL}/users/resetPassword/${param}`);
+      console.log({res})
+      // Stop Spinner
+      yield put(isResettingPwFalse());
+      yield put(resetPasswordSuccess());
+    } catch (error) {
+      // Stop Spinner
+      yield put(isResettingPwFalse());
+      yield put(resetPasswordFailure());
+    }  
+  }
+  
+  function* fn_resetPasswordSuccess () {
+    yield put(changeResetPasswordState("success"));
+  }
+
+  function* fn_resetPasswordFailure () {
+    yield put(changeResetPasswordState("fail"));
+  }
+
+function* fn_sendForgotPwEmailStart ({email}) {
+  try {
+    // Loading -> true
+    console.log({email});
+    yield put(isSendingForgotPwEmailTrue());
+
+    // 1) Request to send email via backend
+    const res = yield call(sendForgotPwEmail, email, `${process.env.REACT_APP_URL}/users/forgotPassword`);
+    console.log({resetEmailRes: res});
+
+    // Loading -> false
+    yield put(isSendingForgotPwEmailFalse());
+    yield put(sendForgotPwEmailSuccess());
+  } catch (error) {
+    // Loading -> false
+    yield put(isSendingForgotPwEmailFalse());
+    yield put(sendForgotPwEmailFailure(error, "sendForgotPwAlert"));
+  }
+}
+
+function* fn_sendForgotPwEmailFailure({error, targetComponent}) {
+  // targetComponent "sendForgotPwAlert"
+  console.log({error})
+  yield globalErrHandler(error, targetComponent);
+}
+
+function* fn_sendForgotPwEmailSuccess() {
+  yield put(isForgotPwEmailSentTrue());
+  yield delay(5000);
+  yield put(isForgotPwEmailSentFalse());
+}
 
 function* fn_deleteMeStart() {
   try {

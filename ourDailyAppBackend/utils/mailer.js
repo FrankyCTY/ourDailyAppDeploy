@@ -32,7 +32,7 @@ module.exports = class Email {
   async send(template, subject) {
     // 1) Render HTML based on a template
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
-      name: this.name,
+    name: this.name,
       url: this.url,
       subject
     })
@@ -52,6 +52,10 @@ module.exports = class Email {
 
   async sendWelcome() {
     await this.send("welcome", "Welcome to OurDailyApp!");
+  }
+
+  async sendPasswordReset() {
+    await this.send('passwordReset', 'Your password reset token (valid for only 10 minutes');
   }
 }
 

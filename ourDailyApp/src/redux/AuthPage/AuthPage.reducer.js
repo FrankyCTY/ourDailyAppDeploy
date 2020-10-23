@@ -1,7 +1,7 @@
 import AuthPageActionTypes from "./AuthPage.types";
 
 const INITIATE_STATE = {
-  authPage: "uploadAvatar",
+  authPage: "",
 };
 
 const AuthPageReducer = (state = INITIATE_STATE, action) => {

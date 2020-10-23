@@ -46,3 +46,30 @@ export const deleteMe = async(url) => {
     
       return backEndResponse;
 }
+
+export const sendForgotPwEmail = async(email, url) => {
+    const backEndResponse = await axios({
+        method: "POST",
+        url,
+        data: {
+            email,
+        }
+    });
+
+    return backEndResponse;
+}
+
+export const resetPassword = async({newPassword, confirmPassword}, url) => {
+    console.log({newPassword})
+    console.log({confirmPassword})
+    const backEndResponse = await axios({
+        method: "PATCH",
+        url,
+        data: {
+            newPassword,
+            confirmPassword,
+        }
+    });
+
+    return backEndResponse;
+}
