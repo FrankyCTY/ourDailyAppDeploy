@@ -195,7 +195,7 @@ exports.googleLogIn = withCatchErrAsync(async (req, res, next) => {
 exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
   // 1) check if user exists based on POSTED email
   const { email } = req.body;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+active");
 
   if (!user) {
     return next(
@@ -203,13 +203,18 @@ exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
     );
   }
 
-  // 2) Generate the random reset token
+  // 2) Error if target user is inactive (deleted)
+  if(!user.active) {
+    return next(new OperationalErr("Target account is inactive.", 400, "local"));
+  }
+
+  // 3) Generate the random reset token
   // * Also added the passwordResetToken and passwordResetExpires into the doc.
   const resetToken = user.createPasswordResetToken();
   await user.save();
 
   try {
-    //3) Send reset token via email
+    //4) Send reset token via email
     const resetURL = `${req.protocol}://${req.get(
       "host"
     )}/api/v1/users/resetPassword/${resetToken}`;
