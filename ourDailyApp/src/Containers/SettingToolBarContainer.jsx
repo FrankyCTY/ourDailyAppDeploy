@@ -14,6 +14,7 @@ const SettingToolBar = () => {
             <ToolBar.Btn className={`${router.pathName === "/settings/profile" && "active"}`} onClick={() => router.push("/settings/profile")}><ToolBar.BtnIcon className="iconfont icon-profile1" /></ToolBar.Btn>
             <ToolBar.Btn className={`${router.pathName === "/settings/changePassword" && "active"}`} onClick={() => router.push("/settings/changePassword")}><ToolBar.BtnIcon className="iconfont icon-key"/></ToolBar.Btn>
             <ToolBar.Btn className={`${router.pathName === "/settings/deleteMe" && "active"}`} onClick={() => router.push("/settings/deleteMe")}><ToolBar.BtnIcon className="iconfont icon-line-deleteuser"/></ToolBar.Btn>
+            <ToolBar.Btn className={`${router.pathName === "/settings/appearance" && "active"}`} onClick={() => router.push("/settings/appearance")}><ToolBar.BtnIcon className="iconfont icon-highlight"/></ToolBar.Btn>
         </ToolBar>
     )
 }

@@ -22,6 +22,7 @@ const MainPage = () => {
     dispatch(fetchAccessAppBtnsStart());
   }, [dispatch]);
   return (
+    <>
     <S.MainPageContainer className="MainPage gs-page">
       <S.ImageFrameWrapper>
         <ImageFrame src={`data:image/jpg;base64,${_arrayBufferToBase64(userAvatar)}`} halo={true} withExtraText={true}
@@ -34,6 +35,8 @@ const MainPage = () => {
         <MainPageAccessAppWrapper />
       </S.AccessAppBtnWrapper>
     </S.MainPageContainer>
+    <S.CustomizedBg/>
+  </>
   );
 };
 

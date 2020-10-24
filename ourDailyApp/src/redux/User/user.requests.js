@@ -60,8 +60,6 @@ export const sendForgotPwEmail = async(email, url) => {
 }
 
 export const resetPassword = async({newPassword, confirmPassword}, url) => {
-    console.log({newPassword})
-    console.log({confirmPassword})
     const backEndResponse = await axios({
         method: "PATCH",
         url,

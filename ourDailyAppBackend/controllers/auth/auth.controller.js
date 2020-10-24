@@ -197,24 +197,25 @@ exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
   const { email } = req.body;
   const user = await User.findOne({ email }).select("+active");
 
+  // 2) Error user does not exist
   if (!user) {
     return next(
       new OperationalErr("Email{SEPERATE}No User with this email address found.", 404, "local")
     );
   }
 
-  // 2) Error if target user is inactive (deleted)
+  // 3) Error if target user is inactive (deleted)
   if(!user.active) {
-    return next(new OperationalErr("Target account is inactive.", 400, "local"));
+    return next(new OperationalErr("Email{SEPERATE}Target account is inactive.", 400, "local"));
   }
 
-  // 3) Generate the random reset token
+  // 4) Generate the random reset token
   // * Also added the passwordResetToken and passwordResetExpires into the doc.
   const resetToken = user.createPasswordResetToken();
   await user.save();
 
   try {
-    //4) Send reset token via email
+    //5) Send reset token via email
     const resetURL = `${req.protocol}://${req.get(
       "host"
     )}/api/v1/users/resetPassword/${resetToken}`;

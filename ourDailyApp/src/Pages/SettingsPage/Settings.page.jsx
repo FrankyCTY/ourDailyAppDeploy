@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import "./SettingsPage.scss";
 import ProfileContainer from "../../Containers/ProfileForm.container";
+import AppearanceContainer from "../../Containers/Appearance.container";
 import { CSSTransition } from "react-transition-group";
 import SettingToolBar from "../../Containers/SettingToolBarContainer";
 import {SideMenu, Formik, Notification, WholePageLoader} from "../../Components/Compound Components";
@@ -26,6 +27,10 @@ const SettingsPage = () => {
             <SideMenu.ItemIcon className="iconfont icon-profile1 mr-2" />
             <SideMenu.ItemText className="itemtext">Profile</SideMenu.ItemText>
           </SideMenu.SideMenuItem>
+          <SideMenu.SideMenuItem className={`${router.pathName === "/settings/appearance" && "active"}`} onClick={() => router.push("/settings/appearance")}>
+            <SideMenu.ItemIcon className="iconfont icon-highlight mr-2" />
+            <SideMenu.ItemText className="itemtext">Appearance</SideMenu.ItemText>
+          </SideMenu.SideMenuItem>
           <SideMenu.SideMenuItem className={`${router.pathName === "/settings/changePassword" && "active"}`} onClick={() => router.push("/settings/changePassword")}>
             <SideMenu.ItemIcon className="iconfont icon-key mr-2" />
             <SideMenu.ItemText className="itemtext">Change password</SideMenu.ItemText>
@@ -40,6 +45,7 @@ const SettingsPage = () => {
           <Switch>
             <Route exact path={`${router.matchPath}`}><Redirect to={{pathname: `${router.matchPath}/profile`}}/></Route>
             <Route exact path={`${router.matchPath}/profile`}><ProfileContainer/></Route>
+            <Route exact path={`${router.matchPath}/appearance`}><AppearanceContainer/></Route>
             <Route exact path={`${router.matchPath}/changePassword`}><ChangePasswordForm/></Route>
             <Route exact path={`${router.matchPath}/deleteMe`}><DeleteMeForm/></Route>
           </Switch>

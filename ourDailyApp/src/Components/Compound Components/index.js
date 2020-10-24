@@ -19,3 +19,4 @@ export { default as ToolBar } from "./ToolBar/ToolBar.component";
 export { default as SideMenu } from "./SideMenu/SideMenu.component";
 export { default as WholePageLoader } from "./WholePageLoader/WholePageLoader.component";
 export { default as SuccessFail } from "./SuccessFail/SuccessFail.component";
+export { default as Gallery } from "./Gallery/Gallery.component";

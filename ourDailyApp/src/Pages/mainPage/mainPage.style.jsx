@@ -47,6 +47,7 @@ S.ImageFrameWrapper = styled.div`
   place-items: center;
 
   animation: ${appear} 350ms;
+  z-index: 2;
 `;
 
 S.username = styled.h2`
@@ -63,10 +64,22 @@ S.AccessAppBtnWrapper = styled.div`
   align-self: flex-start;
 
   margin-top: 3em;
+  z-index: 2;
 
   @media (orientation: landscape) {
     margin-bottom: 2em;
   }
+`;
+
+S.CustomizedBg = styled.div`
+position: fixed;
+top: 0;
+left: 0;
+border: 2px solid white;
+width: 100vw;
+height: 100vh;
+pointer-events: none;
+background: pink;
 `;
 
 export default S;
