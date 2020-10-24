@@ -51,7 +51,7 @@ export default function useProfileForm() {
           birthday: format(new Date(date), 'MM/dd/yyyy'),
         }))
     }
-  }, [])
+  }, [isDOBvalid])
 
 
   return {

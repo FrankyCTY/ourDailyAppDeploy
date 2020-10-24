@@ -71,3 +71,10 @@ export const resetPassword = async({newPassword, confirmPassword}, url) => {
 
     return backEndResponse;
 }
+
+export const changeUserBackground = async(formData, url) => {
+    let res;
+    res =  await axios.patch(url, formData, {withCredentials: true});
+
+    return res;
+}

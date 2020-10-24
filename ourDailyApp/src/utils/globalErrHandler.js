@@ -32,6 +32,7 @@ function globalErrHandler(err, target) {
         break;
       case "sendForgotPwAlert":
         store.dispatch(setSendForgotPwEmailAlert(tupleArray[0][1]));
+        break;
       default:
         console.log("Scope === local but not being handled!");
         break;

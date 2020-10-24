@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "default.jpeg",
     },
+    bg: {
+      type: String,
+      default: undefined,
+    },
     role: {
       type: String,
       enum: ["user", "creator", "admin"],

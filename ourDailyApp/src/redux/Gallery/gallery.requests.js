@@ -12,3 +12,4 @@ export const getBackgroundImages = async(url) => {
 
     return apiResponse;
 }
+

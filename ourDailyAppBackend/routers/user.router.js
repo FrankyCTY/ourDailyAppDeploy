@@ -44,6 +44,8 @@ router.patch(
   userController.updateMe,
 );
 
+router.patch("/updateBg", authController.protect, userController.uploadUserBg, userController.updateUserBg);
+
 // @desc Logged in user change their password
 // @access private
 router.patch('/changePassword', authController.protect, changePasswordValidation, validate, userController.changePassword);

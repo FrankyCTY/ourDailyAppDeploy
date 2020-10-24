@@ -8,6 +8,8 @@ import {SideMenu, Formik, Notification, WholePageLoader} from "../../Components/
 import { useMediaQuery } from "react-responsive";
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 
+import {UploadAvatarProvider} from "../../context/uploadAvatar.context";
+
 import { Route, Switch, Redirect } from "react-router-dom";
 import useRouter from "../../hooks/useRouter.hooks";
 import { useSelector, useDispatch } from "react-redux";
@@ -45,7 +47,7 @@ const SettingsPage = () => {
           <Switch>
             <Route exact path={`${router.matchPath}`}><Redirect to={{pathname: `${router.matchPath}/profile`}}/></Route>
             <Route exact path={`${router.matchPath}/profile`}><ProfileContainer/></Route>
-            <Route exact path={`${router.matchPath}/appearance`}><AppearanceContainer/></Route>
+            <Route exact path={`${router.matchPath}/appearance`}><UploadAvatarProvider><AppearanceContainer/></UploadAvatarProvider></Route>
             <Route exact path={`${router.matchPath}/changePassword`}><ChangePasswordForm/></Route>
             <Route exact path={`${router.matchPath}/deleteMe`}><DeleteMeForm/></Route>
           </Switch>

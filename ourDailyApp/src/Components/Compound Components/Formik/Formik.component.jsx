@@ -3,7 +3,7 @@ import S from "./styles/Formik.style";
 import "react-datepicker/dist/react-datepicker.css";
 import {UploadAvatarContext} from "../../../context/uploadAvatar.context";
 import {updateUserDetailsStart} from "../../../redux/User/user.actions";
-import { format } from 'date-fns';
+import FormikUtils from "./Formik.utils";
 import {useDispatch} from "react-redux";
 
 
@@ -76,37 +76,27 @@ Formik.CustomCheckBox = function FormikCustomCheckBox({onClick, className, child
     )
 }
 
-Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, ...restProps}) {
+Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, operationType, ...restProps}) {
 
     const dispatch = useDispatch();
 
     const {file, cropData} = useContext(UploadAvatarContext);
 
-    const {name, email, bio, personalWebsite, gender, birthday} = formDetails;
-
     const onSubmit = (e) => {
        e.preventDefault();
-       const formData = new FormData();
+       let formData = new FormData();
 
-       // Combine the edited avatar file with the update user details
-       // into formData and send back to bkEnd
-    //    const newBirthday = format(new Date(birthday), 'dd/MM/yyyy');
-
-       // Update avatar only if user changed it
-       if(cropData) {
-           formData.append('avatar', file);
-           console.log("we have cropped data");
-        }
-       formData.append('name', name);
-       formData.append('email', email);
-       formData.append('bio', bio);
-       formData.append('personalWebsite', personalWebsite);
-       formData.append('gender', gender);
-    //    formData.append('birthday', newBirthday);
-       formData.append('birthday', birthday);
-
-    //    console.log({birthday})
-       console.log({gender})
+       // 1) Check the operationType to see what data to send
+       switch (operationType) {
+           case "changeProfile":
+               formData = FormikUtils.SubmitProfileLogic(formDetails, formData, cropData, file);
+                break;
+            case "changeBackground":
+                formData.append("background", formDetails.background);
+                break;
+           default:
+               return alert("Please specify the operationType");
+       }
         dispatch(updateUserDetailsStart(formData));
     }
 

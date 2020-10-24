@@ -2,12 +2,13 @@ const User = require("../../models/user/user.model");
 const S3 = require("../../helpers/S3");
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const OperationalErr = require("../../helpers/OperationalErr");
-const { filterObj, upload, deleteOldAvatarFromS3, uploadAvatarToS3 } = require("./user.utils");
+const { filterObj, upload, deleteOldAvatarFromS3, uploadAvatarToS3, deleteOldBgFromS3, uploadBgToS3 } = require("./user.utils");
 const sharp = require("sharp");
 const factory = require("../controllerFactory");
 const authUtils = require("../auth/auth.utils");
 
 exports.uploadUserAvatar = upload.single("avatar");
+exports.uploadUserBg = upload.single("uploadedBg");
 
 exports.resizeUserPhoto = withCatchErrAsync(async (req, res, next) => {
   // Multer's upload middleware puts the file into req
@@ -34,6 +35,46 @@ exports.resizeUserPhoto = withCatchErrAsync(async (req, res, next) => {
 // @restrictTo only admin
 exports.getAllUsers = factory.getAll(User);
 
+exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
+  const {bgUrl} = req.body;
+  const {id} = req.user;
+
+  let bg = undefined;
+  // if user update with default background
+  if(bgUrl) {
+    bg = bgUrl;
+  }
+  else {
+    // else if user uploaded custom background
+    console.log("here")
+    console.log(req.file)
+    const {buffer, mimetype} = req.file;
+    // 1) create unique filename for bg
+    const imgMimetype = mimetype.substr(mimetype.lastIndexOf('/') + 1);
+    const filename = `user-background-${new Date()}-${id}.${imgMimetype}`;
+    bg = filename;
+    await uploadBgToS3(filename, buffer);
+  
+    console.log({filename});
+  }
+
+  // save changes to user
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    {bg},
+    {
+      new: true,
+      // runValidators: true,
+    }
+  );
+
+  return res.status(200).json({
+    status: "success",
+    data: {
+      user: updatedUser
+    }
+  })
+})
 
 // Please use updateMe with deleteOldAvatarFromS3
 // updateMe itself will not return any response

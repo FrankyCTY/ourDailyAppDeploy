@@ -28,7 +28,7 @@ const ResetPasswordPage = () => {
         return () => {
             dispatch(changeResetPasswordState(""));
         }
-    }, [])
+    }, [dispatch])
 
       const [resetPwObj, setResetPwObj] = useState({newPassword: "", confirmPassword: ""});
 

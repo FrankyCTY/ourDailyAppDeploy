@@ -1,7 +1,6 @@
 import React from "react";
 import {ToolBar} from "../Components/Compound Components";
 import useRouter from "../hooks/useRouter.hooks";
-import PixelSpinner from "../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 
 
 

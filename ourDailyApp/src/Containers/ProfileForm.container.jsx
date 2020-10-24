@@ -1,7 +1,7 @@
 import React from "react";
 import PixelSpinner from "../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import {Formik, UploadAvatar, Notification} from "../Components/Compound Components";
-import {UploadAvatarProvider,} from "../context/uploadAvatar.context";
+import {UploadAvatarProvider} from "../context/uploadAvatar.context";
 import {useSelector} from "react-redux";
 // import {useFormik} from "formik";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
@@ -72,7 +72,7 @@ const ProfileFormContainer = () => {
                     <Formik.DatePicker disabled={isUploadingUserDetails} onChange={handleDateChange} selected={new Date(birthday)}  className="frankyda111"></Formik.DatePicker>
                 </Formik.Group>
             </Formik.Group>
-            <Formik.SubmitBtn disabled={isUploadingUserDetails || !isDOBvalid} type="submit" variant="contained" color="primary" 
+            <Formik.SubmitBtn disabled={isUploadingUserDetails || !isDOBvalid} operationType="changeProfile" type="submit" variant="contained" color="primary" 
             formDetails={profileDetails} className="col-span-2 justify-self-start mt-5">Save{isUploadingUserDetails && <PixelSpinner size={1.2} animationDuration={1500} style={{marginLeft: "4px"}}/>}</Formik.SubmitBtn>
         </Formik>
         <UploadAvatar.CropImageContainer/>

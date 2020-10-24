@@ -44,6 +44,16 @@ exports.uploadAvatarToS3 = async (avatarName, imgBuffer) => {
   
   await s3.upload(params).promise();
 }
+exports.uploadBgToS3 = async (bgName, imgBuffer) => {
+  // 2) Upload to AWS S3 bucket
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: bgName,
+    Body: imgBuffer,
+  };
+  
+  await s3.upload(params).promise();
+}
 
 exports.deleteOldAvatarFromS3 = (oldAvatarName) => {
 
@@ -60,4 +70,17 @@ exports.deleteOldAvatarFromS3 = (oldAvatarName) => {
     if (error) {
     }
   });
+}
+
+exports.deleteOldBgFromS3 = (oldBgName) => {
+    // Delete old avatar photo from AWS S3 bucket
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: oldBgName,
+    };
+    
+    s3.deleteObject(params, (error, data) => {
+      if (error) {
+      }
+    });
 }

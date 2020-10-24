@@ -79,7 +79,7 @@ border: 2px solid white;
 width: 100vw;
 height: 100vh;
 pointer-events: none;
-background: pink;
+background: ${({background}) => background};
 `;
 
 export default S;

@@ -4,6 +4,7 @@ const INITIATE_STATE = {
   isLogged: false,
   user: null,
   userAvatar: null,
+  userBg: "https://images.pexels.com/photos/2988589/pexels-photo-2988589.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
 };
 
 const authReducer_P = (state = INITIATE_STATE, action) => {
@@ -23,11 +24,16 @@ const authReducer_P = (state = INITIATE_STATE, action) => {
           ...state,
           isLogged: false,
         }
-        case AuthActionTypes.SET_USER_AVATAR:
-          return {
-            ...state,
-            userAvatar: action.imgBuffer
-          }
+      case AuthActionTypes.SET_USER_AVATAR:
+        return {
+          ...state,
+          userAvatar: action.imgBuffer
+        }
+      case AuthActionTypes.SET_USER_BACKGROUND:
+        return {
+          ...state,
+          userBg: action.bg,
+        }
     default:
       return state;
   }

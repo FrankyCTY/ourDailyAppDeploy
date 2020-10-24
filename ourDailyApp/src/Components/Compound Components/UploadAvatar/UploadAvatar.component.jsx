@@ -77,12 +77,17 @@ UploadAvatar.CropImageContainer = function CropImageContainer({
   children,
   ...restProps
 }) {
-  const { editAvatar, isEditAvatarPopped, closeEditAvatarPopUp, setCropData, setFile } = useContext(UploadAvatarContext);
+  const { editAvatar, isEditAvatarPopped, closeEditAvatarPopUp, setCropData, setFile, setImgName, setSelectedBg } = useContext(UploadAvatarContext);
 
   const [cropper, setCropper] = React.useState();
 
   const getCropData = () => {
     if (typeof cropper !== "undefined") {
+      // 1) Set avatar to ""
+      setImgName("");
+
+      // 2) Set background to ""
+      setSelectedBg("");
       setCropData(cropper.getCroppedCanvas().toDataURL());
       const blob = b64toBlob(cropper.getCroppedCanvas().toDataURL());
       setFile(blob);

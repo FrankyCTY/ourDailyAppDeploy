@@ -15,6 +15,7 @@ const MainPage = () => {
 
   const userDetails = useSelector((state) => state.auth_P.user);
   const userAvatar = useSelector(state => state.auth_P.userAvatar);
+  const userBg = useSelector(state => state.auth_P.userBg);
 
   // ============= Life Cycle Hooks =============
 
@@ -35,7 +36,7 @@ const MainPage = () => {
         <MainPageAccessAppWrapper />
       </S.AccessAppBtnWrapper>
     </S.MainPageContainer>
-    <S.CustomizedBg/>
+    <S.CustomizedBg background={`url(${userBg}})`}/>
   </>
   );
 };

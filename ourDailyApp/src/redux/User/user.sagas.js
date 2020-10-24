@@ -34,6 +34,10 @@ import {
     isResettingPwTrue,
     isResettingPwFalse,
     changeResetPasswordState,
+    changeUserBackgroundSuccess,
+    changeUserBackgroundFailure,
+    isChangingUserBgTrue,
+    isChangingUserBgFalse,
 } from "./user.actions";
 
 import {setWholePageLoaderBigText} from "../WholePageLoader/wholePageLoader.action";
@@ -46,14 +50,22 @@ import {
     setIsLoggedTrue,
     setUserDetails,
     signOut,
+    setUserBackground,
 } from "../Auth/auth.actions";
 
 
 import {requestAndUpdateAvatar} from "./user.generatorFn";
 
-import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword} from "./user.requests";
+import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword, changeUserBackground} from "./user.requests";
 
 // ================= Sagas ==================
+
+function* onChangeUserBackgroundStart() {
+  yield takeLeading(UserActionTypes.CHANGE_USER_BACKGROUND_START, fn_changeUserBackgroundStart);
+} 
+function* onChangeUserBackgroundSuccess() {
+  yield takeLeading(UserActionTypes.CHANGE_USER_BACKGROUND_SUCCESS, fn_changeUserBackgroundSuccess);
+} 
 
 function* onResetPasswordStart() {
   yield takeLeading(UserActionTypes.RESET_PW_START, fn_resetPasswordStart);
@@ -142,7 +154,35 @@ function* onUpdateUserDetailsStart() {
       call(onResetPasswordStart),
       call(onResetPasswordSuccess),
       call(onResetPasswordFailure),
+      call(onChangeUserBackgroundStart),
+      call(onChangeUserBackgroundSuccess),
     ]);
+  }
+
+  function* fn_changeUserBackgroundStart({formData}) {
+    try {
+      // Loading -> true
+      console.log({formData})
+      yield put(isChangingUserBgTrue());
+      
+      // 1) request backend to change user background
+      const res = yield call(changeUserBackground, formData, `${process.env.REACT_APP_URL}/users/updateBg`);
+
+      console.log({res})
+      console.log(res.data.data.user.bg)
+      // 3) save user background to react state
+      yield put(setUserBackground(res.data.data.user.bg));
+
+      // Loading -> false
+      yield put(changeUserBackgroundSuccess());
+    } catch (error) {
+      // Loading -> false
+      yield put(isChangingUserBgFalse());
+      yield put(changeUserBackgroundFailure());
+    }
+  }
+
+  function* fn_changeUserBackgroundSuccess() {
   }
 
   function* fn_resetPasswordStart({resetPwObj, param}) {

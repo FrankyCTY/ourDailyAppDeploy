@@ -148,3 +148,21 @@ export const changeResetPasswordState = (state) => ({
     type: UserActionTypes.CHANGE_RESET_PW_STATE,
     state
 })
+
+export const isChangingUserBgTrue = () => ({
+    type: UserActionTypes.IS_CHANGING_USER_BG_TRUE,
+  })
+  
+  export const isChangingUserBgFalse = () => ({
+    type: UserActionTypes.IS_CHANGING_USER_BG_FALSE,
+  })
+  export const changeUserBackgroundStart = (formData) => ({
+    type: UserActionTypes.CHANGE_USER_BACKGROUND_START,
+    formData,
+  })
+  export const changeUserBackgroundSuccess = () => ({
+    type: UserActionTypes.CHANGE_USER_BACKGROUND_SUCCESS,
+  })
+  export const changeUserBackgroundFailure = () => ({
+    type: UserActionTypes.CHANGE_USER_BACKGROUND_FAILURE,
+  })

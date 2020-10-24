@@ -4,6 +4,7 @@ import maleAvatar from "../assets/images/uploadAvatarPage/male.png";
 import femaleAvatar from "../assets/images/uploadAvatarPage/female.png";
 import {useDispatch} from "react-redux";
 import {updateUserAvatarStart} from "../redux/User/user.actions";
+import {changeUserBackgroundStart} from "../redux/User/user.actions";
 
 import {useDropzone} from "react-dropzone";
 
@@ -19,6 +20,9 @@ function UploadAvatarProvider({children}) {
   const [imgName, setImgName] = useState("");
   const [file, setFile] = useState('');
   const [isEditAvatarPopped, setIsEditAvatarPopped] = useState(false);
+
+  // For customizing background
+  const [selectedBg, setSelectedBg] = useState("");
   
   // # Handle Drag and Drop avatar
   const onDrop = useCallback(files => {
@@ -34,12 +38,8 @@ function UploadAvatarProvider({children}) {
         setEditAvatar(binaryStr);
       }
     reader.readAsDataURL(files[0]);
-
     
-    // // 2) set image for uploading
-    // setFile(files[0]);
-
-    // 3) Open Edit Avatar Pop up
+    // 2) Open Edit Avatar Pop up
     setIsEditAvatarPopped(true);
     
   }, [])
@@ -80,6 +80,19 @@ function UploadAvatarProvider({children}) {
       dispatch(updateUserAvatarStart(formData));
     }
 
+    const onBackgroundSubmit = (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      // 1) check if user uploaded bg or chose a default bg
+      if(selectedBg !== "") {
+        formData.append("bgUrl", selectedBg);
+      }
+      else {
+        formData.append("uploadedBg", file);
+      }
+      dispatch(changeUserBackgroundStart(formData));
+    }
+
 
     const closeEditAvatarPopUp = useCallback(() => {
       setIsEditAvatarPopped(false);
@@ -88,8 +101,10 @@ function UploadAvatarProvider({children}) {
 
     return <UploadAvatarContext.Provider value={{cropData, setCropData, 
       onSubmit, setFile, file,
+      selectedBg, setSelectedBg,
       onClickDefaultAvatar, getRootProps,
       getInputProps, isEditAvatarPopped, closeEditAvatarPopUp,
+      onBackgroundSubmit,
       imgName, setImgName, editAvatar}}>{children}</UploadAvatarContext.Provider>
 }
 
