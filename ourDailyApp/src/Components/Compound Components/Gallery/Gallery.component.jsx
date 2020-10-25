@@ -13,10 +13,19 @@ Gallery.GalleryItemWrapper = function GalleryItemWrapper({children, ...restProps
     return <S.GalleryItemWrapper {...restProps}>{children}</S.GalleryItemWrapper>
 }
 
-Gallery.GalleryItem = function GalleryItem({children, ...restProps}) {
+Gallery.GalleryItem = function GalleryItem({children, isSelected, ...restProps}) {
 
-    return <S.GalleryItem {...restProps}>{children}</S.GalleryItem>
+    return <S.GalleryItem  isSelected={isSelected} {...restProps}>
+        {isSelected && <S.SelectedCircle>
+            <S.SelectedIcon className="iconfont icon-tick"></S.SelectedIcon>
+        </S.SelectedCircle>}
+        {children}</S.GalleryItem>
 }
+
+Gallery.Tag = function ItemTag({children, ...restProps}) {
+    return <S.ItemTag {...restProps}>{children}</S.ItemTag>
+}
+
 
 Gallery.UploadImgGridItem = function UploadImgGridItem({children, ...restProps}) {
 

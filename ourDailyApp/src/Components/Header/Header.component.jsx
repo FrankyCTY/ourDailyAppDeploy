@@ -21,7 +21,7 @@ const Header = ({cartItemsQuantity}) => {
 
   return (
     <S.HeaderContainer className="header">
-      <S.HeaderNavContainer backgroundLuminosity={backgroundLuminosity}>
+      <S.HeaderNavContainer backgroundluminosity={backgroundLuminosity}>
         {/* ====================== Logo ====================== */}
         <S.LogoWrapper>
           <img
@@ -47,7 +47,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(closeNav());
             }}
           >
-            <S.CartIcon backgroundLuminosity={backgroundLuminosity} className="iconfont icon-cart1"></S.CartIcon>
+            <S.CartIcon backgroundluminosity={backgroundLuminosity} className="iconfont icon-cart1"></S.CartIcon>
             {/* ====================== Cart Icon -- > 1 notification ====================== */}
             {cartItemsQuantity !== 0 && (
               <S.CartItemsQuantityContainer className="cartItems-quantity-container">
@@ -67,7 +67,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(toggleNavHidden());
             }}
           >
-            <S.NavIcon backgroundLuminosity={backgroundLuminosity} className="svg" />
+            <S.NavIcon backgroundluminosity={backgroundLuminosity} className="svg" />
           </S.NavIconContainer>
 
           {/* ====================== Logout btn ====================== */}
@@ -76,7 +76,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(closeNav());
               dispatch(signOutStart());
             }}>
-              <S.LogoutIcon backgroundLuminosity={backgroundLuminosity} className="iconfont icon-log-out"></S.LogoutIcon>
+              <S.LogoutIcon backgroundluminosity={backgroundLuminosity} className="iconfont icon-log-out"></S.LogoutIcon>
             </S.LogoutBtnContainer>
 
         </S.NavListContainer>

@@ -3,10 +3,10 @@ import S from "./ImageFrame.style";
 
 import PropTypes from "prop-types";
 
-const ImageFrame = ({ children, backgroundLuminosity, src, halo, withExtraText, ...restProps }) => {
+const ImageFrame = ({ children, backgroundluminosity, src, halo, withExtraText, ...restProps }) => {
   return (
     <React.Fragment>
-      <S.ImageFrame styled_halo={halo} backgroundLuminosity={backgroundLuminosity} {...restProps}>
+      <S.ImageFrame styled_halo={halo} backgroundluminosity={backgroundluminosity} {...restProps}>
         <S.Img src={src} />
         <S.EditProfileText className="styled_editProfileSpan">
           Edit Profile

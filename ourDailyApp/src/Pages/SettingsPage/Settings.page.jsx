@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./SettingsPage.scss";
 import ProfileContainer from "../../Containers/ProfileForm.container";
-import AppearanceContainer from "../../Containers/Appearance.container";
+import AppearanceContainer from "../../Containers/Appearance/Appearance.container";
 import { CSSTransition } from "react-transition-group";
 import SettingToolBar from "../../Containers/SettingToolBarContainer";
 import {SideMenu, Formik, Notification, WholePageLoader} from "../../Components/Compound Components";

@@ -20,3 +20,4 @@ export { default as SideMenu } from "./SideMenu/SideMenu.component";
 export { default as WholePageLoader } from "./WholePageLoader/WholePageLoader.component";
 export { default as SuccessFail } from "./SuccessFail/SuccessFail.component";
 export { default as Gallery } from "./Gallery/Gallery.component";
+export { default as FloatBtn } from "./FloatButton/floatButton.component";

@@ -1,8 +1,12 @@
-import { Gallery } from "../../Components/Compound Components";
 import GalleryActionTypes from "./gallery.types";
 
 export const populateMorePhotos = (photos) => ({
     type: GalleryActionTypes.POPULATE_MORE_GALLERY_PHOTOS,
+    photos,
+})
+
+export const populatePhotos = (photos) => ({
+    type: GalleryActionTypes.POPULATE_GALLERY_PHOTOS,
     photos,
 })
 

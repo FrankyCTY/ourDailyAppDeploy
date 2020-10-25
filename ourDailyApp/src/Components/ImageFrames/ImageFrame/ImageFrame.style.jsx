@@ -17,12 +17,12 @@ S.ImageFrame = styled.div`
   position: relative;
 
 
-  ${({styled_halo, backgroundLuminosity}) => {
-    if(styled_halo) {
-      if(backgroundLuminosity === 0) {
+  ${({ styled_halo, backgroundluminosity }) => {
+    if (styled_halo) {
+      if (backgroundluminosity === 0) {
         return `box-shadow: 0 0 10px rgba(255, 255, 255, 1);`;
       }
-      if(backgroundLuminosity <= 0.4) {
+      if (backgroundluminosity <= 0.4) {
         return `box-shadow: 0 0 10px ${rgba(255, 255, 255, 1)};`;
       } else {
         return `box-shadow: 0 0 10px rgba(0, 0, 0, 1);`;

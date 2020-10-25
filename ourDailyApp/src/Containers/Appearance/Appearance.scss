@@ -1,0 +1,13 @@
+.fade-primary-enter {
+  opacity: 0;
+}
+.fade-primary-enter-active {
+  opacity: 1;
+  transition: all 250ms ease;
+}
+// .fade-primary-exit {
+// }
+.fade-primary-exit-active {
+  transition: all 250ms ease;
+  opacity: 0;
+}

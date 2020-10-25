@@ -2,7 +2,9 @@ import {takeLeading, call, put, all} from "redux-saga/effects";
 
 import GalleryActionTypes from "./gallery.types";
 
-import {populateMorePhotos, fetchPhotosSuccess, fetchPhotosFailure, setFetchingGalleryImagesTrue, setFetchingGalleryImagesFalse} from "./gallery.actions";
+import {populateMorePhotos, populatePhotos, fetchPhotosSuccess, fetchPhotosFailure, setFetchingGalleryImagesTrue, setFetchingGalleryImagesFalse} from "./gallery.actions";
+
+import {populatePexelPhotos} from "./gallery.sagaUtils";
 
 import {getBackgroundImages} from "./gallery.requests";
 
@@ -34,9 +36,10 @@ function* fn_fetchPhotosStart({url, callback}) {
         console.log({res});
 
         // 2) populate photos into react state
-        const photoUrls = res.data.photos.map((photoObj) => photoObj.src.large);
-        console.log({photoUrls});
-        yield put(populateMorePhotos(photoUrls));
+        const photoArray = yield call(populatePexelPhotos, res.data.photos);
+        // const photoPreviewUrls = res.data.photos.map((photoObj) => photoObj.src.medium);
+        // const photoSrcUrls = res.data.photos.map((photoObj) => photoObj.src.original);
+        yield put(populatePhotos(photoArray));
         // Stop Spinner
         yield put(setFetchingGalleryImagesFalse());
         yield put(fetchPhotosSuccess(res.data.next_page, callback));

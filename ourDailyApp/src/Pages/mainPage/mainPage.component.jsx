@@ -38,10 +38,10 @@ const MainPage = () => {
     <>
     <S.MainPageContainer className="MainPage gs-page">
       <S.ImageFrameWrapper>
-        <ImageFrame backgroundLuminosity={backgroundLuminosity} src={`${_arrayBufferToBase64(userAvatar)}`} halo={true} withExtraText={true}
+        <ImageFrame backgroundluminosity={backgroundLuminosity} src={`${_arrayBufferToBase64(userAvatar)}`} halo={true} withExtraText={true}
         onClick={() => {router.push("/settings")}}
         >
-          <S.Username backgroundLuminosity={backgroundLuminosity}>{userDetails.name}</S.Username>
+          <S.Username backgroundluminosity={backgroundLuminosity}>{userDetails.name}</S.Username>
         </ImageFrame>
       </S.ImageFrameWrapper>
       <S.AccessAppBtnWrapper>
