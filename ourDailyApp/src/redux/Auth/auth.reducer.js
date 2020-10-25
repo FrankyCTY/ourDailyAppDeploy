@@ -41,12 +41,6 @@ const authReducer = (state = INITIATE_STATE, action) => {
         ...state,
         isLogged: true,
       };
-    case AuthActionTypes.SET_USER_DETAILS:
-      return {
-        ...state,
-        isLogged: true,
-        user: action.user,
-      };
     default:
       return state;
   }

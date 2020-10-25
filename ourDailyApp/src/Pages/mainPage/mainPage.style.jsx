@@ -75,11 +75,12 @@ S.CustomizedBg = styled.div`
 position: fixed;
 top: 0;
 left: 0;
-border: 2px solid white;
 width: 100vw;
 height: 100vh;
 pointer-events: none;
-background: ${({background}) => background};
+background: ${({background}) => background };
+background-size: cover;
+background-position: center;
 `;
 
 export default S;

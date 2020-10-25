@@ -6,6 +6,8 @@ import {useDispatch} from "react-redux";
 import {updateUserAvatarStart} from "../redux/User/user.actions";
 import {changeUserBackgroundStart} from "../redux/User/user.actions";
 
+import b64toBlob from "../utils/b64toBlob";
+
 import {useDropzone} from "react-dropzone";
 
 
@@ -15,16 +17,19 @@ function UploadAvatarProvider({children}) {
   
   const dispatch = useDispatch();
   
+  const [cropper, setCropper] = useState();
   const [cropData, setCropData] = useState(null);
   const [editAvatar, setEditAvatar] = useState(null);
+  // Image name for the default photo that we have in the file system
+  // e.g. male.jpeg, female.jpeg
   const [imgName, setImgName] = useState("");
   const [file, setFile] = useState('');
   const [isEditAvatarPopped, setIsEditAvatarPopped] = useState(false);
 
   // For customizing background
-  const [selectedBg, setSelectedBg] = useState("");
+  const [selectedBg, setSelectedBg] = useState({name: "", src: ""});
   
-  // # Handle Drag and Drop avatar
+  // @desc Handle Drag and Drop avatar
   const onDrop = useCallback(files => {
     console.log({file: files[0]}); // e.target.files[0]
     const reader = new FileReader();
@@ -45,7 +50,23 @@ function UploadAvatarProvider({children}) {
   }, [])
 
   const {getRootProps, getInputProps} = useDropzone({onDrop, accept: 'image/jpeg, image/png', multiple: false});
+
+  // @desc apply to get cropped image data 
+  const getCropData = () => {
+    if (typeof cropper !== "undefined") {
+      // 1) Reset all uploaded data
+      setImgName("");
+      setSelectedBg({name: "", src: ""});
+
+      // 2) set the cropped image data
+      setCropData(cropper.getCroppedCanvas().toDataURL());
+      const blob = b64toBlob(cropper.getCroppedCanvas().toDataURL());
+      console.log({blob})
+      setFile(blob);
+    }
+  }
   
+  // @desc submit DEFAULT avatar
   const onClickDefaultAvatar = (e) => {
     let imgSrc;
       setFile('');
@@ -69,7 +90,7 @@ function UploadAvatarProvider({children}) {
       setCropData(imgSrc);
     }
 
-    // # Handle submit avatar
+    // @desc Handle submit avatar
     const onSubmit = (e) => {
       e.preventDefault();
       const formData = new FormData();
@@ -80,20 +101,26 @@ function UploadAvatarProvider({children}) {
       dispatch(updateUserAvatarStart(formData));
     }
 
+    // @desc Handle Background update submit
     const onBackgroundSubmit = (e) => {
       e.preventDefault();
       const formData = new FormData();
       // 1) check if user uploaded bg or chose a default bg
-      if(selectedBg !== "") {
-        formData.append("bgUrl", selectedBg);
+      if(selectedBg.src !== "") {
+        // default bg url
+        console.log({selectedBg})
+        formData.append("bgUrl", selectedBg.src);
       }
       else {
+        // uploaded bg file
+        console.log({file})
         formData.append("uploadedBg", file);
       }
       dispatch(changeUserBackgroundStart(formData));
     }
 
 
+    // closing the edit photo pop up
     const closeEditAvatarPopUp = useCallback(() => {
       setIsEditAvatarPopped(false);
     }, []);
@@ -101,7 +128,8 @@ function UploadAvatarProvider({children}) {
 
     return <UploadAvatarContext.Provider value={{cropData, setCropData, 
       onSubmit, setFile, file,
-      selectedBg, setSelectedBg,
+      selectedBg, setSelectedBg, setCropper,
+      getCropData, 
       onClickDefaultAvatar, getRootProps,
       getInputProps, isEditAvatarPopped, closeEditAvatarPopUp,
       onBackgroundSubmit,

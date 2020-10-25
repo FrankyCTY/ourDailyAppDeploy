@@ -25,7 +25,7 @@ export default function Appearance() {
         console.log({ src }) // Send src to backend and store it, then save in s3 new bucket called background
         // Set uploaded file to ""
         setFile("");
-        setSelectedBg(src);
+        setSelectedBg({name, src});
     }
     return (
         <>
@@ -34,10 +34,10 @@ export default function Appearance() {
                 <Gallery.UploadImgGridItem></Gallery.UploadImgGridItem>
                 <Gallery.GalleryItem><img alt="defailt img" src={userBg}/></Gallery.GalleryItem>
                 {/* {photos.map((photo, key) => <Gallery.GalleryItem className="galleryItem"><img src={photo} key={key} name={`bg-${key}`}/></Gallery.GalleryItem>)} */}
-                {new Array(5).fill("5").map((photo, key) => <Gallery.GalleryItem className={`${selectedBg === `bg-${key}` && "selected"}`} key={key}><img name={`bg-${key}`} onClick={onClick} src={`https://images.pexels.com/photos/2988589/pexels-photo-2988589.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200`} /></Gallery.GalleryItem>)}
+                {new Array(5).fill("5").map((photo, key) => <Gallery.GalleryItem className={`${selectedBg.name === `bg-${key}` && "selected"}`} key={key}><img name={`bg-${key}`} onClick={onClick} alt={`bg-${key}`} src={`https://images.pexels.com/photos/2988589/pexels-photo-2988589.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200`} /></Gallery.GalleryItem>)}
 
             </Gallery.GalleryItemWrapper>
-            <Formik.SubmitBtn disabled={isFetchingGalleryImages} onClick={onBackgroundSubmit} formDetails={{ background: selectedBg }} className="text-gray-200">SAVE{isFetchingGalleryImages && <PixelSpinner size={1.2} animationDuration={1500} style={{ marginLeft: "4px" }} />}</Formik.SubmitBtn>
+            <Formik.SubmitBtn disabled={isFetchingGalleryImages} onClick={onBackgroundSubmit} formDetails={{ background: selectedBg.src }} className="text-gray-200">SAVE{isFetchingGalleryImages && <PixelSpinner size={1.2} animationDuration={1500} style={{ marginLeft: "4px" }} />}</Formik.SubmitBtn>
         </Gallery>
         <UploadAvatar.CropImageContainer />
         </>

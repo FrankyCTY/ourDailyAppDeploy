@@ -11,8 +11,17 @@ module.exports = class S3 {
         // customized try catch block outside to catch error  
         const result = await s3.getObject({Bucket: this.Bucket, Key: this.Key}).promise();
         // return response if we got the object
-        console.log("we are fine in getFromS3")
+        console.log("we are fine in getFromS3", result.Body)
         return respondFn(result.Body);
+    }
+
+    deleteFromS3 = async() => {
+        try {
+            
+            await s3.deleteObject({Bucket: this.Bucket, Key: this.Key}).promise();
+        } catch (error) {
+            console.log("error deleting from bucker", error)   
+        }
     }
 }
 

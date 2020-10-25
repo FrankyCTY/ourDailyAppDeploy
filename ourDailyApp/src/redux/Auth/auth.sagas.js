@@ -11,6 +11,7 @@ import {
   setIsLoggedTrue,
   setUserDetails,
   setUserAvatar,
+  setUserBackground,
   signOut,
 } from "./auth.actions";
 
@@ -111,11 +112,19 @@ function* signInWithEmail({ logInDetails }) {
     
     // 1) Log in user
     const response = yield call(logInUser, logInDetails);
+    console.log({response});
     yield put(setUserDetails(response.data.data.user));
-    // 2) Get avatar from backend and aws
-    const getAvatarResponse = yield call(getAvatar, response.data.data.user.photo);
-    // get avatar image from s3 via backend
-    yield put(setUserAvatar(getAvatarResponse.data.data.image.data));
+    // 3a) get avatar image from s3 via backend
+    yield put(setUserAvatar(response.data.data.avatar.data));
+    // 3b) get user background from s3 via backend
+    const bgBuffer = response.data.data.background.data;
+
+    // check if the bg is buffer or url
+    if(bgBuffer !== undefined) {
+      yield put(setUserBackground(bgBuffer));
+    } else {
+      yield put(setUserBackground(response.data.data.background));
+    }
     yield put(signInSuccess());
     // Stop spinner
     yield put(setIsLoggingInFALSE());

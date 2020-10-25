@@ -4,7 +4,7 @@ const INITIATE_STATE = {
   isLogged: false,
   user: null,
   userAvatar: null,
-  userBg: "https://images.pexels.com/photos/2988589/pexels-photo-2988589.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200",
+  userBg: "",
 };
 
 const authReducer_P = (state = INITIATE_STATE, action) => {

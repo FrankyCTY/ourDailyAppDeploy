@@ -169,9 +169,16 @@ function* onUpdateUserDetailsStart() {
       const res = yield call(changeUserBackground, formData, `${process.env.REACT_APP_URL}/users/updateBg`);
 
       console.log({res})
-      console.log(res.data.data.user.bg)
+      const bgBuffer = res.data.data.background.data;
       // 3) save user background to react state
-      yield put(setUserBackground(res.data.data.user.bg));
+      // check if the bg is buffer or url
+      if(bgBuffer !== undefined) {
+        console.log("we have a background buffer", bgBuffer)
+        yield put(setUserBackground(bgBuffer));
+      } else {
+        console.log("bg url", res.data.data.background)
+        yield put(setUserBackground(res.data.data.background));
+    }
 
       // Loading -> false
       yield put(changeUserBackgroundSuccess());

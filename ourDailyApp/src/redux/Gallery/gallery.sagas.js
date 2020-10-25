@@ -1,4 +1,4 @@
-import {takeLeading, call, put, all, select} from "redux-saga/effects";
+import {takeLeading, call, put, all} from "redux-saga/effects";
 
 import GalleryActionTypes from "./gallery.types";
 
@@ -34,7 +34,7 @@ function* fn_fetchPhotosStart({url, callback}) {
         console.log({res});
 
         // 2) populate photos into react state
-        const photoUrls = res.data.photos.map((photoObj) => photoObj.src.landscape);
+        const photoUrls = res.data.photos.map((photoObj) => photoObj.src.large);
         console.log({photoUrls});
         yield put(populateMorePhotos(photoUrls));
         // Stop Spinner

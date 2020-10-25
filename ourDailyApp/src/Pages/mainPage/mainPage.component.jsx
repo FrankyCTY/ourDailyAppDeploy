@@ -26,7 +26,7 @@ const MainPage = () => {
     <>
     <S.MainPageContainer className="MainPage gs-page">
       <S.ImageFrameWrapper>
-        <ImageFrame src={`data:image/jpg;base64,${_arrayBufferToBase64(userAvatar)}`} halo={true} withExtraText={true}
+        <ImageFrame src={`${_arrayBufferToBase64(userAvatar)}`} halo={true} withExtraText={true}
         onClick={() => {router.push("/settings")}}
         >
           {userDetails.name}
@@ -36,7 +36,10 @@ const MainPage = () => {
         <MainPageAccessAppWrapper />
       </S.AccessAppBtnWrapper>
     </S.MainPageContainer>
-    <S.CustomizedBg background={`url(${userBg}})`}/>
+    {/* <S.CustomizedBg background={`url(${_arrayBufferToBase64(userBg)}})`}/> */}
+    <S.CustomizedBg>
+      <img alt="background-img" src={`${_arrayBufferToBase64(userBg)}`}/>      
+    </S.CustomizedBg>
   </>
   );
 };

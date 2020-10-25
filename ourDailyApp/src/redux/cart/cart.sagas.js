@@ -1,4 +1,4 @@
-import {takeLeading, select, call, put, all, fork, cancel, take, cancelled, delay, takeLatest} from "redux-saga/effects";
+import {takeLeading, call, put, all, fork, cancel, take, cancelled, takeLatest} from "redux-saga/effects";
 
 import CartActionTypes from "./cart.types";
 import {

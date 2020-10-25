@@ -8,9 +8,6 @@ import {useSelector} from "react-redux";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
-import b64toBlob from "../../../utils/b64toBlob";
-
-
 import {UploadAvatarProvider, UploadAvatarContext} from "../../../context/uploadAvatar.context";
 import S from "./styles/UploadAvatar.style";
 
@@ -77,23 +74,8 @@ UploadAvatar.CropImageContainer = function CropImageContainer({
   children,
   ...restProps
 }) {
-  const { editAvatar, isEditAvatarPopped, closeEditAvatarPopUp, setCropData, setFile, setImgName, setSelectedBg } = useContext(UploadAvatarContext);
-
-  const [cropper, setCropper] = React.useState();
-
-  const getCropData = () => {
-    if (typeof cropper !== "undefined") {
-      // 1) Set avatar to ""
-      setImgName("");
-
-      // 2) Set background to ""
-      setSelectedBg("");
-      setCropData(cropper.getCroppedCanvas().toDataURL());
-      const blob = b64toBlob(cropper.getCroppedCanvas().toDataURL());
-      setFile(blob);
-    }
-  }
-
+  const { setCropper, getCropData, editAvatar, isEditAvatarPopped, 
+    closeEditAvatarPopUp } = useContext(UploadAvatarContext);
 
   return isEditAvatarPopped ? ReactDOM.createPortal(<S.CropImageFrame>
     <S.CropImageContainer>

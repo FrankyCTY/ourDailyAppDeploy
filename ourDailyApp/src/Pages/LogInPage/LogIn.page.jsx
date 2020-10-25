@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import S from "./LogIn.style";
 
 import { useMediaQuery } from "react-responsive";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeAuthPage } from "../../redux/AuthPage/AuthPage.actions";
 
 import OauthBtn from "../../Components/Molecules/Buttons/OauthBtn/OauthBtn.component";

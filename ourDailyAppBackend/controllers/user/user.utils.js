@@ -61,15 +61,16 @@ exports.deleteOldAvatarFromS3 = (oldAvatarName) => {
   if(oldAvatarName === "default.jpeg" || oldAvatarName === "male.jpeg" || oldAvatarName === "female.jpeg") return;
 
   // Delete old avatar photo from AWS S3 bucket
-  const params = {
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: oldAvatarName,
-  };
+  // const params = {
+  //   Bucket: process.env.AWS_BUCKET_NAME,
+  //   Key: oldAvatarName,
+  // };
   
-  s3.deleteObject(params, (error, data) => {
-    if (error) {
-    }
-  });
+  // s3.deleteObject(params, (error, data) => {
+  //   if (error) {
+  //   }
+  // });
+  
 }
 
 exports.deleteOldBgFromS3 = (oldBgName) => {

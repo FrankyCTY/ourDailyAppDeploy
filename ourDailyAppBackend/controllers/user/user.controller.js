@@ -3,6 +3,8 @@ const S3 = require("../../helpers/S3");
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const OperationalErr = require("../../helpers/OperationalErr");
 const { filterObj, upload, deleteOldAvatarFromS3, uploadAvatarToS3, deleteOldBgFromS3, uploadBgToS3 } = require("./user.utils");
+// const sharp = require("sharp");
+const Sharp = require("../../helpers/Sharp");
 const sharp = require("sharp");
 const factory = require("../controllerFactory");
 const authUtils = require("../auth/auth.utils");
@@ -19,13 +21,8 @@ exports.resizeUserPhoto = withCatchErrAsync(async (req, res, next) => {
 
   req.file.filename = `user-${id}-${Date.now()}.jpeg`;
 
-  const imgBuffer = await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toBuffer();
-
-  req.file.resizedImgBuffer = imgBuffer;
+  // Resize and reformat user photo
+  req.file.resizedImgBuffer = await new Sharp(req.file.buffer).formatAvatar();
 
   return next();
 });
@@ -39,41 +36,71 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
   const {bgUrl} = req.body;
   const {id} = req.user;
 
-  let bg = undefined;
-  // if user update with default background
+  // if user update with default background with url
   if(bgUrl) {
-    bg = bgUrl;
+    // 1) get url
+    const bg = bgUrl;
+
+    // 2b) save changes to user
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {bg},
+      {
+        new: true,
+        // runValidators: true,
+      }
+    );
+    
+    // 3b) return
+    return res.status(200).json({
+      status: "success",
+      data: {
+        user: updatedUser,
+        // s3 bg can only be buffer
+        background: bg,
+      }
+    })
   }
   else {
     // else if user uploaded custom background
-    console.log("here")
-    console.log(req.file)
-    const {buffer, mimetype} = req.file;
-    // 1) create unique filename for bg
-    const imgMimetype = mimetype.substr(mimetype.lastIndexOf('/') + 1);
-    const filename = `user-background-${new Date()}-${id}.${imgMimetype}`;
-    bg = filename;
-    await uploadBgToS3(filename, buffer);
-  
-    console.log({filename});
+    console.log("hhhhhhhhhhhhhhhhhhhhi")
+    // 1) Delete old BG from s3 bucket
+    const S3Instance = new S3(`user-background-${id}.jpeg`);
+    await S3Instance.deleteFromS3();
+
+    const {buffer} = req.file;
+    // 2b) create unique filename for bg
+    const bgName = `user-background-${id}.jpeg`;
+
+    // 3b) reformat background into jpeg
+    const bg = await sharp(buffer).toFormat("jpeg").toBuffer();
+
+    // 4b) upload to s3
+    await uploadBgToS3(bgName, bg);
+
+    // 5b) save changes to user
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {bg: bgName},
+      {
+        new: true,
+        // runValidators: true,
+      }
+    );
+
+    // 6b) return
+    return res.status(200).json({
+      status: "success",
+      data: {
+        user: updatedUser,
+        // s3 bg can only be buffer
+        background: bg,
+      }
+    })
+
   }
 
-  // save changes to user
-  const updatedUser = await User.findByIdAndUpdate(
-    id,
-    {bg},
-    {
-      new: true,
-      // runValidators: true,
-    }
-  );
 
-  return res.status(200).json({
-    status: "success",
-    data: {
-      user: updatedUser
-    }
-  })
 })
 
 // Please use updateMe with deleteOldAvatarFromS3
@@ -123,7 +150,11 @@ exports.updateMe = withCatchErrAsync(async (req, res, next) => {
 
     // 3A) Delete old avatar from s3 bucket
     if(isUpdateAvatar) {
-      deleteOldAvatarFromS3(req.user.photo);
+      const oldAvatarName = req.user.photo;
+      if(oldAvatarName !== "default.jpeg" || oldAvatarName !== "male.jpeg" || oldAvatarName !== "female.jpeg") {
+        const S3Instance = new S3(oldAvatarName);
+        await S3Instance.deleteFromS3();
+      }
     }
 
     // 3B) Send Response
@@ -161,6 +192,7 @@ exports.changePassword = withCatchErrAsync(async(req, res, next) => {
   return authUtils.createSendToken(userDoc, 200, res);
 })
 
+
 exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
     const {imageId} = req.params;
     console.log("get S3 Image", imageId);
@@ -168,12 +200,6 @@ exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
     let retry = false;
     // 1) Get image using my aws confidentials
     try {
-        // await getFromS3(imageId, (imgBuffer) => res.status(200).json({
-        //   status: "success",
-        //   data: {
-        //     image: imgBuffer,
-        //   }
-        // }));
         const S3Instance = new S3(imageId);
         await S3Instance.getFromS3((imgBuffer) => res.status(200).json({
           status: "success",
@@ -204,12 +230,6 @@ exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
                 image: imgBuffer,
               }
             }));
-          // return getFromS3("default.jpeg", (imgBuffer) => res.status(200).json({
-          //   status: "success",
-          //   data: {
-          //     image: imgBuffer,
-          //   }
-          // }), next);
         } catch (error) {
           console.log(error);
           return next(new OperationalErr("Error getting image from aws", 500, "local"));
