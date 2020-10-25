@@ -8,7 +8,17 @@ import { rgba } from "polished";
 const S = {};
 
 const iconStyles = css`
-color: ${(props) => props.theme.cartIcon};
+${({theme, backgroundLuminosity}) => {
+  if (backgroundLuminosity === 0)
+  {
+    return `color: ${theme.cartIcon}; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
+  }
+  if(backgroundLuminosity <= 0.4) {
+    return `color: white; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
+  } else if (backgroundLuminosity > 0.4) {
+    return `color: black; text-shadow: 2px 2px 10px rgba(255, 255, 255, 1);`;
+  } 
+}}
 opacity: 0.8;
 font-size: 1.4rem;
 cursor: pointer;
@@ -39,7 +49,19 @@ S.HeaderNavContainer = styled.nav`
   justify-content: space-between;
   align-items: center;
   // padding: 0 2vw;
-  border-bottom: 1px solid white;
+  // border-bottom: 1px solid white;
+
+  ${({backgroundLuminosity}) => {
+    if (backgroundLuminosity === 0)
+    {
+      return `border-bottom: 1px solid white;`;
+    }
+    if(backgroundLuminosity <= 0.4) {
+      return `border-bottom: 1px solid white;`;
+    } else if (backgroundLuminosity > 0.4) {
+      return `border-bottom: 1px solid black;`;
+    } 
+  }}
 `;
 
 /* ============================== Logo Wrapper ================================= */
@@ -119,7 +141,18 @@ S.NavIconContainer = styled.div`
 `;
 
 S.NavIcon = styled(NavIcon)`
-  fill: var(--gray1);
+  /* fill: var(--gray1); */
+  ${({backgroundLuminosity}) => {
+    if (backgroundLuminosity === 0)
+    {
+      return `fill: white;`;
+    }
+    if(backgroundLuminosity <= 0.4) {
+      return `fill: white;`;
+    } else if (backgroundLuminosity > 0.4) {
+      return `fill: black;`;
+    } 
+  }}
 `;
 
 S.LogoutBtnContainer = styled.div``;

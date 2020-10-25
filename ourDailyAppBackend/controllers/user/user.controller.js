@@ -36,6 +36,9 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
   const {bgUrl} = req.body;
   const {id} = req.user;
 
+  console.log({bgUrl})
+  console.log({file: req.file})
+
   // if user update with default background with url
   if(bgUrl) {
     // 1) get url
@@ -61,9 +64,8 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
       }
     })
   }
-  else {
+  else if (req.file) {
     // else if user uploaded custom background
-    console.log("hhhhhhhhhhhhhhhhhhhhi")
     // 1) Delete old BG from s3 bucket
     const S3Instance = new S3(`user-background-${id}.jpeg`);
     await S3Instance.deleteFromS3();
@@ -98,6 +100,21 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
       }
     })
 
+  // delete all background
+  } else {
+    // else if user uploaded custom background
+    // 1) Delete old BG from s3 bucket
+    const S3Instance = new S3(`user-background-${id}.jpeg`);
+    await S3Instance.deleteFromS3();
+
+    // 2) return
+    return res.status(200).json({
+      status: "success",
+      data: {
+        // s3 bg can only be buffer
+        background: "default",
+      }
+    })
   }
 
 

@@ -12,6 +12,7 @@ import { createStructuredSelector } from "reselect";
 
 const Header = ({cartItemsQuantity}) => {
   const navHidden = useSelector((state) => state.nav.hidden);
+  const backgroundLuminosity = useSelector(state => state.theme.backgroundLuminosity);
   // const cartItemsQuantity = useSelector((state) => state.cart_P.cartItems, shallowEqual).length;
 
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const Header = ({cartItemsQuantity}) => {
 
   return (
     <S.HeaderContainer className="header">
-      <S.HeaderNavContainer>
+      <S.HeaderNavContainer backgroundLuminosity={backgroundLuminosity}>
         {/* ====================== Logo ====================== */}
         <S.LogoWrapper>
           <img
@@ -46,7 +47,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(closeNav());
             }}
           >
-            <S.CartIcon className="iconfont icon-cart1"></S.CartIcon>
+            <S.CartIcon backgroundLuminosity={backgroundLuminosity} className="iconfont icon-cart1"></S.CartIcon>
             {/* ====================== Cart Icon -- > 1 notification ====================== */}
             {cartItemsQuantity !== 0 && (
               <S.CartItemsQuantityContainer className="cartItems-quantity-container">
@@ -66,7 +67,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(toggleNavHidden());
             }}
           >
-            <S.NavIcon className="svg" />
+            <S.NavIcon backgroundLuminosity={backgroundLuminosity} className="svg" />
           </S.NavIconContainer>
 
           {/* ====================== Logout btn ====================== */}
@@ -75,7 +76,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(closeNav());
               dispatch(signOutStart());
             }}>
-              <S.LogoutIcon className="iconfont icon-log-out"></S.LogoutIcon>
+              <S.LogoutIcon backgroundLuminosity={backgroundLuminosity} className="iconfont icon-log-out"></S.LogoutIcon>
             </S.LogoutBtnContainer>
 
         </S.NavListContainer>

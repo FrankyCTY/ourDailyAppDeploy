@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { rgba } from "polished";
 
 const S = {};
 
@@ -15,8 +16,19 @@ S.ImageFrame = styled.div`
 
   position: relative;
 
-  ${(props) =>
-    props.styled_halo && `box-shadow: 0 0 10px rgba(255, 255, 255, 1);`}
+
+  ${({styled_halo, backgroundLuminosity}) => {
+    if(styled_halo) {
+      if(backgroundLuminosity === 0) {
+        return `box-shadow: 0 0 10px rgba(255, 255, 255, 1);`;
+      }
+      if(backgroundLuminosity <= 0.4) {
+        return `box-shadow: 0 0 10px ${rgba(255, 255, 255, 1)};`;
+      } else {
+        return `box-shadow: 0 0 10px rgba(0, 0, 0, 1);`;
+      }
+    }
+  }}
 
   margin-bottom: 1em;
 `;
