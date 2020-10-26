@@ -1,2 +1,0 @@
-.tab{position:absolute;top:2rem;bottom:0;left:0;right:0;width:100%}.tab-primary-enter{transform:translateX(-110%)}.tab-primary-enter-active{transform:translateX(0);transition:all .3s ease}.tab-primary-exit-active{transition:all .3s ease;transform:translateX(-110%)}.tab-secondary-enter{transform:translateX(110%)}.tab-secondary-enter-active{transform:translateX(0);transition:all .3s ease}.tab-secondary-exit-active{transition:all .3s ease;transform:translateX(110%)}
-/*# sourceMappingURL=5.f2eed42d.chunk.css.map */

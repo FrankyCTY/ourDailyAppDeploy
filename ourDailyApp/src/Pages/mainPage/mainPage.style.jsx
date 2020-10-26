@@ -89,7 +89,9 @@ left: 0;
 width: 100vw;
 height: 100vh;
 pointer-events: none;
+background: ${({background}) => {return background}};
 background-size: cover;
+background-repeat: no-repeat;
 background-position: center;
 `;
 

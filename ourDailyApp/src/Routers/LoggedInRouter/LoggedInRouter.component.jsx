@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Switch, Route, Redirect } from "react-router-dom";
 import SettingsPage from "../../Pages/SettingsPage/Settings.page";

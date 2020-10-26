@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "ourdailyappe688379a": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "storage": {
+    "ourdailyS3Storage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}

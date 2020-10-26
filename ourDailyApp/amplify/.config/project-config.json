@@ -1,12 +1,12 @@
 {
-  "projectName": "ourdailyapp",
+  "projectName": "ourDailyApp",
   "version": "3.0",
   "frontend": "javascript",
   "javascript": {
     "framework": "react",
     "config": {
-      "SourceDir": "./ourDailyApp/src",
-      "DistributionDir": "./ourDailyApp/build",
+      "SourceDir": "src",
+      "DistributionDir": "build",
       "BuildCommand": "npm.cmd run-script build",
       "StartCommand": "npm.cmd run-script start"
     }

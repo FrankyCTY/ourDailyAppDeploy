@@ -9,6 +9,8 @@ import {setWholePageLoaderBigText} from "../WholePageLoader/wholePageLoader.acti
 
 import {changeAuthPage} from "../AuthPage/AuthPage.actions";
 
+import {setUserBackground} from "../Theme/theme.actions";
+
 import globalErrHandler from "../../utils/globalErrHandler";
 
 import {
@@ -22,6 +24,8 @@ import {
 import {requestAndUpdateAvatar} from "./user.generatorFn";
 
 import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword, changeUserBackground, getUserBackground} from "./user.requests";
+
+import {populateUserBg} from "./user.sagaUtils";
 
 // ================= Sagas ==================
 
@@ -132,21 +136,12 @@ function* onUpdateUserDetailsStart() {
   function* fn_getUserBackgroundStart({setUserBgFn}) {
     try {
 
-      // get image from backend
+      // 1) get image from backend
       const response = yield call(getUserBackground, `${process.env.REACT_APP_URL}/users/getUserBg`);
-      const bgBuffer = response.data.data.bg.data;    
-      console.log({res: bgBuffer})
 
-      const bgIsBuffer = (bgBuffer !== undefined);
-
-      if(bgIsBuffer) {
-            // yield put(setUserBackground(bgBuffer));
-            yield setUserBgFn(bgBuffer);
-          } else {
-            // yield put(setUserBackground(response.data.data.bg));
-            // 1) set mainpage bg local state
-            yield setUserBgFn(response.data.data.bg);
-          }
+      // 2) populate user bg to redux state
+      // url || buffer
+      yield call(populateUserBg, response);
     } catch (error) {
       
     }
@@ -161,17 +156,9 @@ function* onUpdateUserDetailsStart() {
       // 1) request backend to change user background
       const res = yield call(changeUserBackground, formData, `${process.env.REACT_APP_URL}/users/updateBg`);
 
-      // console.log({res})
-      // const bgBuffer = res.data.data.background.data;
-      // 3) save user background to react state
-      // check if the bg is buffer or url
-      // if(bgBuffer !== undefined) {
-      //   console.log("we have a background buffer", bgBuffer)
-      //   yield put(setUserBackground(bgBuffer));
-      // } else {
-      //   console.log("bg url", res.data.data.background)
-      //   yield put(setUserBackground(res.data.data.background));
-      // }
+      // 2) populate user bg to redux state
+      // url || buffer
+      yield call(populateUserBg, res);
 
       // Loading -> false
       yield put(UserActions.isChangingUserBgFalse());
