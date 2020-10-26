@@ -13,7 +13,7 @@ import {UploadAvatarProvider} from "../../context/uploadAvatar.context";
 import { Route, Switch, Redirect } from "react-router-dom";
 import useRouter from "../../hooks/useRouter.hooks";
 import { useSelector, useDispatch } from "react-redux";
-import {changeUserPasswordStart, deleteMeStart, isDeletingMeTrue} from "../../redux/User/user.actions";
+import UserActions from "../../redux/User/user.actions";
 
 const SettingsPage = () => {
 
@@ -81,14 +81,14 @@ const ChangePasswordForm = () => {
     // @planToImplement Should have used front end validation to prevent
     // too many requests to backend
     if(!showChangePasswordMsg) {
-      dispatch(changeUserPasswordStart(changePwFormDetails));
+      dispatch(UserActions.changeUserPasswordStart(changePwFormDetails));
     }
   }
 
   return (
   <Formik>
     <Formik.PasswordInput htmlFor="password"
-    value={password} id="newPassword" id="password" name="password" onChange={handleInputChange}
+    value={password} id="password" name="password" onChange={handleInputChange}
     >Password</Formik.PasswordInput>
 
     <Formik.PasswordInput htmlFor="newPassword"
@@ -120,7 +120,7 @@ const DeleteMeForm = () => {
   const handleDeleteMe = () => {
     // Start Deleting User only if checkbox is checked
     if(isChecked) {
-      dispatch(deleteMeStart());
+      dispatch(UserActions.deleteMeStart());
     }
     else {
       // Notification logic

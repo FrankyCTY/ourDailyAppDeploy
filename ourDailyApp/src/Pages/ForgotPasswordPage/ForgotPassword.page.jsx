@@ -3,7 +3,7 @@ import { Form, SuccessFail } from "../..//Components/Compound Components";
 
 import { useDispatch, useSelector } from "react-redux";
 import { changeAuthPage } from "../../redux/AuthPage/AuthPage.actions";
-import {sendForgotPwEmailStart} from "../../redux/User/user.actions";
+import userActions from "../../redux/User/user.actions";
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import { ReactComponent as AlertSvg } from "../../assets/svg/alert.svg";
 
@@ -31,7 +31,7 @@ function ForgotPasswordPage() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(sendForgotPwEmailStart(email));
+    dispatch(userActions.sendForgotPwEmailStart(email));
     console.log("OH!")
   }
 

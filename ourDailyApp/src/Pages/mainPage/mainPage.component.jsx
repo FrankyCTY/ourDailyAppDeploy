@@ -4,7 +4,7 @@ import S from "./mainPage.style";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAccessAppBtnsStart } from "../../redux/app/app.actions";
 import {setBackgroundLuminosity} from "../../redux/Theme/theme.actions";
-import {getUserBackgroundStart} from "../../redux/User/user.actions";
+import userActions from "../../redux/User/user.actions";
 import useRouter from "../../hooks/useRouter.hooks";
 import { usePalette } from 'react-palette';
 import bgImg from "../../assets/bgImg.jpeg";
@@ -33,7 +33,7 @@ const MainPage = () => {
   useEffect(() => {
     dispatch(fetchAccessAppBtnsStart());
     // get MainPage Background Image
-    dispatch(getUserBackgroundStart((bgBuffer) => {setUserBg(bgBuffer)}));
+    dispatch(userActions.getUserBackgroundStart((bgBuffer) => {setUserBg(bgBuffer)}));
   }, [dispatch]);
 
   useEffect(() => {

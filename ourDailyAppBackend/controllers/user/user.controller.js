@@ -2,7 +2,7 @@ const User = require("../../models/user/user.model");
 const S3 = require("../../helpers/S3");
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const OperationalErr = require("../../helpers/OperationalErr");
-const { filterObj, upload, deleteOldAvatarFromS3, uploadAvatarToS3, deleteOldBgFromS3, uploadBgToS3 } = require("./user.utils");
+const { filterObj, upload, uploadAvatarToS3, uploadBgToS3 } = require("./user.utils");
 // const sharp = require("sharp");
 const Sharp = require("../../helpers/Sharp");
 const sharp = require("sharp");
@@ -43,7 +43,7 @@ exports.getUserBg = withCatchErrAsync(async(req, res, next) => {
     userBg = "default";
   }
   else if(bg.startsWith("https")) {
-    userBg = user.bg;
+    userBg = bg;
   } else {
     userBg = await authUtils.getUserBackground(bg);
     // userBg: {type, buffer}, we only need buffer from S3
@@ -145,7 +145,7 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
 
 })
 
-// Please use updateMe with deleteOldAvatarFromS3
+// Please use updateMe wit
 // updateMe itself will not return any response
 exports.updateMe = withCatchErrAsync(async (req, res, next) => {
   // 1) Create designed error if user POST password data

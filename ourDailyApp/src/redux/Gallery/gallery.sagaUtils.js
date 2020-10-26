@@ -5,9 +5,15 @@ export function* populatePexelPhotos(pexelPhotos) {
             const photoObj = {};
 
             // get preview img url (smaller size)
+            const oriUrl = photo.src.medium;
+            const oriUrlqueryStartIndex = oriUrl.lastIndexOf("?");
+            const srcUrl = oriUrl.substring(0, oriUrlqueryStartIndex + 1) + "auto=compress&cs=tinysrgb&h=1080&w=1920";
+
+            console.log({srcUrl})
+
             photoObj.previewUrl = photo.src.medium;
             // get preview src url (biggest size)
-            photoObj.srcUrl = photo.src.original;
+            photoObj.srcUrl = srcUrl;
 
             photoArray.push(photoObj);
         })

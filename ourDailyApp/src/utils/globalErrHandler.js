@@ -1,7 +1,8 @@
 import { store } from "../redux/store";
 
 import { setSignUpAlert, setLogInAlert } from "../redux/Auth/auth.actions";
-import { hideChangePasswordMsg, setChangePasswordAlert, showChangePasswordMsg, setSendForgotPwEmailAlert } from "../redux/User/user.actions";
+// import { hideChangePasswordMsg, setChangePasswordAlert, showChangePasswordMsg, setSendForgotPwEmailAlert } from "../redux/User/user.actions";
+import userActions from "../redux/User/user.actions";
 
 import splitError from "./splitError";
 
@@ -24,14 +25,14 @@ function globalErrHandler(err, target) {
         break;
       case "changePasswordAlert":
         // only get the first error message from the array
-        store.dispatch(setChangePasswordAlert(tupleArray[0][1]));
-        store.dispatch(showChangePasswordMsg());
+        store.dispatch(userActions.setChangePasswordAlert(tupleArray[0][1]));
+        store.dispatch(userActions.showChangePasswordMsg());
         setTimeout(() => {
-          store.dispatch(hideChangePasswordMsg());
+          store.dispatch(userActions.hideChangePasswordMsg());
         }, 2500);
         break;
       case "sendForgotPwAlert":
-        store.dispatch(setSendForgotPwEmailAlert(tupleArray[0][1]));
+        store.dispatch(userActions.setSendForgotPwEmailAlert(tupleArray[0][1]));
         break;
       default:
         console.log("Scope === local but not being handled!");

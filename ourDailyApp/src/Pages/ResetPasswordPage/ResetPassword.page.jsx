@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {SuccessFail, Form} from "../../Components/Compound Components";
 import { ReactComponent as LockSvg } from "../../assets/svg/password.svg";
 import {changeAuthPage} from "../../redux/AuthPage/AuthPage.actions";
-import {resetPasswordStart, changeResetPasswordState} from "../../redux/User/user.actions";
+import UserActions from "../../redux/User/user.actions";
 import useRouter from "../../hooks/useRouter.hooks";
 
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
@@ -26,7 +26,7 @@ const ResetPasswordPage = () => {
     // reset password page state
     useEffect(() => {
         return () => {
-            dispatch(changeResetPasswordState(""));
+            dispatch(UserActions.changeResetPasswordState(""));
         }
     }, [dispatch])
 
@@ -41,7 +41,7 @@ const ResetPasswordPage = () => {
     
       const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(resetPasswordStart(resetPwObj, router.pathName.substr(router.pathName.lastIndexOf('/') + 1)));
+        dispatch(UserActions.resetPasswordStart(resetPwObj, router.pathName.substr(router.pathName.lastIndexOf('/') + 1)));
       }
 
 

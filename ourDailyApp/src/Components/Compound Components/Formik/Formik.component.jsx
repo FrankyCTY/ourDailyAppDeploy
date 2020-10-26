@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import S from "./styles/Formik.style";
 import "react-datepicker/dist/react-datepicker.css";
 import {UploadAvatarContext} from "../../../context/uploadAvatar.context";
-import {updateUserDetailsStart} from "../../../redux/User/user.actions";
+import userActions from "../../../redux/User/user.actions";
 import FormikUtils from "./Formik.utils";
 import {useDispatch} from "react-redux";
 
@@ -97,7 +97,7 @@ Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, operationTyp
            default:
                return alert("Please specify the operationType");
        }
-        dispatch(updateUserDetailsStart(formData));
+        dispatch(userActions.updateUserDetailsStart(formData));
     }
 
 

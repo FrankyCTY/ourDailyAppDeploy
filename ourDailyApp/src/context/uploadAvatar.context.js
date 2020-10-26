@@ -3,8 +3,7 @@ import bg from "../assets/images/uploadAvatarPage/default.jpg";
 import maleAvatar from "../assets/images/uploadAvatarPage/male.png";
 import femaleAvatar from "../assets/images/uploadAvatarPage/female.png";
 import {useDispatch} from "react-redux";
-import {updateUserAvatarStart} from "../redux/User/user.actions";
-import {changeUserBackgroundStart} from "../redux/User/user.actions";
+import UserActions from "../redux/User/user.actions";
 
 import b64toBlob from "../utils/b64toBlob";
 
@@ -29,25 +28,37 @@ function UploadAvatarProvider({children}) {
   // For customizing background
   const [selectedBg, setSelectedBg] = useState({name: "", src: ""});
   
+  // // @desc Handle Drag and Drop avatar
+  // const onDrop = useCallback(files => {
+  //   console.log({file: files[0]}); // e.target.files[0]
+  //   const reader = new FileReader();
+  //   reader.onabort = () => console.log('file reading was aborted')
+  //   reader.onerror = () => console.log('file reading has failed')
+
+  //   reader.onload = () => {
+  //     // 1) Tranform file into base64 binary string
+  //       const binaryStr = reader.result // base64
+  //       // setImgUploaded(binaryStr);
+  //       setEditAvatar(binaryStr);
+  //     }
+  //   reader.readAsDataURL(files[0]);
+    
+  //   // 2) Open Edit Avatar Pop up
+  //   setIsEditAvatarPopped(true);
+    
+  // }, [])
+
   // @desc Handle Drag and Drop avatar
   const onDrop = useCallback(files => {
-    console.log({file: files[0]}); // e.target.files[0]
-    const reader = new FileReader();
-    reader.onabort = () => console.log('file reading was aborted')
-    reader.onerror = () => console.log('file reading has failed')
-
-    reader.onload = () => {
-      // 1) Tranform file into base64 binary string
-        const binaryStr = reader.result // base64
-        // setImgUploaded(binaryStr);
-        setEditAvatar(binaryStr);
-      }
-    reader.readAsDataURL(files[0]);
+    const imgFile = files[0] ;// e.target.files[0]
+    const fileUrl = URL.createObjectURL(imgFile);
+    setEditAvatar(fileUrl);
     
     // 2) Open Edit Avatar Pop up
     setIsEditAvatarPopped(true);
     
   }, [])
+
 
   const {getRootProps, getInputProps} = useDropzone({onDrop, accept: 'image/jpeg, image/png', multiple: false});
 
@@ -98,7 +109,7 @@ function UploadAvatarProvider({children}) {
       // It will lead to different work flow in backend
       imgName === "" ? formData.append('avatar', file) : formData.append('imgName', imgName);
       
-      dispatch(updateUserAvatarStart(formData));
+      dispatch(UserActions.updateUserAvatarStart(formData));
     }
 
     // @desc Handle Background update submit
@@ -116,7 +127,7 @@ function UploadAvatarProvider({children}) {
         console.log({file})
         formData.append("uploadedBg", file);
       }
-      dispatch(changeUserBackgroundStart(formData));
+      dispatch(UserActions.changeUserBackgroundStart(formData));
     }
 
 

@@ -1,174 +1,178 @@
 import UserActionTypes from "./user.types";
 
-export const setIsUploadingAvatarTrue = () => ({
+const UserActions = {}
+
+UserActions.setIsUploadingAvatarTrue = () => ({
     type: UserActionTypes.IS_UPLOADING_AVATAR_TRUE,
 })
 
-export const setIsUploadingAvatarFalse = () => ({
+UserActions.setIsUploadingAvatarFalse = () => ({
     type: UserActionTypes.IS_UPLOADING_AVATAR_FALSE,
 })
 
-export const setIsUpdatingUserDetailsTrue = () => ({
+UserActions.setIsUpdatingUserDetailsTrue = () => ({
     type: UserActionTypes.IS_UPDATING_USER_DETAILS_TRUE,
 })
 
-export const setIsUpdatingUserDetailsFalse = () => ({
+UserActions.setIsUpdatingUserDetailsFalse = () => ({
     type: UserActionTypes.IS_UPDATING_USER_DETAILS_FALSE,
 })
 
-export const setIsChangingUserPasswordTrue = () => ({
+UserActions.setIsChangingUserPasswordTrue = () => ({
     type: UserActionTypes.IS_CHANGING_USER_PASSWORD_TRUE,
 })
 
-export const setIsChangingUserPasswordFalse = () => ({
+UserActions.setIsChangingUserPasswordFalse = () => ({
     type: UserActionTypes.IS_CHANGING_USER_PASSWORD_FALSE,
 })
-export const isDeletingMeTrue = () => ({
+UserActions.isDeletingMeTrue = () => ({
     type: UserActionTypes.IS_DELETE_ME_TRUE,
 })
 
-export const isDeletingMeFalse = () => ({
+UserActions.isDeletingMeFalse = () => ({
     type: UserActionTypes.IS_DELETE_ME_FALSE,
 })
-export const isSendingForgotPwEmailTrue = () => ({
+UserActions.isSendingForgotPwEmailTrue = () => ({
     type: UserActionTypes.IS_SENDING_FORGOT_PW_EMAIL_TRUE,
 })
 
-export const isSendingForgotPwEmailFalse = () => ({
+UserActions.isSendingForgotPwEmailFalse = () => ({
     type: UserActionTypes.IS_SENDING_FORGOT_PW_EMAIL_FALSE,
 })
-export const isForgotPwEmailSentTrue = () => ({
+UserActions.isForgotPwEmailSentTrue = () => ({
     type: UserActionTypes.IS_FORGOT_PW_EMAIL_SENT_TRUE,
 })
 
-export const isForgotPwEmailSentFalse = () => ({
+UserActions.isForgotPwEmailSentFalse = () => ({
     type: UserActionTypes.IS_FORGOT_PW_EMAIL_SENT_FALSE,
 })
-export const isResettingPwTrue = () => ({
+UserActions.isResettingPwTrue = () => ({
     type: UserActionTypes.IS_RESETTING_PW_TRUE,
 })
 
-export const isResettingPwFalse = () => ({
+UserActions.isResettingPwFalse = () => ({
     type: UserActionTypes.IS_RESETTING_PW_FALSE,
 })
 
-export const updateUserDetailsStart = (formData) => ({
+UserActions.updateUserDetailsStart = (formData) => ({
     type: UserActionTypes.UPDATE_USER_DETAILS_START,
     formData,
   })
-export const updateUserDetailsSuccess = () => ({
+UserActions.updateUserDetailsSuccess = () => ({
 type: UserActionTypes.UPDATE_USER_DETAILS_SUCCESS,
 })
-export const updateUserDetailsFailure = () => ({
+UserActions.updateUserDetailsFailure = () => ({
 type: UserActionTypes.UPDATE_USER_DETAILS_FAILURE,
 })
 
-export const updateUserAvatarStart = (formData) => ({
+UserActions.updateUserAvatarStart = (formData) => ({
 type: UserActionTypes.UPDATE_USER_AVATAR_START,
 formData,
 })
 
-export const updateUserAvatarSuccess = () => ({
+UserActions.updateUserAvatarSuccess = () => ({
 type: UserActionTypes.UPDATE_USER_AVATAR_SUCCESS,
 })
-export const updateUserAvatarFailure = () => ({
+UserActions.updateUserAvatarFailure = () => ({
 type: UserActionTypes.UPDATE_USER_AVATAR_FAILURE,
 })
 
-export const changeUserPasswordStart = (changePasswordDetails) => ({
+UserActions.changeUserPasswordStart = (changePasswordDetails) => ({
 type: UserActionTypes.CHANGE_USER_PASSWORD_START,
 changePasswordDetails,
 })
 
-export const changeUserPasswordSuccess = (message) => ({
+UserActions.changeUserPasswordSuccess = (message) => ({
 type: UserActionTypes.CHANGE_USER_PASSWORD_SUCCESS,
 message
 })
 
-export const changeUserPasswordFailure = (error) => ({
+UserActions.changeUserPasswordFailure = (error) => ({
 type: UserActionTypes.CHANGE_USER_PASSWORD_FAILURE,
 error
 })
 
-export const deleteMeStart = (changePasswordDetails) => ({
+UserActions.deleteMeStart = (changePasswordDetails) => ({
 type: UserActionTypes.DELETE_ME_START,
 changePasswordDetails,
 })
 
-export const deleteMeSuccess = () => ({
+UserActions.deleteMeSuccess = () => ({
 type: UserActionTypes.DELETE_ME_SUCCESS,
 })
-export const deleteMeFailure = () => ({
+UserActions.deleteMeFailure = () => ({
 type: UserActionTypes.DELETE_ME_FAILURE,
 })
 
-export const sendForgotPwEmailStart = (email) => ({
+UserActions.sendForgotPwEmailStart = (email) => ({
 type: UserActionTypes.SEND_FORGOT_PW_EMAIL_START,
 email,
 })
-export const sendForgotPwEmailSuccess = () => ({
+UserActions.sendForgotPwEmailSuccess = () => ({
 type: UserActionTypes.SEND_FORGOT_PW_EMAIL_SUCCESS
 })
-export const sendForgotPwEmailFailure = (error, targetComponent) => ({
+UserActions.sendForgotPwEmailFailure = (error, targetComponent) => ({
 type: UserActionTypes.SEND_FORGOT_PW_EMAIL_FAILURE,
 error,
 targetComponent,
 })
-export const resetPasswordStart = (resetPwObj, param) => ({
+UserActions.resetPasswordStart = (resetPwObj, param) => ({
 type: UserActionTypes.RESET_PW_START,
 resetPwObj,
 param,
 })
-export const resetPasswordSuccess = () => ({
+UserActions.resetPasswordSuccess = () => ({
 type: UserActionTypes.RESET_PW_SUCCESS
 })
-export const resetPasswordFailure = () => ({
+UserActions.resetPasswordFailure = () => ({
 type: UserActionTypes.RESET_PW_FAILURE,
 })
-export const setSendForgotPwEmailAlert = (alert) => ({
+UserActions.setSendForgotPwEmailAlert = (alert) => ({
     type: UserActionTypes.SET_SEND_FOTGOT_PW_EMAIL_ALERT,
     alert,
 })
 
-export const setChangePasswordAlert = (alert) => ({
+UserActions.setChangePasswordAlert = (alert) => ({
 type: UserActionTypes.SET_CHANGE_PASSWORD_ALERT,
 alert
 })
-export const clearChangePasswordAlert = () => ({
+UserActions.clearChangePasswordAlert = () => ({
 type: UserActionTypes.CLEAR_CHANGE_PASSWORD_ALERT,
 })
-export const showChangePasswordMsg = () => ({
+UserActions.showChangePasswordMsg = () => ({
 type: UserActionTypes.SHOW_CHANGE_PASSWORD_MSG,
 })
-export const hideChangePasswordMsg = () => ({
+UserActions.hideChangePasswordMsg = () => ({
 type: UserActionTypes.HIDE_CHANGE_PASSWORD_MSG,
 })
 
-export const changeResetPasswordState = (state) => ({
+UserActions.changeResetPasswordState = (state) => ({
     type: UserActionTypes.CHANGE_RESET_PW_STATE,
     state
 })
 
-export const isChangingUserBgTrue = () => ({
+UserActions.isChangingUserBgTrue = () => ({
     type: UserActionTypes.IS_CHANGING_USER_BG_TRUE,
   })
   
-  export const isChangingUserBgFalse = () => ({
+  UserActions.isChangingUserBgFalse = () => ({
     type: UserActionTypes.IS_CHANGING_USER_BG_FALSE,
   })
-  export const changeUserBackgroundStart = (formData) => ({
+  UserActions.changeUserBackgroundStart = (formData) => ({
     type: UserActionTypes.CHANGE_USER_BACKGROUND_START,
     formData,
   })
-  export const changeUserBackgroundSuccess = () => ({
+  UserActions.changeUserBackgroundSuccess = () => ({
     type: UserActionTypes.CHANGE_USER_BACKGROUND_SUCCESS,
   })
-  export const changeUserBackgroundFailure = () => ({
+  UserActions.changeUserBackgroundFailure = () => ({
     type: UserActionTypes.CHANGE_USER_BACKGROUND_FAILURE,
   })
 
-  export const getUserBackgroundStart = (setUserBgFn, setUserBgThumbtailFn) => ({
+  UserActions.getUserBackgroundStart = (setUserBgFn, setUserBgThumbtailFn) => ({
     type: UserActionTypes.GET_USER_BACKGROUND_START,
     setUserBgFn,
     setUserBgThumbtailFn,
   })
+
+export default UserActions;
