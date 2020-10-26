@@ -7,9 +7,9 @@ module.exports = class Sharp {
 
     async formatAvatar() {
         return await sharp(this.imgBuffer)
-        .resize(500, 500)
         .toFormat("jpeg")
-        .jpeg({ quality: 90 })
+        .resize(250, 250)
+        .jpeg({ quality: 80 })
         .toBuffer();
     }
 }

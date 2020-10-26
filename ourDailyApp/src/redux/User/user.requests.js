@@ -78,3 +78,10 @@ export const changeUserBackground = async(formData, url) => {
 
     return res;
 }
+
+export const getUserBackground = async(url) => {
+    let res;
+    res =  await axios.get(url, {withCredentials: true});
+
+    return res;
+}

@@ -22,6 +22,9 @@ import {
   setIsSigningUpFALSE,
 } from "../signUpForm/signUpform.actions";
 
+import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
+import b64toBlob from "../../utils/b64toBlob";
+
 import {setIsLoggingInTRUE, setIsLoggingInFALSE} from "../logInForm/logInForm.actions";
 
 import globalErrHandler from "../../utils/globalErrHandler";
@@ -115,16 +118,17 @@ function* signInWithEmail({ logInDetails }) {
     console.log({response});
     yield put(setUserDetails(response.data.data.user));
     // 3a) get avatar image from s3 via backend
-    yield put(setUserAvatar(response.data.data.avatar.data));
+    const avatarBuffer = response.data.data.avatar.data;
+    yield put(setUserAvatar(avatarBuffer));
     // 3b) get user background from s3 via backend
-    const bgBuffer = response.data.data.background.data;
+    // const bgBuffer = response.data.data.background.data;
 
     // check if the bg is buffer or url
-    if(bgBuffer !== undefined) {
-      yield put(setUserBackground(bgBuffer));
-    } else {
-      yield put(setUserBackground(response.data.data.background));
-    }
+    // if(bgBuffer !== undefined) {
+    //   yield put(setUserBackground(bgBuffer));
+    // } else {
+    //   yield put(setUserBackground(response.data.data.background));
+    // }
     yield put(signInSuccess());
     // Stop spinner
     yield put(setIsLoggingInFALSE());

@@ -32,6 +32,31 @@ exports.resizeUserPhoto = withCatchErrAsync(async (req, res, next) => {
 // @restrictTo only admin
 exports.getAllUsers = factory.getAll(User);
 
+exports.getUserBg = withCatchErrAsync(async(req, res, next) => {
+  const {bg} = req.user;
+  // const userBg = await User.findById(id).select("bg");
+
+  let userBg = undefined;
+
+  // Check if background is url or is a beffer that needed to get from S3
+  if(bg === "default") {
+    userBg = "default";
+  }
+  else if(bg.startsWith("https")) {
+    userBg = user.bg;
+  } else {
+    userBg = await authUtils.getUserBackground(bg);
+    // userBg: {type, buffer}, we only need buffer from S3
+  }
+  // return
+  return res.status(200).json({
+    status: "success",
+    data: {
+      bg: userBg,
+    }
+  })
+})
+
 exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
   const {bgUrl} = req.body;
   const {id} = req.user;
@@ -75,7 +100,7 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
     const bgName = `user-background-${id}.jpeg`;
 
     // 3b) reformat background into jpeg
-    const bg = await sharp(buffer).toFormat("jpeg").toBuffer();
+    const bg = await sharp(buffer).toFormat("jpeg").jpeg({ quality: 30 }).toBuffer();
 
     // 4b) upload to s3
     await uploadBgToS3(bgName, bg);

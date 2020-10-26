@@ -24,7 +24,7 @@ export default function Appearance() {
 
     useEffect(() => {
         // Fetch Photos Start and ALSO set the next page url for grabbing more images from pexels
-        dispatch(fetchPhotosStart(nextPageUrl, (url) => setNextPageUrl(url)));
+        // dispatch(fetchPhotosStart(nextPageUrl, (url) => setNextPageUrl(url)));
     }, [])
 
 

@@ -56,9 +56,13 @@ import {
 
 import {requestAndUpdateAvatar} from "./user.generatorFn";
 
-import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword, changeUserBackground} from "./user.requests";
+import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword, changeUserBackground, getUserBackground} from "./user.requests";
 
 // ================= Sagas ==================
+
+function* onGetUserBackgroundStart() {
+  yield takeLeading(UserActionTypes.GET_USER_BACKGROUND_START, fn_getUserBackgroundStart);
+}
 
 function* onChangeUserBackgroundStart() {
   yield takeLeading(UserActionTypes.CHANGE_USER_BACKGROUND_START, fn_changeUserBackgroundStart);
@@ -156,7 +160,29 @@ function* onUpdateUserDetailsStart() {
       call(onResetPasswordFailure),
       call(onChangeUserBackgroundStart),
       call(onChangeUserBackgroundSuccess),
+      call(onGetUserBackgroundStart),
     ]);
+  }
+
+  function* fn_getUserBackgroundStart({setUserBgFn}) {
+    try {
+
+      // get image from backend
+      const response = yield call(getUserBackground, `${process.env.REACT_APP_URL}/users/getUserBg`);
+      const bgBuffer = response.data.data.bg.data;    
+      console.log({res: bgBuffer})
+
+      if(bgBuffer !== undefined) {
+            // yield put(setUserBackground(bgBuffer));
+            yield setUserBgFn(bgBuffer);
+          } else {
+            // yield put(setUserBackground(response.data.data.bg));
+            // 1) set mainpage bg local state
+            yield setUserBgFn(response.data.data.bg);
+          }
+    } catch (error) {
+      
+    }
   }
 
   function* fn_changeUserBackgroundStart({formData}) {
@@ -172,13 +198,13 @@ function* onUpdateUserDetailsStart() {
       const bgBuffer = res.data.data.background.data;
       // 3) save user background to react state
       // check if the bg is buffer or url
-      if(bgBuffer !== undefined) {
-        console.log("we have a background buffer", bgBuffer)
-        yield put(setUserBackground(bgBuffer));
-      } else {
-        console.log("bg url", res.data.data.background)
-        yield put(setUserBackground(res.data.data.background));
-    }
+      // if(bgBuffer !== undefined) {
+      //   console.log("we have a background buffer", bgBuffer)
+      //   yield put(setUserBackground(bgBuffer));
+      // } else {
+      //   console.log("bg url", res.data.data.background)
+      //   yield put(setUserBackground(res.data.data.background));
+      // }
 
       // Loading -> false
       yield put(changeUserBackgroundSuccess());

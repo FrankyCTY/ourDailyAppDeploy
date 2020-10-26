@@ -166,3 +166,9 @@ export const isChangingUserBgTrue = () => ({
   export const changeUserBackgroundFailure = () => ({
     type: UserActionTypes.CHANGE_USER_BACKGROUND_FAILURE,
   })
+
+  export const getUserBackgroundStart = (setUserBgFn, setUserBgThumbtailFn) => ({
+    type: UserActionTypes.GET_USER_BACKGROUND_START,
+    setUserBgFn,
+    setUserBgThumbtailFn,
+  })
