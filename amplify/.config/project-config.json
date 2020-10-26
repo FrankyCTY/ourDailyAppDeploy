@@ -1,0 +1,17 @@
+{
+  "projectName": "ourdailyapp",
+  "version": "3.0",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "./ourDailyApp/src",
+      "DistributionDir": "./ourDailyApp/build",
+      "BuildCommand": "npm.cmd run-script build",
+      "StartCommand": "npm.cmd run-script start"
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}

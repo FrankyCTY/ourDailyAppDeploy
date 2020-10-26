@@ -1,0 +1,15 @@
+{
+  "ourdaily": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ourdailyapp-ourdaily-04410-authRole",
+      "UnauthRoleArn": "arn:aws:iam::073032805649:role/amplify-ourdailyapp-ourdaily-04410-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::073032805649:role/amplify-ourdailyapp-ourdaily-04410-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-ourdailyapp-ourdaily-04410-deployment",
+      "UnauthRoleName": "amplify-ourdailyapp-ourdaily-04410-unauthRole",
+      "StackName": "amplify-ourdailyapp-ourdaily-04410",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:073032805649:stack/amplify-ourdailyapp-ourdaily-04410/9105a0d0-1780-11eb-8f73-02d4bf7154b4",
+      "AmplifyAppId": "d39uytpfql2i2"
+    }
+  }
+}
