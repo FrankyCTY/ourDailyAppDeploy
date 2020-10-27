@@ -87,8 +87,3 @@ export const setUserAvatar = (imgBuffer) => ({
   type: AuthActionTypes.SET_USER_AVATAR,
   imgBuffer,
 })
-
-export const setUserBackground = (bg) => ({
-  type: AuthActionTypes.SET_USER_BACKGROUND,
-  bg
-})

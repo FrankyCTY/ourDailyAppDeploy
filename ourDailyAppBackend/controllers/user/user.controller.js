@@ -85,7 +85,7 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
       data: {
         user: updatedUser,
         // s3 bg can only be buffer
-        background: bg,
+        bg,
       }
     })
   }
@@ -121,7 +121,7 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
       data: {
         user: updatedUser,
         // s3 bg can only be buffer
-        background: bg,
+        bg,
       }
     })
 

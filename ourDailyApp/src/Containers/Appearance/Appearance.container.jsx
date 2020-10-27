@@ -16,11 +16,15 @@ import { useMediaQuery } from "react-responsive";
 export default function Appearance() {
     const dispatch = useDispatch();
     const photos = useSelector(state => state.gallery.photos);
-    const userBg = useSelector(state => state.auth_P.userBg);
+    const userBg = useSelector(state => state.theme.background);
+    const isChangingUserBackground = useSelector(state => state.user.isChangingUserBackground);
     const isFetchingGalleryImages = useSelector(state => state.gallery.isFetchingGalleryImages);
     const [nextPageUrl, setNextPageUrl] = useState("https://api.pexels.com/v1/curated?per_page=15&page=1");
     const { selectedBg, setSelectedBg, setFile, onBackgroundSubmit } = useContext(UploadAvatarContext);
     const width_above_1280 = useMediaQuery({ query: "(min-width: 1280px" });
+
+    const shouldDisableBtn = isFetchingGalleryImages || isChangingUserBackground;
+
 
     useEffect(() => {
         // Fetch Photos Start and ALSO set the next page url for grabbing more images from pexels
@@ -61,12 +65,12 @@ export default function Appearance() {
 
                 {/* Responsive Save Button */}
                 <CSSTransition in={width_above_1280} timeout={350} classNames="fade-primary" unmountOnExit>
-                    <Formik.SubmitBtn disabled={isFetchingGalleryImages} onClick={onBackgroundSubmit} formDetails={{ background: selectedBg.src }} className="text-gray-200 mt-4">SAVE{isFetchingGalleryImages && <PixelSpinner size={1.2} animationDuration={1500} style={{ marginLeft: "4px" }} />}</Formik.SubmitBtn>
+                    <Formik.SubmitBtn disabled={shouldDisableBtn} onClick={onBackgroundSubmit} formDetails={{ background: selectedBg.src }} className="text-gray-200 mt-4">SAVE{shouldDisableBtn && <PixelSpinner size={1.2} animationDuration={1500} style={{ marginLeft: "4px" }} />}</Formik.SubmitBtn>
                 </CSSTransition>
                     
                 <CSSTransition in={!width_above_1280} timeout={350} classNames="fade-primary" unmountOnExit>
                     <FloatBtn>
-                        <FloatBtn.FloatButton disabled={isFetchingGalleryImages} bg={"#0059A6"} onClick={onBackgroundSubmit}
+                        <FloatBtn.FloatButton disabled={shouldDisableBtn} bg={"#0059A6"} onClick={onBackgroundSubmit}
                             formDetails={{ background: selectedBg.src }}>
                             <FloatBtn.BtnIcon className="iconfont icon-save" />
                         </FloatBtn.FloatButton>

@@ -117,18 +117,10 @@ function* signInWithEmail({ logInDetails }) {
     const response = yield call(logInUser, logInDetails);
     console.log({response});
     yield put(setUserDetails(response.data.data.user));
-    // 3a) get avatar image from s3 via backend
+    // 2) get avatar image from s3 via backend
     const avatarBuffer = response.data.data.avatar.data;
     yield put(setUserAvatar(avatarBuffer));
-    // 3b) get user background from s3 via backend
-    // const bgBuffer = response.data.data.background.data;
-
-    // check if the bg is buffer or url
-    // if(bgBuffer !== undefined) {
-    //   yield put(setUserBackground(bgBuffer));
-    // } else {
-    //   yield put(setUserBackground(response.data.data.background));
-    // }
+    
     yield put(signInSuccess());
     // Stop spinner
     yield put(setIsLoggingInFALSE());

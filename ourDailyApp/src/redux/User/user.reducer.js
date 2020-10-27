@@ -5,6 +5,7 @@ const INITIATE_STATE = {
     isUploadingAvatar: false,
     isUpdatingUserDetails: false,
     isChangingUserPassword: false,
+    isChangingUserBackground: false,
     showChangePasswordMsg: false,
     isDeletingMe: false,
     isSendingForgotPwEmail: false,
@@ -87,6 +88,16 @@ const UserReducer = (state = INITIATE_STATE, action) => {
         return {
             ...state,
             isResettingPw: false,
+        }
+    case UserActionTypes.IS_CHANGING_USER_BG_TRUE:
+        return {
+            ...state,
+            isChangingUserBackground: true,
+        }
+    case UserActionTypes.IS_CHANGING_USER_BG_FALSE:
+        return {
+            ...state,
+            isChangingUserBackground: false,
         }
     case UserActionTypes.CHANGE_RESET_PW_STATE:
         return {

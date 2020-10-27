@@ -155,7 +155,7 @@ function* onUpdateUserDetailsStart() {
       
       // 1) request backend to change user background
       const res = yield call(changeUserBackground, formData, `${process.env.REACT_APP_URL}/users/updateBg`);
-
+      console.log({res})
       // 2) populate user bg to redux state
       // url || buffer
       yield call(populateUserBg, res);

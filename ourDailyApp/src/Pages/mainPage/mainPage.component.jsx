@@ -23,7 +23,8 @@ const MainPage = () => {
   const userBg = useSelector(state => state.theme.background);
   // const userBg = useSelector(state => state.auth_P.userBg);
   // const [userBg, setUserBg] = useState("default");
-  const backgroundLuminosity = useSelector(state => state.theme.backgroundLuminosity);
+  // const backgroundLuminosity = useSelector(state => state.theme.backgroundLuminosity);
+  const backgroundLuminosity = "";
   
   
   const { data } = usePalette(`${_arrayBufferToBase64(userBg)}`);
@@ -38,7 +39,7 @@ const MainPage = () => {
 
     // get MainPage Background Image
     // dispatch(UserActions.getUserBackgroundStart((bgBuffer) => {setUserBg(bgBuffer)}));
-    dispatch(UserActions.getUserBackgroundStart());
+    // dispatch(UserActions.getUserBackgroundStart());
   }, [dispatch]);
 
   useEffect(() => {

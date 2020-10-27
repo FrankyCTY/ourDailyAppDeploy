@@ -28,25 +28,6 @@ function UploadAvatarProvider({children}) {
   // For customizing background
   const [selectedBg, setSelectedBg] = useState({name: "", src: ""});
   
-  // // @desc Handle Drag and Drop avatar
-  // const onDrop = useCallback(files => {
-  //   console.log({file: files[0]}); // e.target.files[0]
-  //   const reader = new FileReader();
-  //   reader.onabort = () => console.log('file reading was aborted')
-  //   reader.onerror = () => console.log('file reading has failed')
-
-  //   reader.onload = () => {
-  //     // 1) Tranform file into base64 binary string
-  //       const binaryStr = reader.result // base64
-  //       // setImgUploaded(binaryStr);
-  //       setEditAvatar(binaryStr);
-  //     }
-  //   reader.readAsDataURL(files[0]);
-    
-  //   // 2) Open Edit Avatar Pop up
-  //   setIsEditAvatarPopped(true);
-    
-  // }, [])
 
   // @desc Handle Drag and Drop avatar
   const onDrop = useCallback(files => {
@@ -119,12 +100,10 @@ function UploadAvatarProvider({children}) {
       // 1) check if user uploaded bg or chose a default bg
       if(selectedBg.src !== "") {
         // default bg url
-        console.log({selectedBg})
         formData.append("bgUrl", selectedBg.src);
       }
       else {
         // uploaded bg file
-        console.log({file})
         formData.append("uploadedBg", file);
       }
       dispatch(UserActions.changeUserBackgroundStart(formData));

@@ -5,6 +5,7 @@ import SettingsPage from "../../Pages/SettingsPage/Settings.page";
 import CommentsConverterPage from "../../Pages/CommentsConverterPage/CommentsConverterPage.component";
 import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
 import {  useDispatch, useSelector } from "react-redux";
+import UserActions from "../../redux/User/user.actions";
 import {getAppsInCartStart, getAppsInWishlistStart} from "../../redux/cart/cart.actions";
 
 import {  ProtectedRoute } from "../../helpers/routes.helper";
@@ -33,6 +34,8 @@ const LoggedInRouter = () => {
   useEffect(() => {
     dispatch(getAppsInCartStart());
     dispatch(getAppsInWishlistStart());
+    // Get User background
+    dispatch(UserActions.getUserBackgroundStart());
   }, [dispatch]);
 
   const WishListPage = React.lazy(() =>

@@ -4,7 +4,6 @@ const INITIATE_STATE = {
   isLogged: false,
   user: null,
   userAvatar: null,
-  userBg: "",
 };
 
 const authReducer_P = (state = INITIATE_STATE, action) => {
@@ -28,11 +27,6 @@ const authReducer_P = (state = INITIATE_STATE, action) => {
         return {
           ...state,
           userAvatar: action.imgBuffer
-        }
-      case AuthActionTypes.SET_USER_BACKGROUND:
-        return {
-          ...state,
-          userBg: action.bg,
         }
     default:
       return state;
