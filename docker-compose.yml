@@ -29,5 +29,5 @@ services:
       - ./ourDailyAppBackend:/app
     env_file:
       - ./ourDailyAppBackend/config/config.env
-  redis:
-    image: "redis:latest"
+  db:
+    image: mongo:latest
