@@ -27,7 +27,6 @@ export default function* gallerySaga() {
 
 function* fn_fetchPhotosStart({url, callback}) {
     try {
-        console.log({url})
         // Start Spinner
         yield put(setFetchingGalleryImagesTrue());
         

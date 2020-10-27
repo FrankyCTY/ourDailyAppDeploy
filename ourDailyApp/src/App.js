@@ -28,10 +28,12 @@ const LoggedInRouter = React.lazy(() => import ("./Routers/LoggedInRouter/Logged
 
 const App = () => {
   const isUserLogged = useSelector((state) => state.auth_P.isLogged);
+
+  const theme = useSelector((state) => state.theme_P.theme);
   // const showNavUIComponents = useSelector(state => state.UIComponents.showNavUIComponents);
 
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
       <GlobalStyle />
       <React.Suspense 
         fallback={

@@ -6,7 +6,7 @@ const CartAndWishlistWrapperStyles = css`
   border: ${(props) => props.theme.cartPage.cartWishlistBorder};
   margin-top: 1em;
   margin-bottom: 1em;
-  color: ${(props) => props.theme.cartPage.text};
+  color: ${(props) => props.theme.general_text};
 `;
 
 // ============================ Left side ============================
@@ -19,7 +19,7 @@ S.CartPageItemsBoard = styled.div`
 /* ============= Cart Items ============= */
 S.NumOfAppInCartSpan = styled.span`
   font-size: 1.1rem;
-  color: ${(props) => props.theme.cartPage.text};
+  color: ${(props) => props.theme.general_text};
 `;
 
 S.CartItemBlockWrapper = styled.div`
@@ -47,12 +47,12 @@ S.WishlistWrapper = styled.div`
 S.EmptyWishlistText = styled.p`
   margin-top: 1em;
   font-size: 0.9rem;
-  color: ${(props) => props.theme.cartPage.text};
+  color: ${(props) => props.theme.general_text};
 `;
 
 S.RecentlyWishlistedText = styled.span`
   font-size: 1.1rem;
-  color: ${(props) => props.theme.cartPage.text};
+  color: ${(props) => props.theme.general_text};
 `;
 
 export default S;

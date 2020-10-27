@@ -21,6 +21,7 @@ import WholePageLoaderReducer from "./WholePageLoader/wholePageLoader.reducer";
 import UserReducer from "./User/user.reducer";
 import GalleryReducer from "./Gallery/gallery.reducer";
 import ThemeReducer from "./Theme/theme.reducer";
+import themeReducer_P from "./Theme/theme_P.reducer";
 
 // =========== Applications ===========
 import pigGameReducer from "./pigGame/pigGame.reducer";
@@ -31,7 +32,7 @@ const persistConfig = {
   key: "root",
   storage,
   // whitelist: ["auth_P"]
-  whitelist: ["cart_P", "auth_P"],
+  whitelist: ["cart_P", "auth_P", "theme_P"],
   // whitelist: [],
   // whitelist: ["cart_P", "pigGame"],
 };
@@ -54,6 +55,7 @@ const topLevelReducers = combineReducers({
   wholePageLoader: WholePageLoaderReducer,
   gallery: GalleryReducer,
   theme: ThemeReducer,
+  theme_P: themeReducer_P,
   // =========== Applications ===========
   pigGame: pigGameReducer,
   pigGameModals: pigGameModalsReducer,

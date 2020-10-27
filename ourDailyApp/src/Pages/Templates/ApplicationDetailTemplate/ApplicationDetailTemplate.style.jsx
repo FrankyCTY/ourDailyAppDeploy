@@ -75,7 +75,7 @@ S.SectionTitle = styled.h2`
 S.FeatureList = styled.ul`
   padding-left: 2em;
   font-size: clamp(0.9rem, 1.5vw, 1.5rem);
-  color: ${(props) => props.theme.appDetailPage.featureList};
+  color: ${(props) => props.theme.general_text};
   margin-bottom: 5em;
 
   & li {

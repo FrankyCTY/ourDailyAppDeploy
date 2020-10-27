@@ -53,17 +53,9 @@ S.ImageFrameWrapper = styled.div`
 S.Username = styled.p`
   font-size: clamp(0.8rem, 1.5vw, 1.5rem);
 
-  ${({theme, backgroundluminosity}) => {
-    if (backgroundluminosity === 0)
-    {
-      return `color: ${theme.mainPage.username};`;
-    }
-    if(backgroundluminosity <= 0.4) {
-      return `color: white; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
-    } else if (backgroundluminosity > 0.4) {
-      return `color: black; text-shadow: 2px 2px 10px rgba(255, 255, 255, 1);`;
-    } 
-  }}
+
+  color: ${({theme}) => theme.general_text};
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);
 `;
 
 S.AccessAppBtnWrapper = styled.div`

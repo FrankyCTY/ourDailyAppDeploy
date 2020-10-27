@@ -5,7 +5,7 @@ const S = {};
 const textStyles = css`
   font-weight: 700;
   cursor: pointer;
-  color: ${(props) => props.theme.cartPage.cartItemTitleCreatorText};
+  color: ${(props) => props.theme.general_text};
 `;
 
 const btnStyles = css`

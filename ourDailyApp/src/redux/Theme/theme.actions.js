@@ -9,3 +9,8 @@ export const setUserBackground = (bg) => ({
   type: ThemeActionTypes.SET_USER_BACKGROUND,
   bg,
 })
+
+export const setTheme = (theme) => ({
+  type: ThemeActionTypes.SET_THEME,
+  theme,
+})

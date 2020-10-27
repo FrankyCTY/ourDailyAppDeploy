@@ -6,12 +6,10 @@ import { fetchAccessAppBtnsStart } from "../../redux/app/app.actions";
 import {setBackgroundLuminosity} from "../../redux/Theme/theme.actions";
 import UserActions from "../../redux/User/user.actions";
 import useRouter from "../../hooks/useRouter.hooks";
-import { usePalette } from 'react-palette';
 
 import MainPageAccessAppWrapper from "../../Components/MainPageAccessAppWrapper/MainPageAccessAppWrapper.component";
 import ImageFrame from "../../Components/ImageFrames/ImageFrame/ImageFrame.component";
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
-import Color from "color";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -27,24 +25,13 @@ const MainPage = () => {
   const backgroundLuminosity = "";
   
   
-  const { data } = usePalette(`${_arrayBufferToBase64(userBg)}`);
 
   // ============= Life Cycle Hooks =============
 
   useEffect(() => {
     dispatch(fetchAccessAppBtnsStart());
-    
-
-    // getFromS3();
-
-    // get MainPage Background Image
-    // dispatch(UserActions.getUserBackgroundStart((bgBuffer) => {setUserBg(bgBuffer)}));
-    // dispatch(UserActions.getUserBackgroundStart());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(setBackgroundLuminosity((Color(data.darkVibrant).luminosity())));
-  }, [data.darkVibrant, dispatch])
 
   return (
     <>

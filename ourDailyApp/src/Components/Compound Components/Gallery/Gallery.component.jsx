@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import S from "./styles/Gallery.style";
 
-import {UploadAvatarContext} from "../../../context/uploadAvatar.context";
+import {UploadImageContext} from "../../../context/uploadAvatar.context";
 
 export default function Gallery({children, ...restProps}) {
     return <S.GalleryContainer {...restProps}>
@@ -22,14 +22,14 @@ Gallery.GalleryItem = function GalleryItem({children, isSelected, ...restProps})
         {children}</S.GalleryItem>
 }
 
-Gallery.Tag = function ItemTag({children, ...restProps}) {
-    return <S.ItemTag {...restProps}>{children}</S.ItemTag>
+Gallery.Tag = function ItemTag({backgroundColor, children, ...restProps}) {
+    return <S.ItemTag backgroundColor={backgroundColor} {...restProps}>{children}</S.ItemTag>
 }
 
 
 Gallery.UploadImgGridItem = function UploadImgGridItem({children, ...restProps}) {
 
-    const {getInputProps} = useContext(UploadAvatarContext);
+    const {getInputProps} = useContext(UploadImageContext);
 
     return <S.UploadImgGridItem {...restProps}>{children}
                 <S.UploadImgDeco>

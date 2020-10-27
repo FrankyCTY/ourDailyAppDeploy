@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import S from "./styles/Formik.style";
 import "react-datepicker/dist/react-datepicker.css";
-import {UploadAvatarContext} from "../../../context/uploadAvatar.context";
+import {UploadImageContext} from "../../../context/uploadAvatar.context";
 import userActions from "../../../redux/User/user.actions";
 import FormikUtils from "./Formik.utils";
 import {useDispatch} from "react-redux";
@@ -80,7 +80,7 @@ Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, operationTyp
 
     const dispatch = useDispatch();
 
-    const {file, cropData} = useContext(UploadAvatarContext);
+    const {file, cropData} = useContext(UploadImageContext);
 
     const onSubmit = (e) => {
        e.preventDefault();
@@ -106,7 +106,7 @@ Formik.SubmitBtn = function FormikSubmitBtn({formDetails, children, operationTyp
 
 Formik.AvatarContainer = function AvatarContainer({src, ...restProps}) {
 
-    const {getInputProps, cropData} = useContext(UploadAvatarContext);
+    const {getInputProps, cropData} = useContext(UploadImageContext);
 
     return  <S.AvatarContainer {...restProps}>
                 <S.Avatar src={cropData || src}/>

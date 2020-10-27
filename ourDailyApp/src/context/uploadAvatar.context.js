@@ -10,8 +10,8 @@ import b64toBlob from "../utils/b64toBlob";
 import {useDropzone} from "react-dropzone";
 
 
-const UploadAvatarContext = createContext();
-function UploadAvatarProvider({children}) {
+const UploadImageContext = createContext();
+function UploadImageProvider({children}) {
 
   
   const dispatch = useDispatch();
@@ -116,14 +116,14 @@ function UploadAvatarProvider({children}) {
     }, []);
 
 
-    return <UploadAvatarContext.Provider value={{cropData, setCropData, 
+    return <UploadImageContext.Provider value={{cropData, setCropData, 
       onSubmit, setFile, file,
       selectedBg, setSelectedBg, setCropper,
       getCropData, 
       onClickDefaultAvatar, getRootProps,
       getInputProps, isEditAvatarPopped, closeEditAvatarPopUp,
       onBackgroundSubmit,
-      imgName, setImgName, editAvatar}}>{children}</UploadAvatarContext.Provider>
+      imgName, setImgName, editAvatar}}>{children}</UploadImageContext.Provider>
 }
 
-export {UploadAvatarProvider, UploadAvatarContext};
+export {UploadImageProvider, UploadImageContext};

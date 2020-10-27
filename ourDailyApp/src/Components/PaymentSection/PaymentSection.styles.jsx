@@ -14,7 +14,7 @@ S.PaymentSection = styled.div`
 S.PaymentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${(props) => props.theme.cartPage.text};
+  color: ${(props) => props.theme.general_text};
 `;
 
 S.TotalPriceText = styled.span`

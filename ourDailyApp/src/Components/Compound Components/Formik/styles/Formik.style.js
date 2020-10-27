@@ -12,7 +12,7 @@ line-height: 1.429;
 border: 1px solid ${({theme}) => theme.wrapper_border};;
 border-radius: .25rem;
 transition border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-background: ${({theme}) => theme.wrapper_background};
+background: ${({theme}) => theme.secondary_bg};
 color: ${({theme}) => theme.Formik.text_color};
 font-size: 0.75rem;
 width: 100%;
@@ -44,7 +44,7 @@ position: relative;
 
 .react-datepicker,
 .react-datepicker__header {
-    background: ${({theme}) => theme.wrapper_background};
+    background: ${({theme}) => theme.secondary_bg};
 }
 .react-datepicker__day {
     color: white !important;

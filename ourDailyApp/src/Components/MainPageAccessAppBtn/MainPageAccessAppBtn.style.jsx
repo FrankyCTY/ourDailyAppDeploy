@@ -44,33 +44,18 @@ S.Image = styled.img`
 
   &:hover {
     border: 1px solid white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 1);
 
-    ${({backgroundLuminosity}) => {
-      if(backgroundLuminosity === 0) {
-        return `box-shadow: 0 0 10px rgba(255, 255, 255, 1);`;
-      }
-      if(backgroundLuminosity <= 0.4) {
-        return `box-shadow: 0 0 10px ${rgba(255, 255, 255, 1)};`;
-      } else {
-        return `box-shadow: 0 0 10px rgba(0, 0, 0, 1);`;
-      }
-    }}
+
   }
 `;
 
 S.AppLinkText = styled.span`
   text-overflow: ellipsis;
-  ${({theme, backgroundLuminosity}) => {
-    if (backgroundLuminosity === 0)
-    {
-      return `color: ${theme.mainPage.appAccessBtnText};`;
-    }
-    if(backgroundLuminosity <= 0.4) {
-      return `color: white; text-shadow: 0px 0px 16px rgba(0, 0, 0, 1);`;
-    } else if (backgroundLuminosity > 0.4) {
-      return `color: black; text-shadow: 2px 2px 5px rgba(255, 255, 255, 1);`;
-    } 
-  }}
+
+  color: ${({theme}) => theme.general_text};
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);
+
   text-decoration: none;
 `;
 

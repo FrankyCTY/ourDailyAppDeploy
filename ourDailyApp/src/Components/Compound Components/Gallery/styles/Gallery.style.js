@@ -83,7 +83,14 @@ ${({isSelected}) => {
 `;
 
 S.ItemTag = styled.div`
-background: #35569A;
+background: ${({backgroundColor}) => {
+    if(backgroundColor) {
+        return `${backgroundColor};`;
+    }
+    else {
+        return "#35569A;";
+    }
+}}
 color: ${({theme}) => theme.general_text};
 position: absolute;
 bottom: 0;

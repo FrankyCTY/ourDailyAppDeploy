@@ -2,13 +2,14 @@ import React, {useState} from "react";
 import "./SettingsPage.scss";
 import ProfileContainer from "../../Containers/ProfileForm.container";
 import AppearanceContainer from "../../Containers/Appearance/Appearance.container";
+import ThemeContainer from "../../Containers/Theme/Theme.container";
 import { CSSTransition } from "react-transition-group";
 import SettingToolBar from "../../Containers/SettingToolBarContainer";
 import {SideMenu, Formik, Notification, WholePageLoader} from "../../Components/Compound Components";
 import { useMediaQuery } from "react-responsive";
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 
-import {UploadAvatarProvider} from "../../context/uploadAvatar.context";
+import {UploadImageProvider} from "../../context/uploadAvatar.context";
 
 import { Route, Switch, Redirect } from "react-router-dom";
 import useRouter from "../../hooks/useRouter.hooks";
@@ -33,6 +34,10 @@ const SettingsPage = () => {
             <SideMenu.ItemIcon className="iconfont icon-highlight mr-2" />
             <SideMenu.ItemText className="itemtext">Appearance</SideMenu.ItemText>
           </SideMenu.SideMenuItem>
+          <SideMenu.SideMenuItem className={`${router.pathName === "/settings/theme" && "active"}`} onClick={() => router.push("/settings/theme")}>
+            <SideMenu.ItemIcon className="iconfont icon-DarkTheme mr-2" />
+            <SideMenu.ItemText className="itemtext">Theme</SideMenu.ItemText>
+          </SideMenu.SideMenuItem>
           <SideMenu.SideMenuItem className={`${router.pathName === "/settings/changePassword" && "active"}`} onClick={() => router.push("/settings/changePassword")}>
             <SideMenu.ItemIcon className="iconfont icon-key mr-2" />
             <SideMenu.ItemText className="itemtext">Change password</SideMenu.ItemText>
@@ -47,9 +52,11 @@ const SettingsPage = () => {
           <Switch>
             <Route exact path={`${router.matchPath}`}><Redirect to={{pathname: `${router.matchPath}/profile`}}/></Route>
             <Route exact path={`${router.matchPath}/profile`}><ProfileContainer/></Route>
-            <Route exact path={`${router.matchPath}/appearance`}><UploadAvatarProvider><AppearanceContainer/></UploadAvatarProvider></Route>
+            <Route exact path={`${router.matchPath}/appearance`}><UploadImageProvider><AppearanceContainer/></UploadImageProvider></Route>
+            <Route exact path={`${router.matchPath}/theme`}><UploadImageProvider><ThemeContainer/></UploadImageProvider></Route>
             <Route exact path={`${router.matchPath}/changePassword`}><ChangePasswordForm/></Route>
             <Route exact path={`${router.matchPath}/deleteMe`}><DeleteMeForm/></Route>
+            <Route><Redirect to="/404"/></Route>
           </Switch>
         </div>
       </div>
@@ -134,11 +141,11 @@ const DeleteMeForm = () => {
   return (<div>
     <h2 className="text-2xl mb-4" style={{color: "red"}}>WARNING</h2>
     <ul>
-      <li className="mb-2"><span className="iconfont icon-cc-pointer-right text-gray-200 mr-2"/><span className="text-gray-500 text-sm">You will no longer be able to log in this account</span></li>
-      <li className="mb-16 md:mb-32"><span className="iconfont icon-cc-pointer-right text-gray-200 mr-2"/><span className="text-gray-500 text-sm">You will not be able to register a new account with the same email address</span></li>
+      <li className="mb-2"><span className="iconfont icon-cc-pointer-right mr-2 text-blue-700"/><span className="text-sm text-blue-700">You will no longer be able to log in this account</span></li>
+      <li className="mb-16 md:mb-32"><span className="iconfont icon-cc-pointer-right mr-2 text-blue-700"/><span className="text-sm text-blue-700">You will not be able to register a new account with the same email address</span></li>
     </ul>
     <Formik.CustomCheckBox onClick={() => toggleIsChecked(!isChecked)} checked={isChecked}>I understand the risk of deleting my account.</Formik.CustomCheckBox>
-    <Formik.CustomSubmitBtn onClick={handleDeleteMe} className="mt-6 text-gray-200 px-4" style={{background: "red !important"}}>Delete Me</Formik.CustomSubmitBtn>
+    <Formik.CustomSubmitBtn onClick={handleDeleteMe} className="mt-6 px-4 text-gray-100">Delete Me</Formik.CustomSubmitBtn>
     <Notification type="error"
       className={`${deleteMeWithoutChecked && "show"}`}>Please check the checkbox to proceed.
       </Notification>

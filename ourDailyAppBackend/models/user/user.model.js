@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "default.jpeg",
     },
+    theme: {
+      type: String,
+      default: "dark",
+    },
     bg: {
       type: String,
       default: "default",

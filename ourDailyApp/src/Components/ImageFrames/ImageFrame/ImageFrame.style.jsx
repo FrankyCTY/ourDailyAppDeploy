@@ -62,11 +62,11 @@ S.EditProfileText = styled.span`
 
   transition: opacity 250ms ease-in-out, transform 250ms;
 
-  color: ${(props) => props.theme.mainPage.editProfileText};
+  color: ${(props) => props.theme.general_text};
 `;
 
 S.ExtraImgSpan = styled.span`
-  color: ${(props) => props.theme.mainPage.username};
+  color: ${(props) => props.theme.general_text};
   font-size: clamp(0.8rem, 1.5vw, 1.5rem);
 `;
 

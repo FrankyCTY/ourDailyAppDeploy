@@ -8,11 +8,11 @@ import {useSelector} from "react-redux";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
-import {UploadAvatarProvider, UploadAvatarContext} from "../../../context/uploadAvatar.context";
+import {UploadImageProvider, UploadImageContext} from "../../../context/uploadAvatar.context";
 import S from "./styles/UploadAvatar.style";
 
 export default function UploadAvatar({ children, ...restProps }) {
-  return <UploadAvatarProvider><S.Container {...restProps}>{children}</S.Container></UploadAvatarProvider>;
+  return <UploadImageProvider><S.Container {...restProps}>{children}</S.Container></UploadImageProvider>;
 }
 
 UploadAvatar.Frame = function Frame({ children, ...restProps }) {
@@ -51,7 +51,7 @@ UploadAvatar.FileInputLabel = function FileInputLabel({
 };
 
 UploadAvatar.FileInput = function FileInput({ children, ...restProps }) {
-  const { onUploadImgHandler } = useContext(UploadAvatarContext);
+  const { onUploadImgHandler } = useContext(UploadImageContext);
 
   return (
     <S.FileInput {...restProps} onChange={onUploadImgHandler} name="avatar" type="file">
@@ -64,7 +64,7 @@ UploadAvatar.AvatarDisplay = function AvatarDisplay({
   children,
   ...restProps
 }) {
-  const { cropData } = useContext(UploadAvatarContext);
+  const { cropData } = useContext(UploadImageContext);
 
   return <S.AvatarDisplay {...restProps}><S.AvatarImg  src={cropData || bg}></S.AvatarImg>{children}</S.AvatarDisplay>;
 };
@@ -75,7 +75,7 @@ UploadAvatar.CropImageContainer = function CropImageContainer({
   ...restProps
 }) {
   const { setCropper, getCropData, editAvatar, isEditAvatarPopped, 
-    closeEditAvatarPopUp } = useContext(UploadAvatarContext);
+    closeEditAvatarPopUp } = useContext(UploadImageContext);
 
   return isEditAvatarPopped ? ReactDOM.createPortal(<S.CropImageFrame>
     <S.CropImageContainer>
@@ -117,7 +117,7 @@ UploadAvatar.DefaultAvatarContainer = function DefaultAvatarContainer({
 UploadAvatar.DefaultAvatarImg = function DefaultAvatarImg({
   name, ...restProps
 }) {
-  const {onClickDefaultAvatar, imgName} = useContext(UploadAvatarContext);
+  const {onClickDefaultAvatar, imgName} = useContext(UploadImageContext);
   return <S.DefaultAvatarImg active={imgName === name} name={name} onClick={onClickDefaultAvatar} {...restProps} />
 }
 
@@ -132,14 +132,14 @@ UploadAvatar.Text = function Text({ children, ...restProps }) {
 
 UploadAvatar.UploadBtn = function UploadBtn({children, ...restProps}) {
   const isUploadingAvatar = useSelector((state) => state.user.isUploadingAvatar);
-  const { onSubmit } = useContext(UploadAvatarContext);
+  const { onSubmit } = useContext(UploadImageContext);
 
   return <S.UploadBtn {...restProps} onClick={onSubmit}>{children}{isUploadingAvatar && <PixelSpinner size={1.2} animationDuration={1500}  style={{transform: "translateY(2px)"}}/>}</S.UploadBtn>
 }
 
 UploadAvatar.UploadAvatarPanel = function UploadAvatarPanel({children, ...restProps}) {
 
-  const {getRootProps, getInputProps} = useContext(UploadAvatarContext);
+  const {getRootProps, getInputProps} = useContext(UploadImageContext);
 
   return <UploadAvatar.Group style={{ placeItems: "center" }} {...getRootProps()}>
         <UploadAvatar.FileInputLabel htmlFor="avatarInput">

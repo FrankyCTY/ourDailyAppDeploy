@@ -3,7 +3,7 @@ import styled from "styled-components";
 const S = {};
 
 S.SideMenuContainer = styled.div`
-background: ${({theme}) => theme.wrapper_background};
+background: ${({theme}) => theme.secondary_bg};
 border: 1px solid ${({theme}) => theme.wrapper_border};
 border-radius: 4px;
 padding-top: 1.5rem;

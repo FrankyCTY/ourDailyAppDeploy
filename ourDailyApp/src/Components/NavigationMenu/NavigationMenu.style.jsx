@@ -6,7 +6,7 @@ import PreloadLink from "../Molecules/Links/PreloadLink/PreloadLink.component";
 const S = {};
 
 const textStyles = css`
-  color: ${(props) => props.theme.NavigationMenu.NavigationMenuText};
+  color: ${(props) => props.theme.general_text};
 `;
 
 S.NavMenuContainer = styled.div`
@@ -72,7 +72,7 @@ S.NavigationItems = styled.li`
 S.NavLink = styled(PreloadLink)`
   ${textStyles}
   &:hover {
-    color: ${(props) => props.theme.NavigationMenu.NavigationMenuText_Hover};
+    color: ${(props) => `${props.theme.NavigationMenu.Text_Hover} !important;`};
   }
 `;
 

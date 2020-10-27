@@ -28,9 +28,12 @@ const rootStyles = {
   gray5: `#2a2e35`,
   gray6: `#12181b`,
   // ========================= New colors =========================
-  primary_0: `#303030`,
-  primary_m1: `#5E5E5E`,
-  primary_old: `#F8F8F8`,
+  black_0: `#303030`,
+  black_m1: `#5E5E5E`,
+
+  white_0: `#F8F8F8`,
+  white_p2: `#ced4da`,
+
   blue_m1: `#6CA0FC`,
   blue_m2: `#0059A6`,
   blue_p2: `#849DC5`,
@@ -45,32 +48,20 @@ const rootStyles = {
   gray_0: `#CECECE`,
   gray_p1: `#E5E5E5`,
 
-  white_p2: `#ced4da`,
 
   header_clr: `#6ca0fc`,
 };
 
-export const lightTheme = {
-  body: rootStyles.primary_0,
-  // header: rootStyles.primary_0,
-  header: `rgba(0, 0, 0, 0)`,
-  header_text_current: rootStyles.primary_old,
-  headerToolTip: rootStyles.gray2,
-  text: rootStyles.gray4,
-  button: rootStyles.blue_light,
-  buttonText: rootStyles.primary_old,
-  shopNavText_Hover: rootStyles.gray2,
-  cartIcon: rootStyles.primary_old,
+export const darkTheme = {
+  body: rootStyles.black_0,
+  secondary_bg: rootStyles.black_m1,
+
   wrapper_border: rootStyles.white_p2,
-  wrapper_background: rootStyles.primary_m1,
-  general_text: rootStyles.primary_old,
+  general_text: rootStyles.white_0,
   attract_color: rootStyles.blue_m2,
+  header: `rgba(0, 0, 0, 0)`,
   mainPage: {
-    app_Hover: `rgba(222, 222, 223, 0.3)`,
-    appAccessBtnText: rootStyles.primary_old,
     spinner_mainPageAccessAppWrapper: rootStyles.blue_light,
-    username: rootStyles.primary_old,
-    editProfileText: rootStyles.primary_old,
   },
   shopNav: {
     toggler_bg: rootStyles.blue_p2,
@@ -79,48 +70,41 @@ export const lightTheme = {
     menuWrapper_bg: rootStyles.blue_p2,
   },
   appStoreCard: {
-    cardBg: rootStyles.primary_m1,
-    cardText: rootStyles.primary_old,
+    cardBg: rootStyles.black_m1,
+    cardText: rootStyles.white_0,
     cardStartBtn_bg: rootStyles.blue_m2,
     // cardLoadingContent_primary: rootStyles.gray1,
     cardLoadingContent_primary: rootStyles.gray_m2,
     // cardLoadingContent_secondary: `#d1d8e1`,
-    cardLoadingContent_secondary: rootStyles.primary_m1,
-    // cardLoadingContent_secondary: rootStyles.primary_m1,
+    cardLoadingContent_secondary: rootStyles.black_m1,
+    // cardLoadingContent_secondary: rootStyles.black_m1,
   },
   wishListCard: {
-    cardBg: rootStyles.primary_m1,
-    cardText: rootStyles.primary_old,
+    cardBg: rootStyles.black_m1,
+    cardText: rootStyles.white_0,
     cardBtn_bg: rootStyles.blue_p2,
   },
   cartPage: {
-    cartItemTitleCreatorText: rootStyles.primary_old,
     cartItemPriceText: rootStyles.red_dark,
     cartItemBtns: rootStyles.blue_dark,
     cartItemBtns_Hover: rootStyles.blue_light,
     cartWishlistBorder: `1px solid rgba(128, 128, 128, 0.13)`,
-    text: rootStyles.primary_old,
-  },
-  wishListPage: {
-    emptyWishList_text: rootStyles.primary_old,
   },
   NavigationMenu: {
     NavigationMenuBg: `rgba(0, 0, 0, 0.8)`,
-    NavigationMenuText: rootStyles.primary_old,
-    NavigationMenuText_Hover: rootStyles.gray_m2,
+    Text_Hover: rootStyles.gray_m2,
   },
   RouteBlock: {
     currentRouteText: rootStyles.gray_0,
     prevRouteText: rootStyles.gray_m1,
   },
   appDetailPage: {
-    featureList: rootStyles.primary_old,
     preloader_primary: rootStyles.gray_m2,
     preloader_secondary: rootStyles.gray6,
     btn_font_clr: "white",
     heartIcon: "white",
     heartIcon_active: "red",
-    text: rootStyles.primary_old,
+    text: rootStyles.white_0,
     addToCartBtn_bg: rootStyles.blue_m2,
     addToWishListBtn_bg: rootStyles.pink_light,
   },
@@ -140,29 +124,29 @@ export const lightTheme = {
     PlayerLogInBtn_secondary: "white",
   },
   SignUpPage: {
-    SignUpTitle: rootStyles.primary_old,
-    OrSepereateLine: rootStyles.primary_old,
+    SignUpTitle: rootStyles.white_0,
+    OrSepereateLine: rootStyles.white_0,
     genderRadiusBtn_hover: rootStyles.blue_m2,
   },
   AuthPage: {
-    ToSignUpPageBtn: rootStyles.primary_old,
-    ToLogInPageBtn: rootStyles.primary_old,
+    ToSignUpPageBtn: rootStyles.white_0,
+    ToLogInPageBtn: rootStyles.white_0,
   },
   LogInForm: {
     logInBtn_bg: rootStyles.blue_m2,
-    logInBtn_text: rootStyles.primary_old,
-    toCreateAccountLink: rootStyles.primary_old,
+    logInBtn_text: rootStyles.white_0,
+    toCreateAccountLink: rootStyles.white_0,
   },
   SignUpForm: {
     SignUpButton_bg: `rgba(0, 0, 0, 0)`,
-    SignUpButton_border: rootStyles.primary_old,
-    SignUpButton_text: rootStyles.primary_old,
+    SignUpButton_border: rootStyles.white_0,
+    SignUpButton_text: rootStyles.white_0,
   },
   FormInput: {
-    text: rootStyles.primary_old,
-    placeHolder: rootStyles.primary_old,
-    svg: rootStyles.primary_old,
-    forgotPassBtn_text: rootStyles.primary_old,
+    text: rootStyles.white_0,
+    placeHolder: rootStyles.white_0,
+    svg: rootStyles.white_0,
+    forgotPassBtn_text: rootStyles.white_0,
     alert_bg: rootStyles.red_0,
     alert_border: "red",
   },
@@ -175,21 +159,21 @@ export const lightTheme = {
     appleBtn_text: "white",
   },
   SocialContactPair: {
-    svg: rootStyles.primary_old,
-    text: rootStyles.primary_old,
+    svg: rootStyles.white_0,
+    text: rootStyles.white_0,
   },
   Notification: {
-    floatContainer_bg: rootStyles.primary_m1,
-    errorText: rootStyles.primary_old,
+    floatContainer_bg: rootStyles.black_m1,
+    errorText: rootStyles.white_0,
     errorIcon: rootStyles.orange_dark,
     successIcon: rootStyles.blue_m1,
   },
   Formik: {
     text_color: rootStyles.gray_m1,
-    label_color: rootStyles.primary_old,
+    label_color: rootStyles.white_0,
   },
   ToolBar: {
-    bg: rootStyles.primary_m1,
+    bg: rootStyles.black_m1,
     icon_color: rootStyles.gray_m1,
   },
   SideMenu: {
@@ -197,8 +181,141 @@ export const lightTheme = {
   },
   WholePageLoader: {
     bg: "rgba(48, 48, 48, 0.8)",
-    color: rootStyles.primary_old,
+    color: rootStyles.white_0,
   }
 };
 
-export const darkTheme = {};
+export const lightTheme = {
+  body: rootStyles.white_p2,
+  secondary_bg: rootStyles.white_0,
+
+  wrapper_border: rootStyles.black_m1,
+  general_text: rootStyles.black_0,
+  attract_color: rootStyles.blue_m2,
+  header: `rgba(0, 0, 0, 0)`,
+  mainPage: {
+    spinner_mainPageAccessAppWrapper: rootStyles.blue_light,
+  },
+  shopNav: {
+    toggler_bg: rootStyles.blue_p2,
+    toggler_bg_hover: rootStyles.blue_p1,
+    shopNavText_Hover: rootStyles.gray2,
+    menuWrapper_bg: rootStyles.blue_p2,
+  },
+  appStoreCard: {
+    cardBg: rootStyles.white_0,
+    cardText: rootStyles.black_m1,
+    cardStartBtn_bg: rootStyles.blue_m2,
+    // cardLoadingContent_primary: rootStyles.gray1,
+    cardLoadingContent_primary: rootStyles.gray_m2,
+    // cardLoadingContent_secondary: `#d1d8e1`,
+    cardLoadingContent_secondary: rootStyles.white_0,
+    // cardLoadingContent_secondary: rootStyles.black_m1,
+  },
+  wishListCard: {
+    cardBg: rootStyles.white_0,
+    cardText: rootStyles.black_m1,
+    cardBtn_bg: rootStyles.blue_p2,
+  },
+  cartPage: {
+    cartItemPriceText: rootStyles.red_dark,
+    cartItemBtns: rootStyles.blue_dark,
+    cartItemBtns_Hover: rootStyles.blue_light,
+    cartWishlistBorder: `1px solid rgba(128, 128, 128, 0.13)`,
+  },
+  NavigationMenu: {
+    NavigationMenuBg: `rgba(255, 255, 255, 0.8)`,
+    Text_Hover: rootStyles.gray_m2,
+  },
+  RouteBlock: {
+    currentRouteText: rootStyles.black_0,
+    prevRouteText: rootStyles.black_m1,
+  },
+  appDetailPage: {
+    preloader_primary: rootStyles.gray_m2,
+    preloader_secondary: rootStyles.gray6,
+    btn_font_clr: "white",
+    heartIcon: "white",
+    heartIcon_active: "red",
+    text: rootStyles.black_m1,
+    addToCartBtn_bg: rootStyles.blue_m2,
+    addToWishListBtn_bg: rootStyles.pink_light,
+  },
+  commentsConverterPage: {
+    title: rootStyles.blue,
+    btnExample: rootStyles.blue,
+  },
+  pigGamePage: {
+    panel_bg: "white",
+    targetInput_border: rootStyles.header_clr,
+    activePanel_bg: rootStyles.gray0,
+    dot_color: `#eb4d4d`,
+    current_container: `#eb4d4d`,
+    totalScore: `#eb4d4d`,
+    preloader_bg: rootStyles.header_clr,
+    playerLogInBtn_primary: `#eb4d4d`,
+    PlayerLogInBtn_secondary: "white",
+  },
+  SignUpPage: {
+    SignUpTitle: rootStyles.black_m1,
+    OrSepereateLine: rootStyles.black_m1,
+    genderRadiusBtn_hover: rootStyles.blue_m2,
+  },
+  AuthPage: {
+    ToSignUpPageBtn: rootStyles.white_0,
+    ToLogInPageBtn: rootStyles.white_0,
+  },
+  LogInForm: {
+    logInBtn_bg: rootStyles.blue_m2,
+    logInBtn_text: rootStyles.white_0,
+    toCreateAccountLink: rootStyles.white_0,
+  },
+  SignUpForm: {
+    SignUpButton_bg: `rgba(0, 0, 0, 0)`,
+    SignUpButton_border: rootStyles.white_0,
+    SignUpButton_text: rootStyles.white_0,
+  },
+  FormInput: {
+    text: rootStyles.white_0,
+    placeHolder: rootStyles.white_0,
+    svg: rootStyles.white_0,
+    forgotPassBtn_text: rootStyles.white_0,
+    alert_bg: rootStyles.red_0,
+    alert_border: "red",
+  },
+  OauthBtns: {
+    googleBtn_bg: "white",
+    facebookBtn_bg: rootStyles.blue_facebook,
+    appleBtn_bg: "black",
+    googleBtn_text: "black",
+    facebookBtn_text: "white",
+    appleBtn_text: "white",
+  },
+  SocialContactPair: {
+    svg: rootStyles.white_0,
+    text: rootStyles.white_0,
+  },
+  Notification: {
+    floatContainer_bg: rootStyles.white_0,
+    errorText: rootStyles.black_m1,
+    errorIcon: rootStyles.orange_dark,
+    successIcon: rootStyles.blue_m1,
+  },
+  // black_0   white_p2
+  // black_m1  white_0
+  Formik: {
+    text_color: rootStyles.gray_m1,
+    label_color: rootStyles.black_m1,
+  },
+  ToolBar: {
+    bg: rootStyles.white_0,
+    icon_color: rootStyles.gray_m1,
+  },
+  SideMenu: {
+    hover_item_bg: rootStyles.gray_m2,
+  },
+  WholePageLoader: {
+    bg: "rgba(48, 48, 48, 0.8)",
+    color: rootStyles.black_m1,
+  }
+};

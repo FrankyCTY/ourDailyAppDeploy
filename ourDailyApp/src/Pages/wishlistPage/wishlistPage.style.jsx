@@ -73,7 +73,7 @@ S.EmptyWishlistContainer = styled.div`
   display: grid;
   place-content: center;
   align-items: center;
-  color: ${(props) => props.theme.wishListPage.emptyWishList_text};
+  color: ${(props) => props.theme.general_text};
   .icon-Empty {
     font-size: clamp(2rem, 4vw, 4rem);
   }

@@ -7,7 +7,6 @@ import {useSelector} from "react-redux";
 import PropTypes from "prop-types";
 
 const MainPageAccessAppBtn = ({ app, index }) => {
-  const backgroundLuminosity = useSelector(state => state.theme.backgroundLuminosity);
  
 
   const { name, route, imageUrl, border } = app;
@@ -20,10 +19,9 @@ const MainPageAccessAppBtn = ({ app, index }) => {
         <S.Image
           src={`${imageUrl}.jpeg`}
           loading="lazy"
-          backgroundLuminosity={backgroundLuminosity}
           className={`${border ? "border" : ""}`}
         />
-        <S.AppLinkText backgroundLuminosity={backgroundLuminosity} className="link-text">{name}</S.AppLinkText>
+        <S.AppLinkText className="link-text">{name}</S.AppLinkText>
       </S.ApplicationItemContainer>
     </Link>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import PixelSpinner from "../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import {Formik, UploadAvatar, Notification} from "../Components/Compound Components";
-import {UploadAvatarProvider} from "../context/uploadAvatar.context";
+import {UploadImageProvider} from "../context/uploadAvatar.context";
 import {useSelector} from "react-redux";
 // import {useFormik} from "formik";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
@@ -12,7 +12,7 @@ const ProfileFormContainer = () => {
     const { profileDetails, handleInputChange, handleDateChange, userAvatar, isDOBvalid } = useProfileForm();
     const {name, email, birthday, bio, gender, personalWebsite} = profileDetails;
 
-    return <UploadAvatarProvider>
+    return <UploadImageProvider>
         <Formik className="md:grid md:grid-cols-2 md:grid-gap md:gap-x-8">
                 <Formik.AvatarContainer src={_arrayBufferToBase64(userAvatar)} 
                 className="mx-auto md:col-span-2 md:mb-12"/>
@@ -77,7 +77,7 @@ const ProfileFormContainer = () => {
         </Formik>
         <UploadAvatar.CropImageContainer/>
         <Notification className={`${!isDOBvalid && "show"}`} type="error" >Please check your birthday year.</Notification>
-        </UploadAvatarProvider>
+        </UploadImageProvider>
         
 }
 

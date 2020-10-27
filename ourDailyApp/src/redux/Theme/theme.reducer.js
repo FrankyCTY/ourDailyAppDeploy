@@ -3,6 +3,7 @@ import ThemeActionTypes from "./theme.types";
 const INITIATE_STATE = {
     backgroundLuminosity: "",
     background: "default",
+    theme: "dark",
   };
   
   const themeReducer = (state = INITIATE_STATE, action) => {
@@ -16,6 +17,11 @@ const INITIATE_STATE = {
         return {
           ...state,
           background: action.bg,
+        }
+      case ThemeActionTypes.SET_THEME:
+        return {
+          ...state,
+          theme: action.theme,
         }
       default:
         return state;

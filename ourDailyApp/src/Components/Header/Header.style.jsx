@@ -8,16 +8,8 @@ import { rgba } from "polished";
 const S = {};
 
 const iconStyles = css`
-${({theme, backgroundluminosity}) => {
-  if (backgroundluminosity === 0)
-  {
-    return `color: ${theme.cartIcon}; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
-  }
-  if(backgroundluminosity <= 0.4) {
-    return `color: white; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
-  } else if (backgroundluminosity > 0.4) {
-    return `color: black; text-shadow: 2px 2px 10px rgba(255, 255, 255, 1);`;
-  } 
+${({theme}) => {
+  return `color: ${theme.general_text}; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
 }}
 opacity: 0.8;
 font-size: 1.4rem;
@@ -48,19 +40,9 @@ S.HeaderNavContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // padding: 0 2vw;
-  // border-bottom: 1px solid white;
 
-  ${({backgroundluminosity}) => {
-    if (backgroundluminosity === 0)
-    {
-      return `border-bottom: 1px solid white;`;
-    }
-    if(backgroundluminosity <= 0.4) {
-      return `border-bottom: 1px solid white;`;
-    } else if (backgroundluminosity > 0.4) {
-      return `border-bottom: 1px solid black;`;
-    } 
+  ${({theme}) => {
+      return `border-bottom: 1px solid ${theme.general_text};`;
   }}
 `;
 
@@ -141,18 +123,10 @@ S.NavIconContainer = styled.div`
 `;
 
 S.NavIcon = styled(NavIcon)`
-  /* fill: var(--gray1); */
-  ${({backgroundluminosity}) => {
-    if (backgroundluminosity === 0)
-    {
-      return `fill: white;`;
-    }
-    if(backgroundluminosity <= 0.4) {
-      return `fill: white;`;
-    } else if (backgroundluminosity > 0.4) {
-      return `fill: black;`;
-    } 
-  }}
+${({theme}) => {
+  return `fill: ${theme.general_text};`
+}}
+
 `;
 
 S.LogoutBtnContainer = styled.div``;
@@ -161,8 +135,8 @@ S.LogoutIcon = styled.i`
 ${iconStyles}`;
 
 // ============================= ToolTips =========================
-S.LanguageToolTip = styled(ReactToolTip)`
-  background: var(--gray4) !important;
-`;
+// S.LanguageToolTip = styled(ReactToolTip)`
+//   background: var(--gray4) !important;
+// `;
 
 export default S;

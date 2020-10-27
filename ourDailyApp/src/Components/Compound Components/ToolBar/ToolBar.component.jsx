@@ -1,7 +1,7 @@
 import React from "react";
 import S from "./styles/ToolBar.style";
 
-export default function ToolBar({children, ...restProps}) {
+export default function ToolBar({shouldExpand, children, ...restProps}) {
     return <S.ToolBarContainer {...restProps}>{children}</S.ToolBarContainer>
 }
 

@@ -9,11 +9,15 @@ export function* populatePexelPhotos(pexelPhotos) {
             const oriUrlqueryStartIndex = oriUrl.lastIndexOf("?");
             const srcUrl = oriUrl.substring(0, oriUrlqueryStartIndex + 1) + "auto=compress&cs=tinysrgb&h=1800&w=3060";
 
+            // get photographer name
+            const photographer = photo.photographer;
+
             console.log({srcUrl})
 
             photoObj.previewUrl = photo.src.medium;
             // get preview src url (biggest size)
             photoObj.srcUrl = srcUrl;
+            photoObj.photographer = photographer;
 
             photoArray.push(photoObj);
         })
