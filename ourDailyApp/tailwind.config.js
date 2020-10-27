@@ -300,6 +300,7 @@ module.exports = {
     inset: {
       '0': '0',
       auto: 'auto',
+      '18%': '18%',
       '22%': '22%',
     },
     letterSpacing: {

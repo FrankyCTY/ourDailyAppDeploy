@@ -7,6 +7,7 @@ import pigGameSaga from "./pigGame/pigGame.sagas";
 import pigGamePlayer2Saga from "./pigGamePlayer2/pigGamePlayer2.sagas";
 import cartSaga from "./cart/cart.sagas";
 import gallerySaga from "./Gallery/gallery.sagas";
+import themeSaga from "./Theme/theme.sagas";
 
 export default function* rootSaga() {
   yield all([
@@ -17,5 +18,6 @@ export default function* rootSaga() {
     call(pigGamePlayer2Saga),
     call(cartSaga),
     call(gallerySaga),
+    call(themeSaga),
   ]);
 }

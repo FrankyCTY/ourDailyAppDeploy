@@ -1,8 +1,8 @@
 import React from "react";
 import S from "./styles/floatButton.style";
 
-export default function FloatBtn({ children, ...otherProps }) {
-    return <S.FloatBtnWrapper {...otherProps}>{children}</S.FloatBtnWrapper>;
+export default function FloatBtn({ bottom, children, ...otherProps }) {
+    return <S.FloatBtnWrapper bottom={bottom} {...otherProps}>{children}</S.FloatBtnWrapper>;
 }
 
 FloatBtn.FloatButton = function FloatButton({ children, ...otherProps }) {

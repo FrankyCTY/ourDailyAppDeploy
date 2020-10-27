@@ -14,3 +14,8 @@ export const setTheme = (theme) => ({
   type: ThemeActionTypes.SET_THEME,
   theme,
 })
+
+export const setThemeStart = (theme) => ({
+  type: ThemeActionTypes.SET_THEME_START,
+  theme,
+})

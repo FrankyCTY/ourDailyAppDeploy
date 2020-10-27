@@ -57,6 +57,18 @@ exports.getUserBg = withCatchErrAsync(async(req, res, next) => {
   })
 })
 
+exports.changeUserTheme = withCatchErrAsync(async(req, res, next) => {
+  const {id} = req.user;
+  const {theme} = req.body;
+
+  const updatedUserDoc = await User.findByIdAndUpdate(id, {theme}, {new: true});
+
+  return res.status(200).json({
+    status: "success",
+    theme: updatedUserDoc.theme,
+  })
+})
+
 exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
   const {bgUrl} = req.body;
   const {id} = req.user;

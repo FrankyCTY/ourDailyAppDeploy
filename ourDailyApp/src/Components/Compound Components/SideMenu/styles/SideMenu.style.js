@@ -23,6 +23,11 @@ transition: background 250ms ease-in-out;
 
 &.active {
     background: ${({theme}) => theme.attract_color};
+
+    & span,
+    & p {
+        color: white;
+    }
 }
 `;
 

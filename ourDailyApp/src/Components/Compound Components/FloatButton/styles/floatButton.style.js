@@ -5,7 +5,14 @@ const S = {};
 S.FloatBtnWrapper = styled.div`  
 position: fixed;
 
-bottom: 22%;
+bottom: ${({bottom}) => {
+  if(bottom) {
+    return `${bottom};`;
+  }
+  else {
+    return "22%;";
+  }
+}}
 right: 12vw;
 z-index: 4;
 

@@ -12,7 +12,7 @@ import { createStructuredSelector } from "reselect";
 
 const Header = ({cartItemsQuantity}) => {
   const navHidden = useSelector((state) => state.nav.hidden);
-  const backgroundLuminosity = useSelector(state => state.theme.backgroundLuminosity);
+  const theme = useSelector(state => state.theme_P.theme);
   // const cartItemsQuantity = useSelector((state) => state.cart_P.cartItems, shallowEqual).length;
 
   const dispatch = useDispatch();
@@ -21,12 +21,12 @@ const Header = ({cartItemsQuantity}) => {
 
   return (
     <S.HeaderContainer className="header">
-      <S.HeaderNavContainer backgroundluminosity={backgroundLuminosity}>
+      <S.HeaderNavContainer>
         {/* ====================== Logo ====================== */}
         <S.LogoWrapper>
           <img
             className="logo"
-            src={"/images/assets/logo_white_small.png"}
+            src={`${theme === "dark" ? "/images/assets/logo_white_small.png" : "/images/assets/logo_small.png"}`}
             alt=""
             role="presentation"
             onClick={() => {
@@ -47,7 +47,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(closeNav());
             }}
           >
-            <S.CartIcon backgroundluminosity={backgroundLuminosity} className="iconfont icon-cart1"></S.CartIcon>
+            <S.CartIcon className="iconfont icon-cart1"></S.CartIcon>
             {/* ====================== Cart Icon -- > 1 notification ====================== */}
             {cartItemsQuantity !== 0 && (
               <S.CartItemsQuantityContainer className="cartItems-quantity-container">
@@ -67,7 +67,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(toggleNavHidden());
             }}
           >
-            <S.NavIcon backgroundluminosity={backgroundLuminosity} className="svg" />
+            <S.NavIcon className="svg" />
           </S.NavIconContainer>
 
           {/* ====================== Logout btn ====================== */}
@@ -76,7 +76,7 @@ const Header = ({cartItemsQuantity}) => {
               dispatch(closeNav());
               dispatch(signOutStart());
             }}>
-              <S.LogoutIcon backgroundluminosity={backgroundLuminosity} className="iconfont icon-log-out"></S.LogoutIcon>
+              <S.LogoutIcon className="iconfont icon-log-out"></S.LogoutIcon>
             </S.LogoutBtnContainer>
 
         </S.NavListContainer>

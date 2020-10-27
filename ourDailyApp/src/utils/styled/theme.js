@@ -31,7 +31,9 @@ const rootStyles = {
   black_0: `#303030`,
   black_m1: `#5E5E5E`,
 
+  white_m1: "white",
   white_0: `#F8F8F8`,
+  white_p1: `#f8f9fc`,
   white_p2: `#ced4da`,
 
   blue_m1: `#6CA0FC`,
@@ -186,8 +188,8 @@ export const darkTheme = {
 };
 
 export const lightTheme = {
-  body: rootStyles.white_p2,
-  secondary_bg: rootStyles.white_0,
+  body: rootStyles.white_p1,
+  secondary_bg: rootStyles.white_m1,
 
   wrapper_border: rootStyles.black_m1,
   general_text: rootStyles.black_0,
@@ -203,17 +205,17 @@ export const lightTheme = {
     menuWrapper_bg: rootStyles.blue_p2,
   },
   appStoreCard: {
-    cardBg: rootStyles.white_0,
+    cardBg: rootStyles.white_m1,
     cardText: rootStyles.black_m1,
     cardStartBtn_bg: rootStyles.blue_m2,
     // cardLoadingContent_primary: rootStyles.gray1,
     cardLoadingContent_primary: rootStyles.gray_m2,
     // cardLoadingContent_secondary: `#d1d8e1`,
-    cardLoadingContent_secondary: rootStyles.white_0,
+    cardLoadingContent_secondary: rootStyles.white_m1,
     // cardLoadingContent_secondary: rootStyles.black_m1,
   },
   wishListCard: {
-    cardBg: rootStyles.white_0,
+    cardBg: rootStyles.white_m1,
     cardText: rootStyles.black_m1,
     cardBtn_bg: rootStyles.blue_p2,
   },
@@ -296,7 +298,7 @@ export const lightTheme = {
     text: rootStyles.white_0,
   },
   Notification: {
-    floatContainer_bg: rootStyles.white_0,
+    floatContainer_bg: rootStyles.white_m1,
     errorText: rootStyles.black_m1,
     errorIcon: rootStyles.orange_dark,
     successIcon: rootStyles.blue_m1,

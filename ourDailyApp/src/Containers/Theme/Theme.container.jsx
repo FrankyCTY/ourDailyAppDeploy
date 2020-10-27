@@ -1,18 +1,10 @@
 import React from "react";
 import S from "./Theme.style";
-import {FormGroup, FormControlLabel, Switch} from "@material-ui/core";
-import {useSelector, useDispatch} from "react-redux";
-
-import {setTheme} from "../../redux/Theme/theme.actions";
+import {FormGroup, Switch} from "@material-ui/core";
+import useTheme from "../../hooks/useTheme.hooks";
 
 const ThemeContainer = () => {
-
-    const dispatch = useDispatch();
-    const theme = useSelector(state => state.theme_P.theme);
-
-    const onThemeChange = () => {
-        theme === "dark" ? dispatch(setTheme("light")) : dispatch(setTheme("dark"));
-    }
+    const {theme, onThemeChange} = useTheme();
 
     return <FormGroup>
         <S.FormControlLabel

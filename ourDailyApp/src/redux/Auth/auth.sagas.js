@@ -11,7 +11,6 @@ import {
   setIsLoggedTrue,
   setUserDetails,
   setUserAvatar,
-  setUserBackground,
   signOut,
 } from "./auth.actions";
 
@@ -23,13 +22,14 @@ import {
 } from "../signUpForm/signUpform.actions";
 
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
-import b64toBlob from "../../utils/b64toBlob";
-
+import {setTheme} from "../Theme/theme.actions";
 import {setIsLoggingInTRUE, setIsLoggingInFALSE} from "../logInForm/logInForm.actions";
 
 import globalErrHandler from "../../utils/globalErrHandler";
 
 import { signUpUser, checkAuthInfoFromDB, logInUser, getAvatar, signOutAndCleanCookie } from "./auth.requests";
+
+import {populateUserData} from "./auth.sagaUtils";
 
 // ================= Sagas ==================
 function* onGoogleAuthorizationSuccess() {
@@ -116,10 +116,8 @@ function* signInWithEmail({ logInDetails }) {
     // 1) Log in user
     const response = yield call(logInUser, logInDetails);
     console.log({response});
-    yield put(setUserDetails(response.data.data.user));
-    // 2) get avatar image from s3 via backend
-    const avatarBuffer = response.data.data.avatar.data;
-    yield put(setUserAvatar(avatarBuffer));
+    // 2) Populate user data
+    yield call(populateUserData, response);
     
     yield put(signInSuccess());
     // Stop spinner

@@ -91,7 +91,7 @@ background: ${({backgroundColor}) => {
         return "#35569A;";
     }
 }}
-color: ${({theme}) => theme.general_text};
+color: white;
 position: absolute;
 bottom: 0;
 left: 0;

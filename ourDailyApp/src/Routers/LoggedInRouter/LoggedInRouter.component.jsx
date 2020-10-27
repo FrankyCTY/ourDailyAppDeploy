@@ -4,11 +4,11 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SettingsPage from "../../Pages/SettingsPage/Settings.page";
 import CommentsConverterPage from "../../Pages/CommentsConverterPage/CommentsConverterPage.component";
 import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserActions from "../../redux/User/user.actions";
 import {getAppsInCartStart, getAppsInWishlistStart} from "../../redux/cart/cart.actions";
 
-import {  ProtectedRoute } from "../../helpers/routes.helper";
+import {ProtectedRoute } from "../../helpers/routes.helper";
 import componentWithPreload from "../../utils/lazyLoading/componentWithPreload";
 import NavUIComponents from "../../Components/NavUIComponents/NavUIComponents.component";
 
@@ -25,7 +25,6 @@ export const routes = [
       component: ShopRouter,
     },
   ];
-
 
 const LoggedInRouter = () => {
 

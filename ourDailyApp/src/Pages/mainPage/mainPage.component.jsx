@@ -3,29 +3,23 @@ import S from "./mainPage.style";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAccessAppBtnsStart } from "../../redux/app/app.actions";
-import {setBackgroundLuminosity} from "../../redux/Theme/theme.actions";
-import UserActions from "../../redux/User/user.actions";
+import useTheme from "../../hooks/useTheme.hooks";
 import useRouter from "../../hooks/useRouter.hooks";
 
 import MainPageAccessAppWrapper from "../../Components/MainPageAccessAppWrapper/MainPageAccessAppWrapper.component";
 import ImageFrame from "../../Components/ImageFrames/ImageFrame/ImageFrame.component";
+import {FloatBtn} from "../../Components/Compound Components";
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
 
 const MainPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { onThemeChange} = useTheme();
 
 
   const userDetails = useSelector((state) => state.auth_P.user);
   const userAvatar = useSelector(state => state.auth_P.userAvatar);
   const userBg = useSelector(state => state.theme.background);
-  // const userBg = useSelector(state => state.auth_P.userBg);
-  // const [userBg, setUserBg] = useState("default");
-  // const backgroundLuminosity = useSelector(state => state.theme.backgroundLuminosity);
-  const backgroundLuminosity = "";
-  
-  
-
   // ============= Life Cycle Hooks =============
 
   useEffect(() => {
@@ -37,21 +31,22 @@ const MainPage = () => {
     <>
     <S.MainPageContainer className="MainPage gs-page">
       <S.ImageFrameWrapper>
-        <ImageFrame backgroundluminosity={backgroundLuminosity} src={_arrayBufferToBase64(userAvatar)} halo={true} withExtraText={true}
+        <ImageFrame src={_arrayBufferToBase64(userAvatar)} halo={true} withExtraText={true}
         onClick={() => {router.push("/settings")}}
         >
-          <S.Username backgroundluminosity={backgroundLuminosity}>{userDetails.name}</S.Username>
+          <S.Username>{userDetails.name}</S.Username>
         </ImageFrame>
       </S.ImageFrameWrapper>
       <S.AccessAppBtnWrapper>
         <MainPageAccessAppWrapper />
       </S.AccessAppBtnWrapper>
     </S.MainPageContainer>
-    {/* <S.CustomizedBg>
-      <img alt="background-img" className="user-background" src={`${_arrayBufferToBase64(userBg)}`}/>      
-    </S.CustomizedBg> */}
-    {/* {<S.CustomizedBg style={{background: `url(${_arrayBufferToBase64(userBg)})`}}></S.CustomizedBg>} */}
     {<S.CustomizedBg background={`url(${_arrayBufferToBase64(userBg)})`}></S.CustomizedBg>}
+    <FloatBtn className="bottom-22% xl:bottom-18%">
+      <FloatBtn.FloatButton bg={"#0059A6"} onClick={onThemeChange}>
+          <FloatBtn.BtnIcon className="iconfont icon-DarkTheme"/>
+      </FloatBtn.FloatButton>
+    </FloatBtn>
   </>
   );
 };
