@@ -182,7 +182,8 @@ export const darkTheme = {
     hover_item_bg: rootStyles.gray_m2,
   },
   WholePageLoader: {
-    bg: "rgba(48, 48, 48, 0.8)",
+    // bg: "rgba(48, 48, 48, 0.8)",
+    bg: `rgba(0, 0, 0, 0.8)`,
     color: rootStyles.white_0,
   }
 };
@@ -317,7 +318,7 @@ export const lightTheme = {
     hover_item_bg: rootStyles.gray_m2,
   },
   WholePageLoader: {
-    bg: "rgba(48, 48, 48, 0.8)",
+    bg: `rgba(255, 255, 255, 0.8)`,
     color: rootStyles.black_m1,
   }
 };

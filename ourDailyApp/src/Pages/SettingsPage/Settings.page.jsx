@@ -119,10 +119,12 @@ const DeleteMeForm = () => {
 
   const isDeletingMe = useSelector(state => state.user.isDeletingMe);
   const wholePageLoaderBigText = useSelector(state => state.wholePageLoader.bigText);
-
   const [isChecked, toggleIsChecked] = useState(false);
   const [deleteMeWithoutChecked, setDeleteMeWithoutChecked] = useState(false);
+  const theme = useSelector(state => state.theme.theme);
   const dispatch = useDispatch();
+
+  const spinnerColor = theme === "dark" ? "#F8F8F8" : "#303030";
 
   const handleDeleteMe = () => {
     // Start Deleting User only if checkbox is checked
@@ -152,7 +154,7 @@ const DeleteMeForm = () => {
     {/* Delete Me Process Loader */}
     <CSSTransition in={isDeletingMe} timeout={250} classNames="loader-primary" unmountOnExit>
       <div className="loader">
-        <WholePageLoader.DefaultLoader size={5} animationDuration={1000}>{wholePageLoaderBigText}</WholePageLoader.DefaultLoader>
+        <WholePageLoader.DefaultLoader spinnerColor={spinnerColor} size={5} animationDuration={1000}>{wholePageLoaderBigText}</WholePageLoader.DefaultLoader>
       </div>
     </CSSTransition>
     </div>

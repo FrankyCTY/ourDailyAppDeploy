@@ -118,22 +118,6 @@ exports.logIn = withCatchErrAsync(async (req, res, next) => {
   // console.log({base64: bufferToBase64(userAvatar)})
   otherData.avatar = userAvatar;
 
-  // 5) Get user background
-  // Check if background is url or is a beffer that needed to get from S3
-  // if(user.bg === "default") {
-  //   otherData.background = "default";
-  // }
-  // else if(user.bg.startsWith("https")) {
-  //   otherData.background = user.bg;
-  // } else {
-  //   const userBg = await authUtils.getUserBackground(user.bg);
-  //   // userBg: {type, buffer}, we only need buffer from S3
-  //   console.log({userBg})
-  //   // console.log({userAvatar})
-  //   otherData.background = userBg;
-  // }
-  // console.log({otherData})
-
   // 6) If everything goes fine, send token to client
   return authUtils.createSendToken(user, 200, res, otherData);
 });

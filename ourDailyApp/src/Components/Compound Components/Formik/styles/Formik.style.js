@@ -47,7 +47,7 @@ position: relative;
     background: ${({theme}) => theme.secondary_bg};
 }
 .react-datepicker__day {
-    color: white !important;
+    color: ${({theme}) => `${theme.Formik.text_color} !important`};
     &:hover {
         background: 0;
         outline: 1px solid #0059A6;
@@ -56,7 +56,7 @@ position: relative;
 
 .react-datepicker__day-name,
 .react-datepicker__current-month {
-    color: white !important;
+    color: ${({theme}) => `${theme.Formik.text_color} !important`};
 }
 `;
 
@@ -121,7 +121,7 @@ S.CustomCheckBox = styled.span`
         transition: transform 0.1s ease-in 25ms;
         transform: scale(0);
         transform-origin: bottom left;
-        color: white;
+        color: ${({theme}) => theme.general_text};
         transform: ${({checked}) => {
             if(checked) {
                 return "scale(1);";

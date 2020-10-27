@@ -17,10 +17,10 @@ WholePageLoader.Group = function Group({children, ...restProps}) {
 
 
 // Loader Sets
-WholePageLoader.DefaultLoader = function DefaultLoader({size, animationDuration, children, ...restProps}) {
+WholePageLoader.DefaultLoader = function DefaultLoader({spinnerColor, size, animationDuration, children, ...restProps}) {
     return <S.WholePageLoaderContainer {...restProps}>
         <S.Group>
-            <PixelSpinner className="mb-6 lg:mb-16 lg:text-2xl" size={size} animationDuration={animationDuration}/>
+            <PixelSpinner className="mb-6 lg:mb-16 lg:text-2xl" color={spinnerColor} size={size} animationDuration={animationDuration}/>
             <S.BigText>{children}</S.BigText>
         </S.Group>
     </S.WholePageLoaderContainer>
