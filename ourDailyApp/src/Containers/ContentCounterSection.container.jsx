@@ -20,6 +20,7 @@ export default function CounterCounterSection() {
         padding: "106px 25px 90px",
         overflow: "hidden",
         position: "relative",
+        background: "#303030",
       }}
       ref={setNode}
     >

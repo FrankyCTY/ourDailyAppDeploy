@@ -33,7 +33,7 @@ const HomeHeader = () => {
                     color: "#849DC5",
                   }}
                 >
-                  home22
+                  home
                 </Header.ToSectionSpan>
                 <Header.ToSectionSpan
                   onClick={() => {

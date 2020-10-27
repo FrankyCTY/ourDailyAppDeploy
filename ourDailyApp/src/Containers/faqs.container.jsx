@@ -9,7 +9,7 @@ const FaqsContainer = () => {
   const [setNode, startAnimate] = useOnScreen({ threshold: [0.2, 0.8] });
 
   return (
-    <div style={{ position: "relative", padding: "0 0 90px" }} ref={setNode}>
+    <div style={{ position: "relative", padding: "0 0 90px", background: "#303030",}} ref={setNode}>
       <Accordion>
         <Accordion.Title
           startAnimate={startAnimate}
