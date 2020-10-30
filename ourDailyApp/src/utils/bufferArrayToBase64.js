@@ -1,6 +1,6 @@
 function _arrayBufferToBase64( buffer ) {
     // if img is default
-    if(buffer === "default" || buffer === undefined) return buffer;
+    if(buffer === "default" || !buffer) return buffer;
 
     // 1) Check if the source if actually buffer
     if(buffer.toString().startsWith("http")) {
@@ -13,7 +13,7 @@ function _arrayBufferToBase64( buffer ) {
     var bytes = new Uint8Array( buffer );
     var len = bytes.byteLength;
     for (var i = 0; i < len; i++) {
-       binary += String.fromCharCode( bytes[ i ] );
+      binary += String.fromCharCode( bytes[ i ] );
     }
     const base64 =  window.btoa( binary );
 

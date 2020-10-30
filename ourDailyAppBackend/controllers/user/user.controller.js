@@ -7,7 +7,6 @@ const { filterObj, upload, uploadAvatarToS3, uploadBgToS3 } = require("./user.ut
 const Sharp = require("../../helpers/Sharp");
 const sharp = require("sharp");
 const factory = require("../controllerFactory");
-const authUtils = require("../auth/auth.utils");
 const UserService = require("../../services/User.service");
 const AuthService = require("../../services/Auth.service");
 
@@ -236,9 +235,16 @@ exports.changePassword = withCatchErrAsync(async(req, res, next) => {
   await userDoc.save();
 
   // 3) update user jwt
-  const {user, token, cookieOptions} = await authService.createSendToken(userDoc);
-  
+  const {token, cookieOptions} = authService.createSendToken(userDoc);
+  res.cookie("jwt", token, cookieOptions);
 
+  return res.status(200).json({
+    status: "success",
+    token,
+    data: {
+      user: userDoc,
+    },
+  }); 
 })
 
 

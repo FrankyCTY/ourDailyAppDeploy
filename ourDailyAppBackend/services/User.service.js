@@ -85,7 +85,7 @@ class UserService {
     return updatedUser;
   }
 
-  resetPassword = async(token) => {
+  checkMatchedUserToResetPw = async(token) => {
   // 1) Get user based on the token
     const hashToken = crypto
       .createHash("sha256")

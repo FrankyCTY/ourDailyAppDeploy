@@ -145,9 +145,10 @@ function* signInWithGoogle({ authorizeServerRes }) {
 
     yield put(setUserDetails(googleLogInRes.data.data.user));
     // 2) Get avatar from backend and aws
-    const getAvatarResponse = yield call(getAvatar, googleLogInRes.data.data.user.photo);
+    // const getAvatarResponse = yield call(getAvatar, googleLogInRes.data.data.user.photo);
     // get avatar image from s3 via backend
-    yield put(setUserAvatar(getAvatarResponse.data.data.image.data));
+    // yield put(setUserAvatar(getAvatarResponse.data.data.image.data));
+
 
     yield put(clearSignUpAlert());
     yield put(clearLogInAlert());
@@ -157,6 +158,7 @@ function* signInWithGoogle({ authorizeServerRes }) {
     // Stop spinner
     yield put(setIsLoggingInFALSE());
   } catch (error) {
+    console.log({error})
     // Stop spinner
     yield put(setIsLoggingInFALSE());
   }

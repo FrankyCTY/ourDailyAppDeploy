@@ -172,9 +172,6 @@ exports.signUp = withCatchErrAsync(async (req, res, next) => {
       },
     }); 
 
-
-    // await getFromS3("default.jpeg", 
-    // (imgBuffer) => authUtils.createSendToken(newUser, 201, res, imgBuffer));
   } catch (error) {
     console.log(error);
     return next(new OperationalErr("Error getting image from aws", 500, "local"));
@@ -192,6 +189,7 @@ exports.logOut = withCatchErrAsync(async (req, res, next) => {
 
 exports.googleLogIn = withCatchErrAsync(async (req, res, next) => {
   const { tokenId } = req.body;
+  const authService = new AuthService();
 
   const { payload } = await client.verifyIdToken({
     idToken: tokenId,
@@ -200,15 +198,21 @@ exports.googleLogIn = withCatchErrAsync(async (req, res, next) => {
 
   const { email_verified, email, name, } = payload;
   if (email_verified) {
-    const userDoc = await User.findOne({ email });
+    const userDoc = await User.findOne({ email, isOauthAccount: true });
 
     if (userDoc) {
-      // set isOauthAccount to true
-      userDoc.isOauthAccount = true;
+      // If everything goes fine, send token to client
+      const {user, token, cookieOptions} = authService.createSendToken(userDoc);
+      res.cookie("jwt", token, cookieOptions);
 
-      authUtils.createSendToken(userDoc, 201, res);
+      return res.status(200).json({
+        status: "success",
+        token,
+        data: {
+          user,
+        },
+      });  
     } else {
-
       // else User email not created in database
       const password = email + process.env.RANDOM_HASH;
 
@@ -220,7 +224,16 @@ exports.googleLogIn = withCatchErrAsync(async (req, res, next) => {
         isOauthAccount: true
       });
 
-      authUtils.createSendToken(newUser, 201, res);
+      const {user: userDoc, token, cookieOptions} = authService.createSendToken(newUser);
+      res.cookie("jwt", token, cookieOptions);
+
+      return res.status(200).json({
+        status: "success",
+        token,
+        data: {
+          user: userDoc,
+        },
+      })
     }
   }
 });
@@ -280,27 +293,28 @@ exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
 
 exports.resetPassword = withCatchErrAsync(async (req, res, next) => {  
   const {token} = req.params;
-
   const userService = new UserService();
-  const userDoc = await userService.resetPassword(token);
-  console.log({userDoc})
+  const authService = new AuthService();
 
-  // Return err if target user is inactive
-  if(!userDoc.active) {
-    return next(
-      new OperationalErr(
-        "Invalid Target.",
-        400,
-        "local"
-      )
-    );
-  }
+  const userDoc = await userService.checkMatchedUserToResetPw(token);
+
   // If token has not expired, and there is a user, set the new password
   // No user, throw error
   if (userDoc === null) {
     return next(
       new OperationalErr(
         "Your token is invalid or has expired, please try again.",
+        400,
+        "local"
+      )
+    );
+  }
+
+  // Return err if target user is inactive
+  if(!userDoc.active) {
+    return next(
+      new OperationalErr(
+        "Invalid Target.",
         400,
         "local"
       )
@@ -319,5 +333,10 @@ exports.resetPassword = withCatchErrAsync(async (req, res, next) => {
 
   // 3) Update JWT and changedPasswordAt property for the user
   // 4) Log the user in , send JWT to the client
-  return authUtils.createSendToken(userDoc, 200, res);
+  const {token: jwtToken, cookieOptions} = authService.createSendToken(userDoc);
+  res.cookie("jwt", jwtToken, cookieOptions);
+  return res.status(200).json({
+    status: "success"
+  })
+
 });

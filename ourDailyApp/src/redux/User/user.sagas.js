@@ -222,7 +222,7 @@ function* onUpdateUserDetailsStart() {
       // Stop Spinner
       yield put(UserActions.isResettingPwFalse());
       yield put(UserActions.resetPasswordFailure());
-    }  
+    } 
   }
   
   function* fn_resetPasswordSuccess () {

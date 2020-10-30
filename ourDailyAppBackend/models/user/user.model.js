@@ -69,6 +69,7 @@ const userSchema = new mongoose.Schema(
     },
     birthday: {
       type: Date,
+      default: new Date(),
     },
     passwordChangedAt: {
       type: Date,

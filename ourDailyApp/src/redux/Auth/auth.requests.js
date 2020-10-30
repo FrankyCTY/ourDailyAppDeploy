@@ -34,7 +34,7 @@ export const checkAuthInfoFromDB = async (authorizeServerRes, url) => {
     },
     withCredentials: true,
   });
-
+  console.log({backEndResponse})
   return backEndResponse;
 };
 
