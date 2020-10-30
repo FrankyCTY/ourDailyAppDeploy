@@ -14,7 +14,7 @@ export function* requestAndUpdateAvatar(formData) {
     // 2) get avatar image from s3 via backend
     const getAvatarResponse = yield call(getAvatar, updatedUser.photo);
     // 3) Upload user avatar in state for display
-    yield put(setUserAvatar(getAvatarResponse.data.data.image.data));
+    yield put(setUserAvatar(getAvatarResponse.data.data.avatar.data));
 
     return updatedUser;
 }

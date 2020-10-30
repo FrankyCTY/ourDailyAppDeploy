@@ -88,7 +88,8 @@ function UploadImageProvider({children}) {
       const formData = new FormData();
       // 1) Check if user uploading his own avatar or using my default avatars
       // It will lead to different work flow in backend
-      imgName === "" ? formData.append('avatar', file) : formData.append('imgName', imgName);
+      const isUsingDefaultImg = imgName !== "";
+      !isUsingDefaultImg ? formData.append('avatar', file) : formData.append('imgName', imgName);
       
       dispatch(UserActions.updateUserAvatarStart(formData));
     }

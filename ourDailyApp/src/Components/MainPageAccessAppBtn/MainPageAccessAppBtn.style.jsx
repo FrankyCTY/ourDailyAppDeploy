@@ -44,7 +44,7 @@ S.Image = styled.img`
 
   &:hover {
     border: 1px solid white;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 1);
+    box-shadow: ${({theme}) => `0 0 10px ${rgba(theme.general_text, 1)}`};
 
 
   }

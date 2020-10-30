@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { Switch, Route, Redirect } from "react-router-dom";
 import SettingsPage from "../../Pages/SettingsPage/Settings.page";
@@ -6,7 +6,6 @@ import CommentsConverterPage from "../../Pages/CommentsConverterPage/CommentsCon
 import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
 import { useDispatch, useSelector } from "react-redux";
 import UserActions from "../../redux/User/user.actions";
-import {getAppsInCartStart, getAppsInWishlistStart} from "../../redux/cart/cart.actions";
 
 import {ProtectedRoute } from "../../helpers/routes.helper";
 import componentWithPreload from "../../utils/lazyLoading/componentWithPreload";
@@ -31,10 +30,7 @@ const LoggedInRouter = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAppsInCartStart());
-    dispatch(getAppsInWishlistStart());
-    // Get User background
-    dispatch(UserActions.getUserBackgroundStart());
+    dispatch(UserActions.getUserWebDataStart());
   }, [dispatch]);
 
   const WishListPage = React.lazy(() =>

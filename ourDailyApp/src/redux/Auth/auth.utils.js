@@ -14,7 +14,7 @@ export const allocateSignUpAlerts = (tupleAlertArray) => {
   // Loop through each alertTuple and distribute them into the corresponding
   // alert array
   tupleAlertArray.forEach((tupleAlert) => {
-    switch (tupleAlertArray[0]) {
+    switch (tupleAlert[0]) {
       case "name":
         newSignUpAlert.nameAlerts.push(tupleAlert[1]);
         break;
@@ -34,7 +34,6 @@ export const allocateSignUpAlerts = (tupleAlertArray) => {
         break;
     }
   });
-
   return newSignUpAlert;
 };
 

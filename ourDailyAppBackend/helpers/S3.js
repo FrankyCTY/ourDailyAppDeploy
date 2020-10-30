@@ -6,13 +6,21 @@ module.exports = class S3 {
         this.Key = key;
     }
 
-    getFromS3 = async (respondFn) => {
+    // getFromS3 = async (respondFn) => {
+    //     // NO try catch block here, because we want to have
+    //     // customized try catch block outside to catch error  
+    //     const result = await s3.getObject({Bucket: this.Bucket, Key: this.Key}).promise();
+    //     // return response if we got the object
+    //     console.log("we are fine in getFromS3", result.Body)
+    //     return respondFn(result.Body);
+    // }
+    getFromS3 = async () => {
         // NO try catch block here, because we want to have
         // customized try catch block outside to catch error  
         const result = await s3.getObject({Bucket: this.Bucket, Key: this.Key}).promise();
-        // return response if we got the object
+        // return the object if we got the object
         console.log("we are fine in getFromS3", result.Body)
-        return respondFn(result.Body);
+        return result.Body;
     }
 
     deleteFromS3 = async() => {
@@ -22,6 +30,11 @@ module.exports = class S3 {
         } catch (error) {
             console.log("error deleting from bucker", error)   
         }
+    }
+
+    uploadToS3 = async(imgBuffer) => {
+        // Upload to AWS S3 bucket       
+        await s3.upload({Bucket: this.Bucket, Key: this.Key, Body: imgBuffer,}).promise();
     }
 }
 

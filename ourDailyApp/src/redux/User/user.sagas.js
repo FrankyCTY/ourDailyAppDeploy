@@ -9,7 +9,8 @@ import {setWholePageLoaderBigText} from "../WholePageLoader/wholePageLoader.acti
 
 import {changeAuthPage} from "../AuthPage/AuthPage.actions";
 
-import {setUserBackground} from "../Theme/theme.actions";
+import {setIsGettingCartAppsTrue, setIsGettingCartAppsFalse, 
+  setIsGettingWishlistAppsTrue, setIsGettingWishlistAppsFalse} from "../cart/cart.actions";
 
 import globalErrHandler from "../../utils/globalErrHandler";
 
@@ -17,17 +18,21 @@ import {
     setIsLoggedTrue,
     setUserDetails,
     signOut,
-    // setUserBackground,
 } from "../Auth/auth.actions";
 
 
 import {requestAndUpdateAvatar} from "./user.generatorFn";
 
-import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword, changeUserBackground, getUserBackground} from "./user.requests";
+import {changeUserPassword, deleteMe, sendForgotPwEmail, resetPassword, changeUserBackground
+  , getUserBackground, getUserWebData} from "./user.requests";
 
-import {populateUserBg} from "./user.sagaUtils";
+import UserSagaUtils from "./user.sagaUtils";
 
 // ================= Sagas ==================
+
+function* onGetUserWebDataStart() {
+  yield takeLeading(UserActionTypes.GET_USER_WEB_DATA_START, fn_getUserWebDataStart);
+}
 
 function* onGetUserBackgroundStart() {
   yield takeLeading(UserActionTypes.GET_USER_BACKGROUND_START, fn_getUserBackgroundStart);
@@ -130,10 +135,36 @@ function* onUpdateUserDetailsStart() {
       call(onChangeUserBackgroundStart),
       call(onChangeUserBackgroundSuccess),
       call(onGetUserBackgroundStart),
+      call(onGetUserWebDataStart),
     ]);
   }
 
-  function* fn_getUserBackgroundStart({setUserBgFn}) {
+  function* fn_getUserWebDataStart() {
+    try {
+      // Start Spinner
+      yield put(setIsGettingCartAppsTrue());
+      yield put(setIsGettingWishlistAppsTrue());
+
+      // 1) Get user web data from backend
+      const response = yield call(getUserWebData, `${process.env.REACT_APP_URL}/users/getDataForUser`);
+
+      const userSagaUtils = new UserSagaUtils();
+      yield call(userSagaUtils.populateUserData, [response, userSagaUtils]);
+
+      // Stop Spinner
+      yield put(setIsGettingCartAppsFalse());
+      yield put(setIsGettingWishlistAppsFalse());
+    } catch (error) {
+      // Stop Spinner
+      yield put(setIsGettingCartAppsFalse());
+      yield put(setIsGettingWishlistAppsFalse());
+
+      yield put(UserActions.getUserWebDataFailure());
+
+    }
+  }
+
+  function* fn_getUserBackgroundStart() {
     try {
 
       // 1) get image from backend
@@ -141,7 +172,8 @@ function* onUpdateUserDetailsStart() {
 
       // 2) populate user bg to redux state
       // url || buffer
-      yield call(populateUserBg, response);
+      const userSagaUtils = new UserSagaUtils();
+      yield call(userSagaUtils.populateUserBg, response);
     } catch (error) {
       
     }
@@ -158,7 +190,8 @@ function* onUpdateUserDetailsStart() {
       console.log({res})
       // 2) populate user bg to redux state
       // url || buffer
-      yield call(populateUserBg, res);
+      const userSagaUtils = new UserSagaUtils();
+      yield call(userSagaUtils.populateUserBg, res);
 
       // Loading -> false
       yield put(UserActions.isChangingUserBgFalse());

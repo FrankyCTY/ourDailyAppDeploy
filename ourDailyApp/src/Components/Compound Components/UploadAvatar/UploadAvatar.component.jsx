@@ -104,7 +104,7 @@ UploadAvatar.CropImageContainer = function CropImageContainer({
       </div>
     </S.CropImageContainer >
     <S.Overlay onClick={closeEditAvatarPopUp}/>
-   </S.CropImageFrame>, document.body) : null;
+  </S.CropImageFrame>, document.body) : null;
 }
 
 

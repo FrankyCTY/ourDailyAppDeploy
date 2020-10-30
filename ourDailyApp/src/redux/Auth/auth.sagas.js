@@ -90,9 +90,10 @@ function* signUp({ signUpDetails }) {
 
     // 1) Sign up user and set user details
     const response = yield call(signUpUser, signUpDetails);
+    console.log({response})
     yield put(setUserDetails(response.data.data.user));
     // 2) Also set the default avatar for the user first
-    yield put(setUserAvatar(response.data.data.image.data));
+    yield put(setUserAvatar(response.data.data.avatar.data));
 
     yield put(signUpSuccess(signUpDetails.email, signUpDetails.password));
 
@@ -162,6 +163,8 @@ function* signInWithGoogle({ authorizeServerRes }) {
 }
 
 function* signUpFailHandler({ error, targetComponent }) {
+  console.log({error})
+  console.log({targetComponent})
   yield globalErrHandler(error, targetComponent);
 }
 

@@ -16,19 +16,7 @@ S.ImageFrame = styled.div`
 
   position: relative;
 
-
-  ${({ styled_halo, backgroundluminosity }) => {
-    if (styled_halo) {
-      if (backgroundluminosity === 0) {
-        return `box-shadow: 0 0 10px rgba(255, 255, 255, 1);`;
-      }
-      if (backgroundluminosity <= 0.4) {
-        return `box-shadow: 0 0 10px ${rgba(255, 255, 255, 1)};`;
-      } else {
-        return `box-shadow: 0 0 10px rgba(0, 0, 0, 1);`;
-      }
-    }
-  }}
+  box-shadow: ${({theme}) => `0 0 10px ${rgba(theme.general_text, 1)}`};
 
   margin-bottom: 1em;
 `;
@@ -62,7 +50,7 @@ S.EditProfileText = styled.span`
 
   transition: opacity 250ms ease-in-out, transform 250ms;
 
-  color: ${(props) => props.theme.general_text};
+  color: white;
 `;
 
 S.ExtraImgSpan = styled.span`

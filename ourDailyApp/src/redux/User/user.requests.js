@@ -85,3 +85,10 @@ export const getUserBackground = async(url) => {
 
     return res;
 }
+
+export const getUserWebData = async(url) => {
+    let res;
+    res =  await axios.get(url, {withCredentials: true});
+
+    return res;
+}

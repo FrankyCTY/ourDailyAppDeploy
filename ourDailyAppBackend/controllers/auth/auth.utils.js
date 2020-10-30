@@ -70,36 +70,4 @@ exports.getUserBackground = async(bgId) => {
   }
 }
 
-exports.getUserImage = async (imageId, next) => {
-  let retry = false;
-  // 1) Get image using my aws confidentials
-  try {
-        console.log("before try catch");
-        const S3Instance = new S3(imageId);
-        return await S3Instance.getFromS3((imgBuffer) => imgBuffer);
-        // return ;
-      
-    } catch (error) {
-      // 2a) If error is "can't find the avatar with that Key provided"
-      // then we want to retry later
-      if (error.statusCode === 404) {
-        console.log("CAUGHT NO SUCH KEY ERROR!")
-        retry = true;
-      }
-      // 2b) If error is other error, then we throw error respond
-      if(!retry)
-      {
-        console.log(error);
-        return next(new OperationalErr("Error getting image from aws", 500, "local"));
-      } else {
-        // 3) if can't find the specific avatar, then we retry with the default jpeg
-        try {
-          const S3Instance = new S3("default.jpeg");
-          return await S3Instance.getFromS3((imgBuffer) => imgBuffer);
-        } catch (error) {
-          console.log(error);
-          return next(new OperationalErr("Error getting image from aws", 500, "local"));
-        }
-      }
-    }
-}
+

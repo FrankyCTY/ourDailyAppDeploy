@@ -169,10 +169,18 @@ UserActions.isChangingUserBgTrue = () => ({
     type: UserActionTypes.CHANGE_USER_BACKGROUND_FAILURE,
   })
 
-  UserActions.getUserBackgroundStart = (setUserBgFn, setUserBgThumbtailFn) => ({
+  UserActions.getUserBackgroundStart = () => ({
     type: UserActionTypes.GET_USER_BACKGROUND_START,
-    setUserBgFn,
-    setUserBgThumbtailFn,
+  })
+
+  UserActions.getUserWebDataStart = () => ({
+      type: UserActionTypes.GET_USER_WEB_DATA_START,
+  })
+  UserActions.getUserWebDataSuccess = () => ({
+      type: UserActionTypes.GET_USER_WEB_DATA_SUCCESS,
+  })
+  UserActions.getUserWebDataFailure = () => ({
+      type: UserActionTypes.GET_USER_WEB_DATA_FAILURE,
   })
 
 export default UserActions;

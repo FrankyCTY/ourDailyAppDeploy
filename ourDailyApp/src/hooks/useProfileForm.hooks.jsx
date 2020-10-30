@@ -27,7 +27,10 @@ export default function useProfileForm() {
     console.log(inputBirthdayYear > new Date().getFullYear());
 
     // Check if input birthday is bigger than current year
-    if((inputBirthdayYear > new Date().getFullYear()) || ((new Date().getFullYear() - inputBirthdayYear) > 120)) {
+    const useHasNotBorned = (inputBirthdayYear > new Date().getFullYear());
+    const userIsTooOld = ((new Date().getFullYear() - inputBirthdayYear) > 120)
+
+    if(useHasNotBorned || userIsTooOld) {
       return setIsDOBvalid(false);
     }
 

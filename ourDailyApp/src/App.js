@@ -33,7 +33,7 @@ const App = () => {
   // const showNavUIComponents = useSelector(state => state.UIComponents.showNavUIComponents);
 
   return (
-    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
+    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <GlobalStyle />
       <React.Suspense 
         fallback={

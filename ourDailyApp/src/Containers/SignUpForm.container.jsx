@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form } from "../Components/Compound Components";
 import PixelSpinner from "../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import { signUpStart } from "../redux/Auth/auth.actions";
@@ -10,7 +10,6 @@ import { ReactComponent as AlertSvg } from "../assets/svg/alert.svg";
 
 const SignUpForm = () => {
   const {
-    signUpAlertObj,
     clickedAlertSvg,
     setClickedAlertSvg,
     signUpDetails,
@@ -20,6 +19,8 @@ const SignUpForm = () => {
   const { name, email, password, passwordConfirm } = signUpDetails;
 
   const dispatch = useDispatch();
+
+  const signUpAlertObj = useSelector(state => state.auth.signUpAlert);
 
   return (
     <Form.SignUpFormContainer>

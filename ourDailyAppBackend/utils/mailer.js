@@ -58,18 +58,3 @@ module.exports = class Email {
     await this.send('passwordReset', 'Your password reset token (valid for only 10 minutes');
   }
 }
-
-// const sendEmail = async (options) => {
-//     // Activate in gmail "less secure app" option
-//   // 2) Define the email options
-//   const mailOptions = {
-//     from: `Franky Venus <${process.env.EMAIL_FROM}}>`,
-//     to: options.email,
-//     subject: options.subject,
-//     text: options.message,
-//     html: "<h1>Hello man!</h1>",
-//   };
-
-//   // 3) Send the email with nodemailer
-//   await transporter.sendMail(mailOptions);
-// };

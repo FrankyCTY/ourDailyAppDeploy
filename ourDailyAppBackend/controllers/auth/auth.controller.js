@@ -3,12 +3,13 @@ const S3 = require("../../helpers/S3");
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const User = require("../../models/user/user.model");
 const authUtils = require("./auth.utils");
-const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const OperationalErr = require("../../helpers/OperationalErr");
 const Email = require("../../utils/mailer");
 const { promisify } = require("util");
+const UserService = require("../../services/User.service");
+const AuthService = require("../../services/Auth.service");
 
 const client = new OAuth2Client(
   `${process.env.REACT_APP_GOOGLE_CLIENTID}`
@@ -76,11 +77,13 @@ exports.protect = withCatchErrAsync(async (req, res, next) => {
 //@public
 exports.logIn = withCatchErrAsync(async (req, res, next) => {
   const { email, password } = req.body;
+  const userService = new UserService();
+  const authService = new AuthService();
 
-  // 1) DATABASE - check if the user email is in the database
+  // DATABASE - check if the user email is in the database
   const user = await User.findOne({ email }).select("+password").select("+active");
 
-  // 2) if account doesn't exist
+  // if account doesn't exist
   if (!user) {
     return next(
       new OperationalErr(
@@ -91,7 +94,7 @@ exports.logIn = withCatchErrAsync(async (req, res, next) => {
     );
   }
 
-  // 3) Only active user to log in
+  // Only active user to log in
   if(!user.active) {
     return next(
       new OperationalErr(
@@ -101,7 +104,7 @@ exports.logIn = withCatchErrAsync(async (req, res, next) => {
     )
   }
 
-  // 4) Compare user password to see if valid
+  // Compare user password to see if valid
   if (!(await user.correctPassword(password, user.password))) {
     return next(
       new OperationalErr(
@@ -112,20 +115,28 @@ exports.logIn = withCatchErrAsync(async (req, res, next) => {
     );
   }
 
-  // 4) Get user avatar from S3
-  const otherData = {};
-  const userAvatar = await authUtils.getUserImage(user.photo, next);
-  // console.log({base64: bufferToBase64(userAvatar)})
-  otherData.avatar = userAvatar;
+  // Get user avatar from S3
+  const userAvatar = await userService.getUserImage(user.photo, next);
 
-  // 6) If everything goes fine, send token to client
-  return authUtils.createSendToken(user, 200, res, otherData);
+  // If everything goes fine, send token to client
+  const {user: userDoc, token, cookieOptions} = authService.createSendToken(user);
+  res.cookie("jwt", token, cookieOptions);
+
+  return res.status(200).json({
+    status: "success",
+    token,
+    data: {
+      user: userDoc,
+      avatar: userAvatar,
+    },
+  });  
 });
 
 // @desc    Allow users to sign up
 // @public
 exports.signUp = withCatchErrAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm, gender, birthday } = req.body;
+  const authService = new AuthService();
 
   const newUser = await User.create({
     name,
@@ -142,10 +153,26 @@ exports.signUp = withCatchErrAsync(async (req, res, next) => {
     // @planToImplement url should point to change avatar page
     const url = `${req.protocol}://${req.get('host')}/mainPage`;
     console.log(url);
-    await new Email(newUser, url).sendWelcome();
+    // await new Email(newUser, url).sendWelcome();
+
 
     const S3Instance = new S3("default.jpeg");
-    await S3Instance.getFromS3((imgBuffer) => authUtils.createSendToken(newUser, 201, res, imgBuffer));
+
+    const avatarBuffer = await S3Instance.getFromS3();
+    // If everything goes fine, send token to client
+    const {user: userDoc, token, cookieOptions} = authService.createSendToken(newUser);
+    res.cookie("jwt", token, cookieOptions);
+
+    return res.status(201).json({
+      status: "success",
+      token,
+      data: {
+        user: userDoc,
+        avatar: avatarBuffer,
+      },
+    }); 
+
+
     // await getFromS3("default.jpeg", 
     // (imgBuffer) => authUtils.createSendToken(newUser, 201, res, imgBuffer));
   } catch (error) {
@@ -218,6 +245,7 @@ exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
   // 4) Generate the random reset token
   // * Also added the passwordResetToken and passwordResetExpires into the doc.
   const resetToken = user.createPasswordResetToken();
+  console.log({resetToken})
   await user.save();
 
   try {
@@ -251,19 +279,14 @@ exports.forgotPassword = withCatchErrAsync(async (req, res, next) => {
 });
 
 exports.resetPassword = withCatchErrAsync(async (req, res, next) => {  
-  // 1) Get user based on the token
-  const hashToken = crypto
-    .createHash("sha256")
-    .update(req.params.token)
-    .digest("hex");
+  const {token} = req.params;
 
-  const user = await User.findOne({
-    passwordResetToken: hashToken,
-    passwordResetExpires: { $gt: Date.now() },
-  }).select("+active");
-  console.log({active: user.active});
-  // 2) Check if user is inactive
-  if(!user.active) {
+  const userService = new UserService();
+  const userDoc = await userService.resetPassword(token);
+  console.log({userDoc})
+
+  // Return err if target user is inactive
+  if(!userDoc.active) {
     return next(
       new OperationalErr(
         "Invalid Target.",
@@ -272,9 +295,9 @@ exports.resetPassword = withCatchErrAsync(async (req, res, next) => {
       )
     );
   }
-  // 3) If token has not expired, and there is a user, set the new password
+  // If token has not expired, and there is a user, set the new password
   // No user, throw error
-  if (user === null) {
+  if (userDoc === null) {
     return next(
       new OperationalErr(
         "Your token is invalid or has expired, please try again.",
@@ -284,15 +307,17 @@ exports.resetPassword = withCatchErrAsync(async (req, res, next) => {
     );
   }
 
+  // If everything goes fine, prepare data for response
+  // and clean up the passwordReset data for user
   const { newPassword, confirmPassword } = req.body;
-  user.password = newPassword;
-  user.passwordConfirm = confirmPassword;
-  user.passwordResetToken = undefined;
-  user.passwordResetExpires = undefined;
+  userDoc.password = newPassword;
+  userDoc.passwordConfirm = confirmPassword;
+  userDoc.passwordResetToken = undefined;
+  userDoc.passwordResetExpires = undefined;
 
-  await user.save();
+  await userDoc.save();
 
   // 3) Update JWT and changedPasswordAt property for the user
   // 4) Log the user in , send JWT to the client
-  return authUtils.createSendToken(user, 200, res);
+  return authUtils.createSendToken(userDoc, 200, res);
 });

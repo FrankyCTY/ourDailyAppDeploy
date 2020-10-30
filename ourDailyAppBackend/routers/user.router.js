@@ -38,7 +38,7 @@ router.patch(
   "/updateMe",
   authController.protect,
   userController.uploadUserAvatar,
-  userController.resizeUserPhoto,
+  // userController.resizeUserPhoto,
   // Please use updateMe with deleteOldAvatarFromS3
   // updateMe itself will not return any response
   userController.updateMe,
@@ -61,5 +61,7 @@ router.patch('/deleteMe', authController.protect, userController.deleteMe);
 // @Private
 router.get("/getAppInCart", authController.protect, userController.getAppInCart);
 router.get("/getAppInWishlist", authController.protect, userController.getAppInWishlist);
+
+router.get("/getDataForUser", authController.protect, userController.getDataForUser);
 
 module.exports = router;

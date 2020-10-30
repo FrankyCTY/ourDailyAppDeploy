@@ -8,6 +8,8 @@ const Sharp = require("../../helpers/Sharp");
 const sharp = require("sharp");
 const factory = require("../controllerFactory");
 const authUtils = require("../auth/auth.utils");
+const UserService = require("../../services/User.service");
+const AuthService = require("../../services/Auth.service");
 
 exports.uploadUserAvatar = upload.single("avatar");
 exports.uploadUserBg = upload.single("uploadedBg");
@@ -36,18 +38,8 @@ exports.getUserBg = withCatchErrAsync(async(req, res, next) => {
   const {bg} = req.user;
   // const userBg = await User.findById(id).select("bg");
 
-  let userBg = undefined;
-
-  // Check if background is url or is a beffer that needed to get from S3
-  if(bg === "default") {
-    userBg = "default";
-  }
-  else if(bg.startsWith("https")) {
-    userBg = bg;
-  } else {
-    userBg = await authUtils.getUserBackground(bg);
-    // userBg: {type, buffer}, we only need buffer from S3
-  }
+  const userService = new UserService();
+  const userBg = await userService.getUserBg(bg);
   // return
   return res.status(200).json({
     status: "success",
@@ -72,6 +64,7 @@ exports.changeUserTheme = withCatchErrAsync(async(req, res, next) => {
 exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
   const {bgUrl} = req.body;
   const {id} = req.user;
+  const userService = new UserService();
 
   console.log({bgUrl})
   console.log({file: req.file})
@@ -160,6 +153,10 @@ exports.updateUserBg = withCatchErrAsync(async (req, res, next) => {
 // Please use updateMe wit
 // updateMe itself will not return any response
 exports.updateMe = withCatchErrAsync(async (req, res, next) => {
+  const {id} = req.user;
+  const filteredReqBody = filterObj(req.body, ["name", "email", "birthday", "bio", "personalWebsite", "gender", "imgName"]);
+  const userService = new UserService();
+
   // 1) Create designed error if user POST password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -171,59 +168,55 @@ exports.updateMe = withCatchErrAsync(async (req, res, next) => {
     );
   }
 
-  // 2) Only update aws s3 if req.file exists
+  // 2a) If user is upload his own photo to update
   if(req.file) {
-    const { filename, resizedImgBuffer } = req.file;
-    const imgBuffer = resizedImgBuffer;
+    // Resize user photo
+    const {filename, resizedImgBuffer} = await userService.resizeUserPhoto(id, req.file.buffer);
+    // add into req.user
+    console.log({resizedImgBuffer})
+    req.file.filename = filename;
+    req.file.resizedImgBuffer = resizedImgBuffer;
 
-    await uploadAvatarToS3(filename, imgBuffer);
+
+    // Only update aws s3 if req.file exists
+    const s3 = new S3(filename);
+    await s3.uploadToS3(resizedImgBuffer);
+
+    // Preparing the response body and update in db
+    filteredReqBody.photo = filename;
+
+    // Delete old avatar from s3 bucket
+    const oldAvatarName = req.user.photo;
+    // some photos are not allowed to be deleted from s3'
+    if(oldAvatarName !== "default.jpeg" && oldAvatarName !== "male.jpeg" && oldAvatarName !== "female.jpeg") {
+      console.log("will delete old avatar")
+      const S3Instance = new S3(oldAvatarName);
+      await S3Instance.deleteFromS3();
+    }
   }
-  
-    const filteredReqBody = filterObj(req.body, ["name", "email", "birthday", "bio", "personalWebsite", "gender", "imgName"]);
-    // 3) Apply if user choose one of the default avatar
+  // 2b) Operate if user is updating avatar with provided images
+  // Which can only happen when user first register the account, so no need
+  // to delete old avatar from S3
+  else if (req.body.imgName) {
+    filteredReqBody.photo = `${req.body.imgName}.jpeg`;
+  }
 
-    let isUpdateAvatar = false;
-    if(req.body.imgName)
-    {
-      filteredReqBody.photo = `${req.body.imgName}.jpeg`;
-      isUpdateAvatar = true;
-    }
-    // 4) Apply if user upload his own avatar
-    if (req.file) {
-      filteredReqBody.photo = req.file.filename;
-      isUpdateAvatar = true;
-    }
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
-      filteredReqBody,
-      {
-        new: true,
-        // runValidators: true,
-      }
-    );
+  // 3) Update the db with user data
+  const updatedUserDoc = await userService.updateUser(filteredReqBody, id);
 
-    // 3A) Delete old avatar from s3 bucket
-    if(isUpdateAvatar) {
-      const oldAvatarName = req.user.photo;
-      if(oldAvatarName !== "default.jpeg" || oldAvatarName !== "male.jpeg" || oldAvatarName !== "female.jpeg") {
-        const S3Instance = new S3(oldAvatarName);
-        await S3Instance.deleteFromS3();
-      }
-    }
-
-    // 3B) Send Response
-    return res.status(200).json({
-      status: "success",
-      data: {
-        user: updatedUser,
-      },
-    });
-  // }
+  // return
+  return res.status(200).json({
+    status: "success",
+    data: {
+      user: updatedUserDoc,
+    },
+  });
 });
 
 exports.changePassword = withCatchErrAsync(async(req, res, next) => {
   const {password, newPassword} = req.body;
   const {_id} = req.user;
+  const authService = new AuthService();
 
   const userDoc = await User.findById(_id).select("+password");
   // 1) Check if user password is correct
@@ -243,7 +236,9 @@ exports.changePassword = withCatchErrAsync(async(req, res, next) => {
   await userDoc.save();
 
   // 3) update user jwt
-  return authUtils.createSendToken(userDoc, 200, res);
+  const {user, token, cookieOptions} = await authService.createSendToken(userDoc);
+  
+
 })
 
 
@@ -255,12 +250,15 @@ exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
     // 1) Get image using my aws confidentials
     try {
         const S3Instance = new S3(imageId);
-        await S3Instance.getFromS3((imgBuffer) => res.status(200).json({
+        const avatarBuffer = await S3Instance.getFromS3();
+        // If everything goes fine, send token to client
+        return res.status(200).json({
           status: "success",
           data: {
-            image: imgBuffer,
-          }
-        }));
+            avatar: avatarBuffer,
+          },
+        }); 
+
       
     } catch (error) {
       // 2a) If error is "can't find the avatar with that Key provided"
@@ -277,13 +275,17 @@ exports.getS3Image = withCatchErrAsync(async (req, res, next) => {
       } else {
         // 3) if can't find the specific avatar, then we retry with the default jpeg
         try {
-          const S3Instance = new S3("default.jpeg");
-          await S3Instance.getFromS3((imgBuffer) => res.status(200).json({
-              status: "success",
-              data: {
-                image: imgBuffer,
-              }
-            }));
+
+          const S3Instance = new S3(imageId);
+          const avatarBuffer = await S3Instance.getFromS3();
+          // If everything goes fine, send token to client
+          return res.status(200).json({
+            status: "success",
+            token,
+            data: {
+              avatar: avatarBuffer,
+            },
+          }); 
         } catch (error) {
           console.log(error);
           return next(new OperationalErr("Error getting image from aws", 500, "local"));
@@ -305,7 +307,7 @@ exports.getAppInCart = withCatchErrAsync(async (req, res, next) => {
 
   console.log({totalPriceInCart})
 
-  const appInCartDocs = userDoc.applicationsInCart
+  const appInCartDocs = userDoc.applicationsInCart;
 
   return res.status(200).json({
     status: "success",
@@ -362,6 +364,51 @@ exports.deleteMe = withCatchErrAsync(async(req, res, next) => {
     }
   })
 })
+
+exports.getDataForUser = withCatchErrAsync(async(req, res, next) => {
+  const {_id, bg, photo} = req.user;
+  console.log({photo})
+
+  const userDoc = await User.findById(_id).populate([{path: 'applicationsInCart', select: {'name': 1, 'createdAt': 1, 'imgSrc': 1, 'price': 1, 'route': 1, 'creator': 1}}, 
+  {path: 'wishlistApplications', select: {'name': 1, 'createdAt': 1, 'imgSrc': 1, 'price': 1, 'route': 1, 'creator': 1}}]);
+  
+  
+  // 1) get cart
+  // Only calculate the total price if there is app in the user's cart
+  let totalPriceInCart = 0;
+  if(userDoc.applicationsInCart.length !== 0) {
+    totalPriceInCart = userDoc.applicationsInCart.reduce((totalPrice, app) => totalPrice + app.price, 0);
+  }
+
+  const appInCartDocs = userDoc.applicationsInCart
+
+  
+  // 2) get wishlist
+  const appInWishlistDocs = userDoc.wishlistApplications
+
+  // 3. get background
+  const userService = new UserService();
+  const userBg = await userService.getUserBg(bg);
+
+  // 4. get avatar
+  const userAvatar = await userService.getUserImage(photo, next);
+  console.log(userAvatar);
+  // const S3Instance = new S3("default.jpeg");
+
+  // const avatarBuffer = await S3Instance.getFromS3();
+  
+  
+  return res.status(200).json({
+    status: "success",
+    data: {
+      cartItems: appInCartDocs,
+      totalPriceInCart,
+      wishlistItems: appInWishlistDocs,
+      bg: userBg,
+      avatar: userAvatar,
+    }
+  })
+}); 
 
 // @desc Allow admin to see the birthday data of the users
 // @private
