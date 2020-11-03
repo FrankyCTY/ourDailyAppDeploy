@@ -11,8 +11,8 @@ const textStyles = css`
 `;
 
 const toolBoxSvgStyles = css`
-  margin: ${({svgMargin}) => svgMargin};
-  width: ${({svgSize}) => svgSize};
+  margin: ${({svgmargin}) => svgmargin};
+  width: ${({svgsize}) => svgsize};
   cursor: pointer;
 
   &:hover {
@@ -23,6 +23,15 @@ const toolBoxSvgStyles = css`
 const pairButtonStyles = css`
   fill: ${({theme}) => theme.minor};
   color: ${({theme}) => theme.minor};
+`;
+
+const attractBtnStyles = css`
+background: ${({theme}) => theme.attract_color};
+outline: 0;
+color: white;
+&:hover {
+  filter: brightness(1.2);
+}
 `;
 
 const S = {};
@@ -105,7 +114,6 @@ ${textStyles}
 `;
 
 S.TodoListItemBlock = styled.div`
-  // border: 2px solid yellow;
   padding: 1rem;
   border-radius: 22px;
   cursor: pointer;
@@ -139,9 +147,7 @@ color: ${({theme}) => theme.RouteBlock.prevRouteText};
 font-size: 0.8rem;`;
 
 S.AddTodoBtn = styled.button`
-background: ${({theme}) => theme.attract_color};
-outline: 0;
-color: white;
+${attractBtnStyles};
 border-radius: 100%;
 width: 2rem;
 height: 2rem;
@@ -189,9 +195,7 @@ S.CollectionSvg = styled(CollectionLogo)`
 `;
 
 S.CreateCollectionBtn = styled.button`
-  background: ${({theme}) => theme.attract_color};
-  outline: 0;
-  color: white;
+  ${attractBtnStyles};
   font-size: .8rem;
   border-radius: 12px;
   padding: .8rem 1.5rem;

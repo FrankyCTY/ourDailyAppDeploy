@@ -6,7 +6,7 @@ import useRouter from "../hooks/useRouter.hooks";
 import {ReactComponent as CollectionSingleLogo} from '../assets/svg/collection single.svg';
 import { useSelector } from "react-redux";
 
-function TodoContainer() {
+function TodoContainer(props) {
   return (
   <div className="flex">
   {<Todo.TodoSideBar className="TodoSideBar">
@@ -15,7 +15,7 @@ function TodoContainer() {
   <Todo className="TodoContainer">
     <TodoHeader/>
     <div className="todoBodyContainer flex">
-      <TodoListSection/>
+      <TodoListSection activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} />
       <TodoItemDetailsSection/>
     </div>
   </Todo>
@@ -45,18 +45,19 @@ function TodoHeader() {
   )
 }
 
-function TodoListSection() {
+function TodoListSection({activeTodoItem, onTodoItemClick}) {
+
   return (
     <div style={{borderRight: "1px solid #303030", height: "calc(100vh - 71px)"}} className="w-1/2 p-3 xl:w-5/12">
       <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText="12" title="Todo">
         <Todo.AddTodoBtn/>
       </Todo.TodoHeader>
       <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
-        <Todo.TodoListItemBlock subTitle="Build backend for todolist" active="true"
+        {/* <Todo.TodoListItemBlock subTitle="Build backend for todolist" active="true"
         previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
-        ></Todo.TodoListItemBlock>
-        {new Array(20).fill(1).map(() =>       <Todo.TodoListItemBlock subTitle="Build backend for todolist"
+        ></Todo.TodoListItemBlock> */}
+        {new Array(20).fill(1).map((x, idx) => <Todo.TodoListItemBlock key={idx} onClick={(e) => onTodoItemClick(e, idx)} active={activeTodoItem === idx} subTitle="Build backend for todolist"
         previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
         ></Todo.TodoListItemBlock>)}

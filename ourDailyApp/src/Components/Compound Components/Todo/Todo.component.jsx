@@ -65,9 +65,9 @@ Todo.ToolBox = function ToolBox({
   svgSize, svgMargin, nobg, children, ...restProps
 }) {
 return <S.ToolBox nobg={nobg} {...restProps}>          
-<S.ModifySvg svgSize={svgSize || "0.8rem"} svgMargin={svgMargin || "0.1rem 0.2rem"} className="modifySvg"/>
-<S.PinSvg svgSize={svgSize || "0.8rem"} svgMargin={svgMargin || "0.1rem 0.2rem"} className="pinSvg"/>
-<S.BinSvg svgSize={svgSize || "0.8rem"} svgMargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
+<S.ModifySvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="modifySvg"/>
+<S.PinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="pinSvg"/>
+<S.BinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
 {children}
 </S.ToolBox>
 }
