@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
 import S from "./styles/Formik.style";
+
+import {MenuItem} from "@material-ui/core";
 import "react-datepicker/dist/react-datepicker.css";
 import {UploadImageContext} from "../../../context/uploadAvatar.context";
 import userActions from "../../../redux/User/user.actions";
@@ -116,4 +118,31 @@ Formik.AvatarContainer = function AvatarContainer({src, ...restProps}) {
                 <S.UploadAvatarLabel htmlFor="avatar"></S.UploadAvatarLabel>
                 <S.FormikInput id="avatar" name="avatar" type="file" className="hidden" {...getInputProps()} ></S.FormikInput>
             </S.AvatarContainer>
+}
+
+Formik.DropDown = function DropDown({src, ...restProps}) {
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+        setAge(event.target.value);
+    };
+    //   className={classes.formControl}
+    return (
+    <S.FormSelectContainer>
+        <S.Select
+        value={age}
+        onChange={handleChange}
+        displayEmpty
+        // className={classes.selectEmpty}
+        inputProps={{ 'aria-label': 'Without label' }}
+    >
+            <MenuItem value="">
+            <span>Recent</span>
+            </MenuItem>
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+        </S.Select>
+    </S.FormSelectContainer>
+    )
 }

@@ -21,3 +21,4 @@ export { default as WholePageLoader } from "./WholePageLoader/WholePageLoader.co
 export { default as SuccessFail } from "./SuccessFail/SuccessFail.component";
 export { default as Gallery } from "./Gallery/Gallery.component";
 export { default as FloatBtn } from "./FloatButton/floatButton.component";
+export { default as Application } from "./Application/Application.component";

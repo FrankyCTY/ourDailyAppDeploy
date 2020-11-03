@@ -235,14 +235,12 @@ exports.changePassword = withCatchErrAsync(async(req, res, next) => {
   await userDoc.save();
 
   // 3) update user jwt
-  const {token, cookieOptions} = authService.createSendToken(userDoc);
-  res.cookie("jwt", token, cookieOptions);
+  const {user, res: response} = authService.createSendToken(userDoc, res);
 
-  return res.status(200).json({
+  return response.status(200).json({
     status: "success",
-    token,
     data: {
-      user: userDoc,
+      user,
     },
   }); 
 })

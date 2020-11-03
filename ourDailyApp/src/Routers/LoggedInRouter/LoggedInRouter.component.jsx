@@ -6,6 +6,7 @@ import CommentsConverterPage from "../../Pages/CommentsConverterPage/CommentsCon
 import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
 import { useDispatch, useSelector } from "react-redux";
 import UserActions from "../../redux/User/user.actions";
+import useRouter from "../../hooks/useRouter.hooks";
 
 import {ProtectedRoute } from "../../helpers/routes.helper";
 import componentWithPreload from "../../utils/lazyLoading/componentWithPreload";
@@ -16,6 +17,7 @@ import NavUIComponents from "../../Components/NavUIComponents/NavUIComponents.co
 const ShopRouter = componentWithPreload(() =>
 import("../ShopRouter/ShopRouter.component")
 );
+const ApplicationRouter = React.lazy(() => import("../ApplicationRouter/ApplicationRouter.component"));
 
 export const routes = [
     {
@@ -49,10 +51,12 @@ const LoggedInRouter = () => {
 
 
   const isUserLogged = useSelector((state) => state.auth_P.isLogged);
+  const router = useRouter();
+  const showUiComponents = !(router.pathName.toString().startsWith('/applications'))
 
   return (
     <>
-    <NavUIComponents/>
+    {showUiComponents&& <NavUIComponents/>}
     <Switch>
         <ProtectedRoute exact isLogged={isUserLogged} path="/main">
             <MainPage />
@@ -78,6 +82,9 @@ const LoggedInRouter = () => {
         </ProtectedRoute>
         <ProtectedRoute exact isLogged={isUserLogged} path="/wishlist">
         <WishListPage />
+        </ProtectedRoute>
+        <ProtectedRoute isLogged={isUserLogged} path='/applications'>
+          <ApplicationRouter/>
         </ProtectedRoute>
         <Route
             // render={() => (isUserLogged ? <NoMatch /> : <Redirect to="/login" />)}

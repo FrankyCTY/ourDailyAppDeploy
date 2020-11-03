@@ -119,12 +119,10 @@ exports.logIn = withCatchErrAsync(async (req, res, next) => {
   const userAvatar = await userService.getUserImage(user.photo, next);
 
   // If everything goes fine, send token to client
-  const {user: userDoc, token, cookieOptions} = authService.createSendToken(user);
-  res.cookie("jwt", token, cookieOptions);
+  const {user: userDoc, res: response} = authService.createSendToken(user, res);
 
-  return res.status(200).json({
+  return response.status(200).json({
     status: "success",
-    token,
     data: {
       user: userDoc,
       avatar: userAvatar,
@@ -160,12 +158,10 @@ exports.signUp = withCatchErrAsync(async (req, res, next) => {
 
     const avatarBuffer = await S3Instance.getFromS3();
     // If everything goes fine, send token to client
-    const {user: userDoc, token, cookieOptions} = authService.createSendToken(newUser);
-    res.cookie("jwt", token, cookieOptions);
+    const {user: userDoc, res: response} = authService.createSendToken(newUser, res);
 
-    return res.status(201).json({
+    return response.status(201).json({
       status: "success",
-      token,
       data: {
         user: userDoc,
         avatar: avatarBuffer,
@@ -202,12 +198,10 @@ exports.googleLogIn = withCatchErrAsync(async (req, res, next) => {
 
     if (userDoc) {
       // If everything goes fine, send token to client
-      const {user, token, cookieOptions} = authService.createSendToken(userDoc);
-      res.cookie("jwt", token, cookieOptions);
+      const {user, res: response} = authService.createSendToken(userDoc, res);
 
-      return res.status(200).json({
+      return response.status(200).json({
         status: "success",
-        token,
         data: {
           user,
         },
@@ -224,10 +218,9 @@ exports.googleLogIn = withCatchErrAsync(async (req, res, next) => {
         isOauthAccount: true
       });
 
-      const {user: userDoc, token, cookieOptions} = authService.createSendToken(newUser);
-      res.cookie("jwt", token, cookieOptions);
+      const {user: userDoc, res: response} = authService.createSendToken(newUser, res);
 
-      return res.status(200).json({
+      return response.status(200).json({
         status: "success",
         token,
         data: {
@@ -333,8 +326,7 @@ exports.resetPassword = withCatchErrAsync(async (req, res, next) => {
 
   // 3) Update JWT and changedPasswordAt property for the user
   // 4) Log the user in , send JWT to the client
-  const {token: jwtToken, cookieOptions} = authService.createSendToken(userDoc);
-  res.cookie("jwt", jwtToken, cookieOptions);
+  authService.createSendToken(userDoc);
   return res.status(200).json({
     status: "success"
   })

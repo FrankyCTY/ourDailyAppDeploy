@@ -55,6 +55,21 @@ body::-webkit-scrollbar-thumb {
     object-fit: cover;
   }
 
+  // materiUI select menu
+  #menu- {
+    & .MuiPaper-root,
+    & .MuiMenu-paper,
+    & .MuiPopover-paper {
+      background: ${({theme}) => theme.secondary_bg};
+      color: ${({theme}) => theme.general_text};
+      top: 90px !important;
+    }
+
+    & li {
+      font-size: .8rem !important;
+    }
+  }
+
   .link {
     text-decoration: none;
     &:hover {

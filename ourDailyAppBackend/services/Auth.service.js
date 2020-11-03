@@ -15,7 +15,7 @@ class AuthService {
     );
   };
   
-  createSendToken = (user) => {
+  createSendToken = (user, res) => {
     // console.log("createSendToken activated", otherData)
     const token = this.signToken(user._id);
     const cookieOptions = {
@@ -30,17 +30,16 @@ class AuthService {
       // Token will only be sent via HTTPS
       if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
       
-      // Send cookie -> server to client
-      // res.cookie("jwt", token, cookieOptions);
-      
     // Get rid of sensitive data
     user.password = undefined;
     user.passwordChangedAt = undefined;
     
+    // set cookie
+    res.cookie("jwt", token, cookieOptions);
 
     // new return
     console.log({user})
-    return {user, token, cookieOptions};
+    return {user, res};
   };
 }
 

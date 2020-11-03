@@ -25,3 +25,12 @@ WholePageLoader.DefaultLoader = function DefaultLoader({spinnerColor, size, anim
         </S.Group>
     </S.WholePageLoaderContainer>
 }
+
+WholePageLoader.CheckingJwtLoader = function DefaultLoader({spinnerColor, size, animationDuration, children, ...restProps}) {
+    return <S.WholePageLoaderContainer {...restProps}>
+        <S.Group>
+            <PixelSpinner className="mb-6 lg:mb-16 lg:text-2xl" color={spinnerColor} size={size} animationDuration={animationDuration}/>
+            <S.BigText>Hello World</S.BigText>
+        </S.Group>
+    </S.WholePageLoaderContainer>
+}

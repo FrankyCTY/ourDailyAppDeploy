@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 import PropTypes from "prop-types";
 
 const MainPageAccessAppBtn = ({ app, index }) => {
- 
+
 
   const { name, route, imageUrl, border } = app;
   return (

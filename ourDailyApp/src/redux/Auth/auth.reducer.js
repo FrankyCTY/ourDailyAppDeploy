@@ -14,7 +14,9 @@ const INITIATE_STATE = {
     emailAlerts: [],
     formAlerts: [],
   },
-  updateUserAlert: {}
+  updateUserAlert: {},
+  // isLogged: false,
+  // isCheckingJwt: false,
 };
 
 const authReducer = (state = INITIATE_STATE, action) => {
@@ -41,6 +43,21 @@ const authReducer = (state = INITIATE_STATE, action) => {
         ...state,
         isLogged: true,
       };
+    // case AuthActionTypes.SET_ISLOGGED_TRUE:
+    //   return {
+    //     ...state,
+    //     isLogged: true,
+    //   };
+    // case AuthActionTypes.IS_CHECKING_JWT_TRUE:
+    //   return {
+    //     ...state,
+    //     isCheckingJwt: true,
+    //   };
+    // case AuthActionTypes.IS_CHECKING_JWT_FALSE:
+    //   return {
+    //     ...state,
+    //     isCheckingJwt: true,
+    //   };
     default:
       return state;
   }

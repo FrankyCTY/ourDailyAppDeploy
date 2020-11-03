@@ -57,7 +57,7 @@ UserActions.isResettingPwFalse = () => ({
 UserActions.updateUserDetailsStart = (formData) => ({
     type: UserActionTypes.UPDATE_USER_DETAILS_START,
     formData,
-  })
+})
 UserActions.updateUserDetailsSuccess = () => ({
 type: UserActionTypes.UPDATE_USER_DETAILS_SUCCESS,
 })

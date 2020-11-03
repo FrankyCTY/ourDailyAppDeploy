@@ -14,7 +14,7 @@ services:
     stdin_open: true
     build:
       context: ./ourDailyApp
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfil e.dev
     env_file:
       - ./ourDailyApp/.env
     volumes:

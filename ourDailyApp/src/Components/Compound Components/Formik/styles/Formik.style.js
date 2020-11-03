@@ -1,5 +1,5 @@
 import styled, {css} from "styled-components";
-import {Button} from "@material-ui/core";
+import {Button, FormControl, Select} from "@material-ui/core";
 import DatePicker from "react-datepicker";
 
 const S = {};
@@ -9,7 +9,7 @@ border-radius: .25rem;
 padding: .375rem .75rem;
 font-weight: 400;
 line-height: 1.429;
-border: 1px solid ${({theme}) => theme.wrapper_border};;
+border: 1px solid ${({theme}) => theme.wrapper_border};
 border-radius: .25rem;
 transition border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 background: ${({theme}) => theme.secondary_bg};
@@ -33,6 +33,10 @@ width: 100%;
     font-size: 1rem;
 }
 `;
+
+const textStyles = css`
+color: ${({theme}) => theme.general_text};
+`
 
 S.FormikForm = styled.form`
 
@@ -193,6 +197,33 @@ border-radius: inherit;
 cursor: pointer;
 display: block;
 `;
+
+S.FormSelectContainer = styled(FormControl)`
+& span {
+    font-size: 0.9rem;
+    margin-right: .4rem;
+}
+& .MuiInputBase-root {
+${textStyles};
+
+}
+
+& .MuiSelect-icon {
+${textStyles};
+
+}
+.MuiInput-underline::before,
+.MuiInput-underline:hover:not(.Mui-disabled)::before {
+border-bottom: 0;
+}
+
+// Select Menu List
+& 
+`;
+
+S.Select = styled(Select)`
+`;
+
 
 
 export default S;

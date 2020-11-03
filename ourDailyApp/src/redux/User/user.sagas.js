@@ -18,6 +18,8 @@ import {
     setIsLoggedTrue,
     setUserDetails,
     signOut,
+    isCheckingJwtTrue,
+    isCheckingJwtFalse,
 } from "../Auth/auth.actions";
 
 
@@ -142,22 +144,28 @@ function* onUpdateUserDetailsStart() {
   function* fn_getUserWebDataStart() {
     try {
       // Start Spinner
-      yield put(setIsGettingCartAppsTrue());
-      yield put(setIsGettingWishlistAppsTrue());
+      // yield put(setIsGettingCartAppsTrue());
+      // yield put(setIsGettingWishlistAppsTrue());
 
       // 1) Get user web data from backend
       const response = yield call(getUserWebData, `${process.env.REACT_APP_URL}/users/getDataForUser`);
 
+      // 2) If user didn't get any error at this point
+      // that means the user has proper JWT authorization
+      /* yield put(setIsLoggedTrue()); */
+      
       const userSagaUtils = new UserSagaUtils();
       yield call(userSagaUtils.populateUserData, [response, userSagaUtils]);
 
       // Stop Spinner
-      yield put(setIsGettingCartAppsFalse());
-      yield put(setIsGettingWishlistAppsFalse());
+      // yield put(isCheckingJwtFalse());
+      // yield put(setIsGettingCartAppsFalse());
+      // yield put(setIsGettingWishlistAppsFalse());
     } catch (error) {
       // Stop Spinner
-      yield put(setIsGettingCartAppsFalse());
-      yield put(setIsGettingWishlistAppsFalse());
+      // yield put(isCheckingJwtFalse());
+      // yield put(setIsGettingCartAppsFalse());
+      // yield put(setIsGettingWishlistAppsFalse());
 
       yield put(UserActions.getUserWebDataFailure());
 
@@ -285,6 +293,7 @@ function* fn_deleteMeStart() {
     // Loading -> false
     yield put(UserActions.isDeletingMeFalse());
     yield put(UserActions.deleteMeSuccess());
+    // log out
   } catch (error) {
     // Loading -> false
     yield put(UserActions.isDeletingMeFalse());

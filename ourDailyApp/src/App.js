@@ -1,16 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import './App.css';
 
 import { Switch, Route } from "react-router-dom";
 import { IsUserRedirect } from "./helpers/routes.helper";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./utils/styled/globalStyle";
 import { lightTheme, darkTheme } from "./utils/styled/theme";
 import PixelSpinner from "./Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
+import {WholePageLoader} from "./Components/Compound Components/";
+
+import {isCheckingJwtTrue, isCheckingJwtFalse} from "./redux/Auth/auth.actions";
 
 // import NavUIComponents from "./Components/NavUIComponents/NavUIComponents.component";
 import PageNotFoundPage from "./Pages/PageNotFound/PageNotFound.page";
@@ -26,8 +29,11 @@ const LoggedInRouter = React.lazy(() => import ("./Routers/LoggedInRouter/Logged
 
 
 
+
+
 const App = () => {
   const isUserLogged = useSelector((state) => state.auth_P.isLogged);
+  // const isCheckingJwt = useSelector((state) => state.auth.isCheckingJwt);
 
   const theme = useSelector((state) => state.theme_P.theme);
   // const showNavUIComponents = useSelector(state => state.UIComponents.showNavUIComponents);
@@ -70,6 +76,7 @@ const App = () => {
         </Route>
 
         </Switch>
+        {/* {isCheckingJwt && <WholePageLoader.CheckingJwtLoader/>} */}
       </React.Suspense>
     </ThemeProvider>
   );

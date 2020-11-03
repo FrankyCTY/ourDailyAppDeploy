@@ -87,3 +87,11 @@ export const setUserAvatar = (imgBuffer) => ({
   type: AuthActionTypes.SET_USER_AVATAR,
   imgBuffer,
 })
+
+export const isCheckingJwtTrue = () => ({
+  type: AuthActionTypes.IS_CHECKING_JWT_TRUE
+})
+
+export const isCheckingJwtFalse = () => ({
+  type: AuthActionTypes.IS_CHECKING_JWT_FALSE
+})
