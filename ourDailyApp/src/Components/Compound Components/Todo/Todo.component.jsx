@@ -3,9 +3,6 @@ import S from "./styles/Todo.style";
 
 import Formik from "../Formik/Formik.component";
 
-// import {ReactComponent as BackLogo} from '../../../assets/svg/back.svg';
-
-
 export default function Todo({ children, ...restProps }) {
   return <S.TodoContainer {...restProps}>{children}</S.TodoContainer>;
 }
@@ -74,6 +71,40 @@ return <S.ToolBox nobg={nobg} {...restProps}>
 {children}
 </S.ToolBox>
 }
+
+Todo.SearchBar = function SearchBar({
+  children, ...restProps
+}) {
+  return <Todo.Group className="flex items-center">
+    <S.SearchSvg className="iconfont icon-Search"/>
+    <S.SearchInput type="text" placeholder="Search..." />
+  </Todo.Group>
+}
+
+Todo.PairButton = function PairButton({
+  withArrow, buttonText, children, ...restProps
+}) {
+  return (
+    <S.PairButton {...restProps}>
+      {withArrow && <S.ArrowIcon className="iconfont icon-play"/>}
+      {children}
+      <S.PairButtonText>{buttonText}</S.PairButtonText>
+    </S.PairButton>)
+}
+
+Todo.CreateCollectionBtn = function CreateCollectionBtn({
+  children, ...restProps
+}) {
+  return (
+    <S.CreateCollectionBtn {...restProps}>Create Collection</S.CreateCollectionBtn>)
+}
+
+Todo.AddTodoBtn = function AddTodoBtn({
+  children, ...restProps
+}) {
+  return (
+    <S.AddTodoBtn {...restProps}><i className="iconfont icon-plus"/></S.AddTodoBtn>)
+}
   
 // Sets
 
@@ -87,6 +118,7 @@ Todo.TodoHeader = function TodoHeader({
         <Todo.TitleText className="mr-2">{title}</Todo.TitleText>
         <S.TagBox>{tagBoxText}</S.TagBox>
       </S.Group>
+      {children}
     </S.TodoHeader>
   )
 }
@@ -99,12 +131,29 @@ Todo.TodoListItemBlock = function TodoListItemBlock({
 
   return (
     <S.TodoListItemBlock {...restProps} active={active}>
-      <Todo.Group className="flex align-middle justify-between">
-        <Todo.SubtitleText className="block mb-4">{subTitle}</Todo.SubtitleText>
+      <Todo.Group className="flex items-center justify-between">
+        <Todo.SubtitleText className="block mb-4 xl:text-base">{subTitle}</Todo.SubtitleText>
         { active && <Todo.ToolBox/>}
       </Todo.Group>
 
-      <Todo.Text>{newPreviewText}</Todo.Text>
+      <Todo.Text className="xl:text-sm">{newPreviewText}</Todo.Text>
     </S.TodoListItemBlock>
+  )
+}
+
+Todo.TodoSideBar = function TodoSideBar({
+  children, ...restProps
+}) {
+  return (
+    <S.TodoSideBarContainer {...restProps}>
+      <div className="overflow-y-auto flex-auto">
+        <Todo.PairButton className="flex items-center" buttonText="Back to console"><S.ReturnSvg className="mr-4" /></Todo.PairButton>
+        <Todo.PairButton className="flex items-center" buttonText="Collection" withArrow={true}><S.CollectionSvg className="mr-4" /></Todo.PairButton>
+        {children}
+      </div>
+      <div className="flex justify-center mb-12">
+        <Todo.CreateCollectionBtn/>
+      </div>
+    </S.TodoSideBarContainer>
   )
 }

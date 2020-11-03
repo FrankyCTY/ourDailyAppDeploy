@@ -56,9 +56,10 @@ const rootStyles = {
 
 export const darkTheme = {
   body: rootStyles.black_0,
-  secondary_bg: rootStyles.black_m1,
+  // secondary_bg: rootStyles.black_m1,
+  secondary_bg: "#5E5E5E",
   
-  minor: rootStyles.gray0,
+  minor: rootStyles.gray_m2,
   minor_text: rootStyles.gray_0,
 
   wrapper_border: rootStyles.white_p2,

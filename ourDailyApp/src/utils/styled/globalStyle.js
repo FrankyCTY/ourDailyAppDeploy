@@ -63,10 +63,6 @@ body::-webkit-scrollbar-thumb {
       background: ${({theme}) => theme.secondary_bg};
       color: ${({theme}) => theme.general_text};
       top: 90px !important;
-
-      @media screen and (min-width: 640px) {
-        top: 55px !important;
-      }
     }
 
     & li {

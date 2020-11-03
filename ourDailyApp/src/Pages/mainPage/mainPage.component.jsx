@@ -31,7 +31,8 @@ const MainPage = () => {
     <>
     <S.MainPageContainer className="MainPage gs-page">
       <S.ImageFrameWrapper>
-        <ImageFrame src={_arrayBufferToBase64(userAvatar)} halo={true} withExtraText={true}
+        <ImageFrame src={_arrayBufferToBase64(userAvatar)} hasHoverEffect={true}
+        halo={true} withExtraText={true}
         onClick={() => {router.push("/settings")}}
         >
           <S.Username>{userDetails.name}</S.Username>

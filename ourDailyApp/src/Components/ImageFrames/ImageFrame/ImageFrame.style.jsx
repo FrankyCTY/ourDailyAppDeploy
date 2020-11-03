@@ -5,10 +5,10 @@ const S = {};
 
 S.ImageFrame = styled.div`
   font-size: clamp(0.8rem, 1.5vw, 1.5rem);
-  --size: 10em;
+  --size: ${({size}) => size};
   width: var(--size);
   height: var(--size);
-  border: 5px solid white;
+  border: .2rem solid white;
 
   border-radius: 100%;
   background-position: center;
@@ -29,13 +29,17 @@ S.Img = styled.img`
 
   transition: filter 250ms ease-in-out;
 
-  &:hover {
-    filter: blur(3px) brightness(0.5);
-  }
-  &:hover + .styled_editProfileSpan {
-    opacity: 1;
-    transform: translate(-50%, -20%);
-  }
+  ${({hasHoverEffect}) => {
+    if(hasHoverEffect === true) {
+      return `&:hover {
+        filter: blur(3px) brightness(0.5);
+      }
+      &:hover + .styled_editProfileSpan {
+        opacity: 1;
+        transform: translate(-50%, -20%);
+      };`;
+    }
+  }}
 `;
 
 S.EditProfileText = styled.span`

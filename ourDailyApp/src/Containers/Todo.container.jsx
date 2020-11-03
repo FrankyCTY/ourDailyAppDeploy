@@ -1,57 +1,82 @@
 import React, {useState} from "react";
-import {Todo, ToolBar} from "../Components/Compound Components";
-import {ReactComponent as ModifyLogo} from '../assets/svg/modify.svg';
-import {ReactComponent as PinLogo} from '../assets/svg/pin.svg';
-import {ReactComponent as BinLogo} from '../assets/svg/bin.svg';
+import {Todo} from "../Components/Compound Components";
+import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
+import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
+import useRouter from "../hooks/useRouter.hooks";
+import {ReactComponent as CollectionSingleLogo} from '../assets/svg/collection single.svg';
+import { useSelector } from "react-redux";
 
 function TodoContainer() {
-  return <Todo>
+  return (
+  <div className="flex">
+  {<Todo.TodoSideBar className="TodoSideBar">
+      <Todo.PairButton className="flex items-center pl-16" buttonText="Todo"><CollectionSingleLogo className="mr-4"/></Todo.PairButton>
+    </Todo.TodoSideBar>}
+  <Todo className="TodoContainer">
+    <TodoHeader/>
     <div className="todoBodyContainer flex">
       <TodoListSection/>
       <TodoItemDetailsSection/>
     </div>
   </Todo>
+  </div>
+  )
+}
+
+function TodoHeader() {
+  const router = useRouter();
+  const userAvatar = useSelector(state => state.auth_P.userAvatar);
+  const userName = useSelector((state) => state.auth_P.user.name);
+
+  return (
+    <div className="px-3" style={{borderBottom: "1px solid #303030"}}>
+      <div className="px-6 flex items-center justify-between">
+        <Todo.SearchBar/>
+        <div className="flex items-center">
+          <ImageFrame 
+          className="mr-4 text-sm transform translate-y-1" src={_arrayBufferToBase64(userAvatar)}
+          hasHoverEffect={false}
+          size="2.5rem" halo={true} withExtraText={true}
+          onClick={() => {router.push("/settings")}}/>
+          <Todo.Text className="lg:text-sm">{userName}</Todo.Text>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function TodoListSection() {
   return (
-    <div style={{width: "50%", borderRight: "2px solid #303030"}} className="p-2">
-      <Todo.TodoHeader className="mb-4" tagBoxText="12" title="Todo"/>
-      <Todo.TodoListItemBlock subTitle="Build backend for todolist" active="true"
-      previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
-      ></Todo.TodoListItemBlock>
-      <Todo.TodoListItemBlock subTitle="Build backend for todolist"
-      previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
-      ></Todo.TodoListItemBlock>
-      <Todo.TodoListItemBlock subTitle="Build backend for todolist"
-      previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
-      ></Todo.TodoListItemBlock>
-      <Todo.TodoListItemBlock subTitle="Build backend for todolist"
-      previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
-      ></Todo.TodoListItemBlock>
-      <Todo.TodoListItemBlock subTitle="Build backend for todolist"
-      previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
-      ></Todo.TodoListItemBlock>
-      <Todo.TodoListItemBlock subTitle="Build backend for todolist"
-      previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
-      ></Todo.TodoListItemBlock>
+    <div style={{borderRight: "1px solid #303030", height: "calc(100vh - 71px)"}} className="w-1/2 p-3 xl:w-5/12">
+      <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText="12" title="Todo">
+        <Todo.AddTodoBtn/>
+      </Todo.TodoHeader>
+      <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
+        <Todo.TodoListItemBlock subTitle="Build backend for todolist" active="true"
+        previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
+        ></Todo.TodoListItemBlock>
+        {new Array(20).fill(1).map(() =>       <Todo.TodoListItemBlock subTitle="Build backend for todolist"
+        previewText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..."
+        ></Todo.TodoListItemBlock>)}
+      </div>
+
     </div>
   )
 }
 
 function TodoItemDetailsSection() {
   return (
-    <div style={{width: "50%" }}>
-      <Todo.Group className="flex justify-between">
-        <Todo.TitleText className="font-normal text-base">Build backend for todolist</Todo.TitleText>
-        <Todo.ToolBox nobg={true} svgSize="1rem" svgMargin="0.1rem 0.2rem"/>
+    <div className="w-1/2 px-4 pt-12 xl:w-10/12">
+      <Todo.Group className="flex justify-between mb-4">
+        <Todo.TitleText className="font-normal text-sm lg:text-lg">Build backend for todolist</Todo.TitleText>
+        <Todo.ToolBox nobg={true} svgSize="1rem" svgMargin="0.1rem 0.5rem"/>
       </Todo.Group>
+      <Todo.Text className="leading-6 text-xs lg:text-sm">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been...
+      </Todo.Text>
     </div>
   )
 }
