@@ -17,21 +17,17 @@ const ProfileFormContainer = () => {
                 <Formik.AvatarContainer src={_arrayBufferToBase64(userAvatar)} 
                 className="mx-auto md:col-span-2 md:mb-12"/>
 
-                {/* Name */}
-                <Formik.Group>
-                    <Formik.Label htmlFor="name">Name</Formik.Label>
-                    <Formik.Group>
-                        <Formik.Input disabled={isUploadingUserDetails} value={name} onChange={handleInputChange} className="w-full" type="text" id="name" name="name"></Formik.Input>
-                    </Formik.Group>
-                </Formik.Group>
+            {/* Name */}
+            <Formik.InputGroup htmlFor="name" labelText="Name" 
+            disabled={isUploadingUserDetails} value={name} 
+            onChange={handleInputChange} className="w-full" 
+            type="text" id="name" name="name"/>
 
-                {/* Email */}
-                <Formik.Group>
-                    <Formik.Label htmlFor="email">E-mail</Formik.Label>
-                    <Formik.Group>
-                        <Formik.Input disabled={isUploadingUserDetails} value={email} onChange={handleInputChange} className="w-full" type="text" id="email" name="email"></Formik.Input>
-                    </Formik.Group>
-                </Formik.Group>
+            {/* Email */}
+            <Formik.InputGroup htmlFor="email" labelText="E-mail" 
+            disabled={isUploadingUserDetails} value={email} 
+            onChange={handleInputChange} className="w-full" 
+            type="text" id="email" name="email"/>
 
 
 
@@ -44,13 +40,10 @@ const ProfileFormContainer = () => {
             </Formik.Group>
 
             {/* Personal Website */}
-
-            <Formik.Group>
-                <Formik.Label htmlFor="website">Personal Website</Formik.Label>
-                <Formik.Group>
-                    <Formik.Input disabled={isUploadingUserDetails} value={personalWebsite} onChange={handleInputChange} className="w-full" type="text" id="personalWebsite" name="personalWebsite"></Formik.Input>
-                </Formik.Group>
-            </Formik.Group>
+            <Formik.InputGroup htmlFor="website" labelText="Personal Website" 
+            disabled={isUploadingUserDetails} value={personalWebsite} onChange={handleInputChange} 
+            className="w-full" type="text" id="personalWebsite" 
+            name="personalWebsite"/>
 
             {/* Gender dropdown */}
             <Formik.Group>

@@ -38,7 +38,7 @@ Popup.DefaultPopup = React.forwardRef(function DefaultPopup({setOpenPopup, open,
   }, [dismissPopup]);
 
   return <Popup open={open}>
-    <S.PopupContainer popupsize={"5rem"} ref={refNode} {...restProps}>{children}</S.PopupContainer>
+    <S.PopupContainer ref={refNode} {...restProps}>{children}</S.PopupContainer>
   </Popup>
 });
 

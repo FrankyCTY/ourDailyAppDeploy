@@ -52,6 +52,12 @@ S.Text = styled.p`
   color: ${({theme}) => theme.minor_text};
 `;
 
+S.AttractText = styled.span`
+  font-size: 0.7rem;
+  color: ${({theme}) => theme.attract_color};
+  cursor: pointer;
+`;
+
 S.ModifySvg = styled(ModifyLogo)`${toolBoxSvgStyles};`;
 S.PinSvg = styled(PinLogo)`${toolBoxSvgStyles};`;
 S.BinSvg = styled(BinLogo)`${toolBoxSvgStyles};`;
@@ -129,7 +135,7 @@ S.TodoListItemBlock = styled.div`
   }}
 
   ${({active, theme}) => {
-    if(active === false) {
+    if(!active) {
       return `
         &:hover {
           background: ${theme.minor};

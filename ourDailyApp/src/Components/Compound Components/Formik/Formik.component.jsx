@@ -65,6 +65,12 @@ Formik.CustomSubmitBtn = function FormikCustomSubmitBtn({children, ...restProps}
     return <S.FormikSubmitBtn {...restProps}>{children}</S.FormikSubmitBtn>
 }
 
+Formik.CancelBtn = function FormikCancelBtn({children, ...restProps}) {
+    return <S.CancelBtn {...restProps}>{children}</S.CancelBtn>
+}
+
+// Sets
+
 Formik.CustomCheckBox = function FormikCustomCheckBox({onClick, className, children, ...restProps }) {
     
     return (
@@ -144,5 +150,16 @@ Formik.DropDown = function DropDown({src, ...restProps}) {
             <MenuItem value={30}>Thirty</MenuItem>
         </S.Select>
     </S.FormSelectContainer>
+    )
+}
+
+Formik.InputGroup = function InputGroup({labelText, htmlFor, disabled, value, onChange, children, ...restProps}) {
+    return (
+        <Formik.Group>
+            <Formik.Label htmlFor={htmlFor}>{labelText}</Formik.Label>
+            <Formik.Group>
+                <Formik.Input disabled={disabled} value={value} onChange={onChange} {...restProps}></Formik.Input>
+            </Formik.Group>
+        </Formik.Group>
     )
 }

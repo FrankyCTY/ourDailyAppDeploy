@@ -1,7 +1,12 @@
-import React, {useState} from "react";
+import React from "react";
 import {Todo, ToolBar} from "../Components/Compound Components";
 
-function TodoMobileContainer({activeTodoItem, onTodoItemClick}) {
+function TodoMobileContainer({activeTodoItem, onTodoItemClick, popupProps}) {
+
+  const onAddTodoBtnClick = () => {
+    popupProps.setRenderPopup("addTodo");
+    popupProps.setOpenPopup(true);
+  }
 
   return <Todo>
     <Todo.MobileNav navText="Console" />
@@ -13,10 +18,10 @@ function TodoMobileContainer({activeTodoItem, onTodoItemClick}) {
 
     <ToolBar className="expanded">
       <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>
-      <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-plus"/></ToolBar.Btn>
+      <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-plus" onClick={onAddTodoBtnClick}/></ToolBar.Btn>
       <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x"/></ToolBar.Btn>
     </ToolBar>
   </Todo>
 }
 
-export default TodoMobileContainer
+export default TodoMobileContainer;

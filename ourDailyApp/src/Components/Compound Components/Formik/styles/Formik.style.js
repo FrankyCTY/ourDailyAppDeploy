@@ -101,7 +101,7 @@ font-size: 0.875rem;
 
 S.FormikSubmitBtn = styled(Button)`
     background: ${({theme}) => theme.attract_color} !important;
-
+    font-family: 'Poppins', sans-serif !important;
     &:hover {
         filter: brightness(1.2);
     }
@@ -110,6 +110,15 @@ S.FormikSubmitBtn = styled(Button)`
         background: gray !important;
         color: white !important;
     }
+`;
+
+S.CancelBtn = styled(Button)`
+background: ${({theme}) => theme.minor} !important;
+color: ${({theme}) => theme.minor_text} !important;
+font-family: 'Poppins', sans-serif !important;
+&:hover {
+    filter: brightness(1.2);
+}
 `;
 
 S.CustomCheckBox = styled.span`

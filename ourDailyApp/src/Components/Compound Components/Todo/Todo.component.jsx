@@ -33,6 +33,14 @@ Todo.Text = function Text({
     )
   }
 
+Todo.AttractText = function AttractText({
+  children, ...restProps
+}) {
+  return (
+    <S.AttractText {...restProps}>{children}</S.AttractText>
+    )
+  }
+
 Todo.Group = function Group({
   children, ...restProps
 }) {
@@ -62,10 +70,10 @@ Todo.TagBox = function TagBox({
   }
 
 Todo.ToolBox = function ToolBox({
-  svgSize, svgMargin, nobg, children, ...restProps
+  svgSize, svgMargin, nobg, onModifyClick, children, ...restProps
 }) {
 return <S.ToolBox nobg={nobg} {...restProps}>          
-<S.ModifySvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="modifySvg"/>
+<S.ModifySvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} onClick={onModifyClick} className="modifySvg"/>
 <S.PinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="pinSvg"/>
 <S.BinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
 {children}
@@ -73,11 +81,11 @@ return <S.ToolBox nobg={nobg} {...restProps}>
 }
 
 Todo.SearchBar = function SearchBar({
-  children, ...restProps
+  value, onChange, children, ...restProps
 }) {
   return <Todo.Group className="flex items-center">
     <S.SearchSvg className="iconfont icon-Search"/>
-    <S.SearchInput type="text" placeholder="Search..." />
+    <S.SearchInput type="text" placeholder="Search..." onChange={onChange} value={value} />
   </Todo.Group>
 }
 
@@ -142,7 +150,7 @@ Todo.TodoListItemBlock = function TodoListItemBlock({
 }
 
 Todo.TodoSideBar = function TodoSideBar({
-  children, ...restProps
+  onCreateCollectionClick, children, ...restProps
 }) {
   return (
     <S.TodoSideBarContainer {...restProps}>
@@ -152,7 +160,7 @@ Todo.TodoSideBar = function TodoSideBar({
         {children}
       </div>
       <div className="flex justify-center mb-12">
-        <Todo.CreateCollectionBtn/>
+        <Todo.CreateCollectionBtn onClick={onCreateCollectionClick}/>
       </div>
     </S.TodoSideBarContainer>
   )
