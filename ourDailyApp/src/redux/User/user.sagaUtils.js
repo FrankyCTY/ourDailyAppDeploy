@@ -4,7 +4,6 @@ import {populateCartApps, populateWishlistApps, updateCartTotalPrice} from "../c
 import {setUserAvatar} from "../Auth/auth.actions";
 
 class UserSagaUtils {
-    constructor() {};
 
     * populateUserBg(response) {
     console.log({hi: "I am inside of populateUserBg"})

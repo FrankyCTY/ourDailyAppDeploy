@@ -117,6 +117,7 @@ S.TodoListItemBlock = styled.div`
   padding: 1rem;
   border-radius: 22px;
   cursor: pointer;
+  margin-bottom: .5rem;
 
   ${({active, theme}) => {
     return active && `    
@@ -126,6 +127,17 @@ S.TodoListItemBlock = styled.div`
       text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
     }`;
   }}
+
+  ${({active, theme}) => {
+    if(active === false) {
+      return `
+        &:hover {
+          background: ${theme.minor};
+          filter: brightness(1.2);
+        }
+      `;
+    }
+  }}}
 `;
 
 S.BackLogo = styled(BackLogo)`

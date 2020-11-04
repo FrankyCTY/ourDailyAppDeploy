@@ -15,7 +15,7 @@ function TodoContainer(props) {
   <Todo className="TodoContainer">
     <TodoHeader/>
     <div className="todoBodyContainer flex">
-      <TodoListSection activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} />
+      <TodoListSection activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} popupProps={props.popupProps}/>
       <TodoItemDetailsSection/>
     </div>
   </Todo>
@@ -45,12 +45,17 @@ function TodoHeader() {
   )
 }
 
-function TodoListSection({activeTodoItem, onTodoItemClick}) {
+function TodoListSection({activeTodoItem, onTodoItemClick, popupProps}) {
+
+  const onAddTodoBtnClick = () => {
+    popupProps.setRenderPopup("addTodo");
+    popupProps.setOpenPopup(true);
+  }
 
   return (
     <div style={{borderRight: "1px solid #303030", height: "calc(100vh - 71px)"}} className="w-1/2 p-3 xl:w-5/12">
       <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText="12" title="Todo">
-        <Todo.AddTodoBtn/>
+        <Todo.AddTodoBtn onClick={onAddTodoBtnClick}/>
       </Todo.TodoHeader>
       <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
         {/* <Todo.TodoListItemBlock subTitle="Build backend for todolist" active="true"

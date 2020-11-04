@@ -22,3 +22,4 @@ export { default as SuccessFail } from "./SuccessFail/SuccessFail.component";
 export { default as Gallery } from "./Gallery/Gallery.component";
 export { default as FloatBtn } from "./FloatButton/floatButton.component";
 export { default as Todo } from "./Todo/Todo.component";
+export { default as Popup } from "./Popup/Popup.component";
