@@ -1,44 +1,19 @@
 import React, {useState} from "react";
-import {Todo, Formik, Preloader} from "../Components/Compound Components";
+import {Todo, Formik} from "../Components/Compound Components";
 import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
+import {setTodoSearchTerm} from "../redux/Todo/todo.actions";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
 import useRouter from "../hooks/useRouter.hooks";
-import Fuse from 'fuse.js';
-import { useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 
 function TodoContainer(props) {
-
-  const openedCollection = useSelector(state => state.todo.openedCollection);
-  const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
-  
-  const [searchTerm, setSearchTerm] = useState("");
-  
-  const options = {
-    shouldSort: true,
-    threshold: 0.4,
-    keys: ['title', 'body'],
-  } 
-  
-  // Filter of todo items
-  const filteredTodos = React.useMemo(() => {
-    // return [] if no search term or no users
-    if (!searchTerm || !todoItemsToDisplay) return todoItemsToDisplay || [];
-    // if user has entered search term and we have todos
-    const fuse = new Fuse(todoItemsToDisplay, options);
-    
-    return fuse.search(searchTerm);
-  }, [todoItemsToDisplay, searchTerm, options]);
-  
-
-  const todoItemsQuantity = filteredTodos.length;
-
-
   return (
     <div className="flex-1">
     <Todo className="TodoContainer">
-      <TodoHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+      <TodoHeader/>
       <div className="todoBodyContainer flex">
-        <TodoListSection todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} popupProps={props.popupProps}/>
+        <TodoListSection todoItemsQuantity={props.todoItemsQuantity} filteredTodos={props.filteredTodos} activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} popupProps={props.popupProps}/>
         <TodoItemDetailsSection/>
       </div>
     </Todo>
@@ -46,16 +21,18 @@ function TodoContainer(props) {
   )
 }
 
-function TodoHeader({searchTerm, setSearchTerm}) {
+function TodoHeader() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const userAvatar = useSelector(state => state.auth_P.userAvatar);
   const userName = useSelector((state) => state.auth_P.user.name);
+  const searchTerm = useSelector(state => state.todo.searchTerm);
   
 
   return (
     <div className="px-3" style={{borderBottom: "1px solid #303030"}}>
       <div className="px-6 flex items-center justify-between">
-        <Todo.SearchBar onChange={(e) => setSearchTerm(e.target.value)} value={searchTerm}/>
+        <Todo.SearchBar onChange={(e) => dispatch(setTodoSearchTerm(e.target.value))} value={searchTerm}/>
         <div className="flex items-center">
           <ImageFrame 
           className="mr-4 text-sm transform translate-y-1" src={_arrayBufferToBase64(userAvatar)}

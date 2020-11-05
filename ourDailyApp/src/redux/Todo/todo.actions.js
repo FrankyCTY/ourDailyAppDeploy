@@ -1,3 +1,4 @@
+import TodoPage from "../../Pages/Todo/Todo.page";
 import TodoActionTypes from "./todo.types";
 
 export const fetchTodoCollectionsStart = () => ({
@@ -61,4 +62,8 @@ export const openTodoSideBar = () => ({
 })
 export const closeTodoSideBar = () => ({
   type: TodoActionTypes.CLOSE_TODO_SIDEBAR
+})
+export const setTodoSearchTerm = (term) => ({
+  type: TodoActionTypes.SET_TODO_SEARCH_TERM,
+  term,
 })

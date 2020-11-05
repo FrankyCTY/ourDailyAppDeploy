@@ -11,6 +11,7 @@ const INITIATE_STATE = {
   isSideBarOpened: false,
   isFetchingCollections: false,
   isFetchingTodoItems: false,
+  searchTerm: "",
 };
 
 const todoReducer = (state = INITIATE_STATE, action) => {
@@ -79,6 +80,11 @@ const todoReducer = (state = INITIATE_STATE, action) => {
       return {
         ...state,
         isSideBarOpened: false,
+      }
+    case TodoActionTypes.SET_TODO_SEARCH_TERM:
+      return {
+        ...state,
+        searchTerm: action.term,
       }
     default:
       return state;

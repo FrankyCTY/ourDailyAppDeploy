@@ -3,10 +3,12 @@ import { useMediaQuery } from "react-responsive";
 import TodoMobileContainer from "../../Containers/TodoMobile.container";
 import TodoContainer from "../../Containers/Todo.container";
 import {useSelector, useDispatch} from "react-redux";
-import {Popup, Todo, Formik, Preloader} from "../../Components/Compound Components";
+import {Popup, Todo, Formik, Preloader, ToolBar} from "../../Components/Compound Components";
+import Fuse from 'fuse.js';
 
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
-  fetchTodoItemsForACollectionStart, setOpenedTodoCollection} from "../../redux/Todo/todo.actions";
+  fetchTodoItemsForACollectionStart, setOpenedTodoCollection
+, toggleSideBarOpen} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 
@@ -14,7 +16,9 @@ import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 const TodoPage = () => {
   const dispatch = useDispatch();
 
-  const renderDesktopAppWithoutSideBar = useMediaQuery({ query: "(min-width: 640px" });
+  const renderDesktopApp = useMediaQuery({ query: "(min-width: 640px" });
+  const showToolbar = useMediaQuery({ query: "(max-width: 1279px" });
+
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
   const todos = useSelector(state => state.todo.todos);
   const isSideBarOpened = useSelector(state => state.todo.isSideBarOpened);
@@ -36,6 +40,11 @@ const TodoPage = () => {
     popupProps.setOpenPopup(true);
   }
 
+  const onAddTodoBtnClick = () => {
+    popupProps.setRenderPopup("addTodo");
+    popupProps.setOpenPopup(true);
+  }
+
   const onCollectionClick = (e, collectionId, collectionName, createdAt) => {
     const isEmptyTodos = Object.keys(todos).length === 0;
     const needToFetchTodoItems = isEmptyTodos || todos[collectionId] === undefined;
@@ -49,6 +58,29 @@ const TodoPage = () => {
     
   }
 
+  const searchTerm = useSelector(state => state.todo.searchTerm);
+  
+  const openedCollection = useSelector(state => state.todo.openedCollection);
+  const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
+
+  const options = {
+    shouldSort: true,
+    threshold: 0.4,
+    keys: ['title', 'body'],
+  } 
+
+  const filteredTodos = React.useMemo(() => {
+    // return [] if no search term or no users
+    if (!searchTerm || !todoItemsToDisplay) return todoItemsToDisplay || [];
+    // if user has entered search term and we have todos
+    const fuse = new Fuse(todoItemsToDisplay, options);
+    
+    return fuse.search(searchTerm);
+  }, [todoItemsToDisplay, searchTerm, options]);
+  
+
+  const todoItemsQuantity = filteredTodos.length;
+
 
   useEffect(() => {
     if(collections.length === 0) dispatch(fetchTodoCollectionsStart());
@@ -61,10 +93,17 @@ const TodoPage = () => {
     collections={isFetchingCollections ? new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-4 w-3/4 mx-auto"/>)
     : collections.map((collection) => <Todo.PairButton key={collection.id} onClick={(e) => onCollectionClick(e, collection.id, collection.name, collection.createdAt)} className="flex items-center sm:pl-16" buttonText={collection.name}><Todo.CollectionSingleLogo className="mr-4"/></Todo.PairButton>)}
   />}
-    {renderDesktopAppWithoutSideBar ? 
-    <TodoContainer collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
-  : <TodoMobileContainer activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
+    {renderDesktopApp ? 
+    <TodoContainer todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
+  : <TodoMobileContainer todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
   }
+
+  { showToolbar && <ToolBar className="expanded">
+    <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>
+    <ToolBar.Btn onClick={onAddTodoBtnClick}><ToolBar.BtnIcon className="iconfont icon-plus"/></ToolBar.Btn>
+    <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x"/></ToolBar.Btn>
+  </ToolBar>}
+
   <Popup.DefaultPopup open={openPopup} setOpenPopup={setOpenPopup} className="flex flex-col">
     {renderPopup === "addTodo" && <AddTodoPopup setOpenPopup={setOpenPopup}/>}
     {renderPopup === "createCollection" && <CreateCollectionPopup setOpenPopup={setOpenPopup}/>}

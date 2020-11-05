@@ -1,9 +1,6 @@
 import React from "react";
 import S from "./styles/Todo.style";
-import useDismiss from "../../../hooks/useDismiss.hooks";
 import useRouter from "../../../hooks/useRouter.hooks";
-import {useDispatch, useSelector} from "react-redux";
-import {toggleSideBarOpen} from "../../../redux/Todo/todo.actions";
 import Formik from "../Formik/Formik.component";
 
 export default function Todo({ children, ...restProps }) {
