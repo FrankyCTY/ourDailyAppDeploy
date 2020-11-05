@@ -1,6 +1,8 @@
 import React from "react";
 import S from "./styles/Todo.style";
 import useRouter from "../../../hooks/useRouter.hooks";
+import useDismiss from "../../../hooks/useDismiss.hooks";
+import {useDispatch} from "react-redux";
 import Formik from "../Formik/Formik.component";
 
 export default function Todo({ children, ...restProps }) {
@@ -169,14 +171,29 @@ Todo.TodoListItemBlock = function TodoListItemBlock({
 }
 
 Todo.TodoSideBar = function TodoSideBar({
-  showSideBar, onCreateCollectionClick, collections, children, ...restProps
+  showSideBar, closeTodoSideBar, onCreateCollectionClick, collections, children, ...restProps
 }) {
+
+  const dispatch = useDispatch();
+
+  const node = React.useRef();
+
+  const dismissSidebar = useDismiss(node, () => dispatch(closeTodoSideBar()));
 
   const router = useRouter();
 
+  React.useEffect(() => {
+    // add eventListener to document when mounted
+    document.addEventListener("mousedown", dismissSidebar);
+    // remove eventListener from document when unmounted
+    return () => {
+      document.removeEventListener("mousedown", dismissSidebar);
+    };
+  }, [dismissSidebar]);
+
   return (
-    <>
-      <S.TodoSideBarContainer showSideBar={showSideBar} {...restProps}>
+    <S.TodoSideBarOverLay showSideBar={showSideBar}>
+      <S.TodoSideBarContainer showSideBar={showSideBar} {...restProps} ref={node}>
         <div className="overflow-y-auto flex-auto">
           <Todo.PairButton className="flex items-center" buttonText="Back to console" onClick={() => router.push('/main')}><S.ReturnSvg className="mr-4" /></Todo.PairButton>
           <Todo.SideBarDropdown className="flex items-center" buttonText="Collection" 
@@ -188,6 +205,6 @@ Todo.TodoSideBar = function TodoSideBar({
           <Todo.CreateCollectionBtn onClick={onCreateCollectionClick}/>
         </div>
       </S.TodoSideBarContainer>
-    </>
+    </S.TodoSideBarOverLay>
   )
 }

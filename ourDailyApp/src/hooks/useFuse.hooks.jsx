@@ -8,7 +8,7 @@ export default function useFuse(searchTerm, targetData) {
     keys: ['title', 'body'],
   } 
 
-  const filteredTodos = React.useMemo(() => {
+  const filteredData = React.useMemo(() => {
     // return [] if no search term or no users
     if (!searchTerm || !targetData) return targetData || [];
     // if user has entered search term and we have todos
@@ -17,5 +17,5 @@ export default function useFuse(searchTerm, targetData) {
     return fuse.search(searchTerm);
   }, [targetData, searchTerm, options]);
 
-  return [filteredTodos];
+  return [filteredData];
 }

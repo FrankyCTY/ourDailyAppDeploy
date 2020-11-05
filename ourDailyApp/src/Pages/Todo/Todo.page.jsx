@@ -9,7 +9,7 @@ import useFuse from "../../hooks/useFuse.hooks";
 
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
   fetchTodoItemsForACollectionStart, setOpenedTodoCollection
-, toggleSideBarOpen} from "../../redux/Todo/todo.actions";
+, toggleSideBarOpen, closeTodoSideBar} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 
@@ -73,7 +73,7 @@ const TodoPage = () => {
 
   // 0 - 640px mobile view
   return <div className="flex"> 
-    {<Todo.TodoSideBar showSideBar={isSideBarOpened} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
+    {<Todo.TodoSideBar showSideBar={isSideBarOpened} closeTodoSideBar={closeTodoSideBar} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
     collections={isFetchingCollections ? new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-4 w-3/4 mx-auto"/>)
     : collections.map((collection) => <Todo.PairButton key={collection.id} onClick={(e) => onCollectionClick(e, collection.id, collection.name, collection.createdAt)} className="flex items-center sm:pl-16" buttonText={collection.name}><Todo.CollectionSingleLogo className="mr-4"/></Todo.PairButton>)}
   />}

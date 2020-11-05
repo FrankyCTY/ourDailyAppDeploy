@@ -267,12 +267,30 @@ S.CreateCollectionBtn = styled.button`
   }
 `;
 
+S.TodoSideBarOverLay = styled.div`
+height: 100vh;
+width: 100vw;
+background: rgba(0,0,0,0.7);
+z-index: 10;
+position: fixed;
+left: 0;
+top: 0;
+transition: opacity 250ms ease-in-out;
+opacity: 0;
+cursor: pointer;
+pointer-events: none;
+
+${({showSideBar}) => {
+  if(showSideBar) return "opacity: 1; pointer-events: auto;";
+}}
+
+`;
+
 S.TodoSideBarContainer = styled.div`
   height: 100vh;
-  min-width: 160px;
+  min-width: 180px;
   background: ${({theme}) => theme.body};
   position: absolute;
-  z-index: 10;
   padding-top: 71px;
   padding-right: 1px;
   display: flex;
@@ -280,7 +298,7 @@ S.TodoSideBarContainer = styled.div`
   user-select: none;
   transition: transform 250ms ease-in-out;
   transform: translateX(-100%);
-  box-shadow: 2px 0 10px 2px rgba(0, 0, 0, 0.2);
+
   ${({showSideBar}) => {
     if(showSideBar) return "transform: translateX(0);";
   }}
