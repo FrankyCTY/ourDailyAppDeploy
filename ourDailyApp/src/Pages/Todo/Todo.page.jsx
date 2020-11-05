@@ -4,7 +4,8 @@ import TodoMobileContainer from "../../Containers/TodoMobile.container";
 import TodoContainer from "../../Containers/Todo.container";
 import {useSelector, useDispatch} from "react-redux";
 import {Popup, Todo, Formik, Preloader, ToolBar} from "../../Components/Compound Components";
-import Fuse from 'fuse.js';
+import usePopup from "../../hooks/usePopup.hooks";
+import useFuse from "../../hooks/useFuse.hooks";
 
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
   fetchTodoItemsForACollectionStart, setOpenedTodoCollection
@@ -22,13 +23,16 @@ const TodoPage = () => {
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
   const todos = useSelector(state => state.todo.todos);
   const isSideBarOpened = useSelector(state => state.todo.isSideBarOpened);
-
+  const openedCollection = useSelector(state => state.todo.openedCollection);
+  const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
   const collections = useSelector(state => state.todo.collections);
+  const searchTerm = useSelector(state => state.todo.searchTerm);
 
   const [activeTodoItem, onTodoItemClick] = useRecordClickTgt(null);
 
-  const [openPopup, setOpenPopup] = useState(false);
-  const [renderPopup, setRenderPopup] = useState(null);
+  const [openPopup, setOpenPopup, renderPopup, setRenderPopup] = usePopup();
+
+  const [filteredTodos] = useFuse(searchTerm, todoItemsToDisplay);
 
   const popupProps = {
     setOpenPopup,
@@ -36,13 +40,13 @@ const TodoPage = () => {
   }
 
   const onCreateCollectionClick = () => {
-    popupProps.setRenderPopup("createCollection");
-    popupProps.setOpenPopup(true);
+    setRenderPopup("createCollection");
+    setOpenPopup(true);
   }
 
   const onAddTodoBtnClick = () => {
-    popupProps.setRenderPopup("addTodo");
-    popupProps.setOpenPopup(true);
+    setRenderPopup("addTodo");
+    setOpenPopup(true);
   }
 
   const onCollectionClick = (e, collectionId, collectionName, createdAt) => {
@@ -57,27 +61,7 @@ const TodoPage = () => {
     }
     
   }
-
-  const searchTerm = useSelector(state => state.todo.searchTerm);
-  
-  const openedCollection = useSelector(state => state.todo.openedCollection);
-  const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
-
-  const options = {
-    shouldSort: true,
-    threshold: 0.4,
-    keys: ['title', 'body'],
-  } 
-
-  const filteredTodos = React.useMemo(() => {
-    // return [] if no search term or no users
-    if (!searchTerm || !todoItemsToDisplay) return todoItemsToDisplay || [];
-    // if user has entered search term and we have todos
-    const fuse = new Fuse(todoItemsToDisplay, options);
-    
-    return fuse.search(searchTerm);
-  }, [todoItemsToDisplay, searchTerm, options]);
-  
+ 
 
   const todoItemsQuantity = filteredTodos.length;
 
@@ -95,7 +79,7 @@ const TodoPage = () => {
   />}
     {renderDesktopApp ? 
     <TodoContainer todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
-  : <TodoMobileContainer todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
+  : <TodoMobileContainer todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick}/>
   }
 
   { showToolbar && <ToolBar className="expanded">

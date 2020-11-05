@@ -2,7 +2,7 @@ import React from "react";
 import {Todo} from "../Components/Compound Components";
 import {useSelector} from "react-redux";
 
-function TodoMobileContainer({activeTodoItem, onTodoItemClick, popupProps}) {
+function TodoMobileContainer({activeTodoItem, onTodoItemClick}) {
   const {name: collectionName, createdAt} = useSelector(state => state.todo.openedCollection);
   const openedCollection = useSelector(state => state.todo.openedCollection);
   const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id] || []);
