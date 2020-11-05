@@ -1,57 +1,44 @@
 import React, {useState} from "react";
-import {Todo, Formik} from "../Components/Compound Components";
+import {Todo, Formik, Preloader} from "../Components/Compound Components";
 import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
 import useRouter from "../hooks/useRouter.hooks";
-import {ReactComponent as CollectionSingleLogo} from '../assets/svg/collection single.svg';
 import Fuse from 'fuse.js';
 import { useSelector } from "react-redux";
 
 function TodoContainer(props) {
 
-  const todos = [
-    {
-      "title": "Build backend for todolist",
-      "body": "Lorem Ipsum is simply dummy text of the printing and typesetting indus...",
-    },
-    {
-      "title": "Hello World",
-      "body": "Default Body Text",
-    }
-  ]
+  const openedCollection = useSelector(state => state.todo.openedCollection);
+  const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
+  
   const [searchTerm, setSearchTerm] = useState("");
-
+  
   const options = {
     shouldSort: true,
     threshold: 0.4,
     keys: ['title', 'body'],
-  }
-
+  } 
+  
+  // Filter of todo items
   const filteredTodos = React.useMemo(() => {
     // return [] if no search term or no users
-    if (!searchTerm || !todos) return todos || [];
+    if (!searchTerm || !todoItemsToDisplay) return todoItemsToDisplay || [];
     // if user has entered search term and we have todos
-    const fuse = new Fuse(todos, options);
-
+    const fuse = new Fuse(todoItemsToDisplay, options);
+    
     return fuse.search(searchTerm);
-  }, [todos, searchTerm]);
+  }, [todoItemsToDisplay, searchTerm, options]);
+  
 
-  console.log({filteredTodos})
-  
-  const onCreateCollectionClick = () => {
-    props.popupProps.setRenderPopup("createCollection");
-    props.popupProps.setOpenPopup(true);
-  }
-  
+  const todoItemsQuantity = filteredTodos.length;
+
+
   return (
-    <div className="flex">
-    {<Todo.TodoSideBar onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar">
-        <Todo.PairButton className="flex items-center pl-16" buttonText="Todo"><CollectionSingleLogo className="mr-4"/></Todo.PairButton>
-      </Todo.TodoSideBar>}
-    <Todo className="TodoContainer flex-1">
+    <div className="flex-1">
+    <Todo className="TodoContainer">
       <TodoHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
       <div className="todoBodyContainer flex">
-        <TodoListSection filteredTodos={filteredTodos} activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} popupProps={props.popupProps}/>
+        <TodoListSection todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} popupProps={props.popupProps}/>
         <TodoItemDetailsSection/>
       </div>
     </Todo>
@@ -82,7 +69,9 @@ function TodoHeader({searchTerm, setSearchTerm}) {
   )
 }
 
-function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupProps}) {
+function TodoListSection({todoItemsQuantity, filteredTodos, activeTodoItem, onTodoItemClick, popupProps}) {
+
+  const {name: collectionName, createdAt} = useSelector(state => state.todo.openedCollection);
 
   const onAddTodoBtnClick = () => {
     popupProps.setRenderPopup("addTodo");
@@ -91,7 +80,7 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
 
   return (
     <div style={{borderRight: "1px solid #303030", height: "calc(100vh - 71px)"}} className="w-1/2 p-3 xl:w-1/3">
-      <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText="12" title="Todo">
+      <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText={todoItemsQuantity} title={collectionName}>
         <Todo.AddTodoBtn onClick={onAddTodoBtnClick}/>
       </Todo.TodoHeader>
       <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>

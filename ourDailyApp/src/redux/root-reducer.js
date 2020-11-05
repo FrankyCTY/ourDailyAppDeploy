@@ -22,7 +22,7 @@ import UserReducer from "./User/user.reducer";
 import GalleryReducer from "./Gallery/gallery.reducer";
 import ThemeReducer from "./Theme/theme.reducer";
 import themeReducer_P from "./Theme/theme_P.reducer";
-
+import todoReducer from "./Todo/todo.reducer";
 // =========== Applications ===========
 import pigGameReducer from "./pigGame/pigGame.reducer";
 import pigGameModalsReducer from "./pigGameModals/pigGameModals.reducer";
@@ -56,6 +56,7 @@ const topLevelReducers = combineReducers({
   gallery: GalleryReducer,
   theme: ThemeReducer,
   theme_P: themeReducer_P,
+  todo: todoReducer,
   // =========== Applications ===========
   pigGame: pigGameReducer,
   pigGameModals: pigGameModalsReducer,

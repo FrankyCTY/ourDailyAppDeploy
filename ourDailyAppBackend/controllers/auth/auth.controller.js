@@ -2,7 +2,6 @@
 const S3 = require("../../helpers/S3");
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const User = require("../../models/user/user.model");
-const authUtils = require("./auth.utils");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const OperationalErr = require("../../helpers/OperationalErr");

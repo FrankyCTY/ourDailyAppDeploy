@@ -5,6 +5,7 @@ import {ReactComponent as PinLogo} from '../../../../assets/svg/pin.svg';
 import {ReactComponent as BinLogo} from '../../../../assets/svg/bin.svg';
 import {ReactComponent as ReturnLogo} from '../../../../assets/svg/return.svg';
 import {ReactComponent as CollectionLogo} from '../../../../assets/svg/collection.svg';
+import {ReactComponent as CollectionSingleLogo} from '../../../../assets/svg/collection single.svg';
 
 const textStyles = css`
   color: ${({theme}) => theme.general_text};
@@ -91,6 +92,18 @@ S.ToolBox = styled.div`
 `;
 
 S.Group = styled.div`
+`;
+
+S.SideBarDropdown = styled.div`
+  & .icon-play {
+    ${({isExpanded}) => {
+      if(isExpanded) {
+        return "transform: rotate(90deg);";
+      } else {
+        return "transform: rotate(0deg);";
+      }
+    }}
+  }
 `;
 
 S.SearchInput = styled.input`
@@ -180,8 +193,8 @@ top: 5px;
 
 S.PairButton = styled.div`
   cursor: pointer;
-  padding: .8rem;
-  padding-left: 2.8rem;
+  padding: .4rem;
+  padding-left: 1rem;
   position: relative;
   &.active {
     background: ${({theme}) => theme.secondary_bg};
@@ -189,39 +202,74 @@ S.PairButton = styled.div`
   &:hover {
     filter: brightness(1.2);
   }
+
+  @media screen and (min-width: 550px) {
+    padding: .8rem;
+    padding-left: 2.8rem;
+  }
 `;
 
 S.PairButtonText = styled.span`
   ${pairButtonStyles};
-  font-size: .9rem;
+  font-size: .7rem;
+
+  @media screen and (min-width: 550px) {
+    font-size: .9rem;
+  }
 `;
 
 S.ArrowIcon = styled.i`
 ${pairButtonStyles};
-font-size: 0.7rem;
+font-size: 0.4rem;
 position: absolute;
-left: 1rem;
+left: 0rem;
+
+@media screen and (min-width: 550px) {
+  left: 1rem;
+  font-size: 0.7rem;
+}
 `;
 
 S.ReturnSvg = styled(ReturnLogo)`
   ${pairButtonStyles};
-  font-size: .8rem;
+  width: 1.2rem;
+
+  @media screen and (min-width: 550px) {
+    width: initial;
+  }
+`;
+S.CollectionSingleLogo = styled(CollectionSingleLogo)`
+  ${pairButtonStyles};
+  width: 1.2rem;
+
+  @media screen and (min-width: 550px) {
+    width: initial;
+  }
 `;
 S.CollectionSvg = styled(CollectionLogo)`
   ${pairButtonStyles};
-  font-size: .8rem;
+  width: 1.2rem;
+
+  @media screen and (min-width: 550px) {
+    width: initial;
+  }
 `;
 
 S.CreateCollectionBtn = styled.button`
   ${attractBtnStyles};
-  font-size: .8rem;
+  font-size: .6rem;
   border-radius: 12px;
-  padding: .8rem 1.5rem;
+  padding: .5rem 1.2rem;
+
+  @media screen and (min-width: 550px) {
+    font-size: .8rem;
+    padding: .8rem 1.5rem;
+  }
 `;
 
 S.TodoSideBarContainer = styled.div`
   height: 100vh;
-  min-width: 270px;
+  min-width: 160px;
   background: ${({theme}) => theme.body};
   position: absolute;
   z-index: 10;
@@ -229,11 +277,25 @@ S.TodoSideBarContainer = styled.div`
   padding-right: 1px;
   display: flex;
   flex-direction: column;
+  user-select: none;
+  transition: transform 250ms ease-in-out;
+  transform: translateX(-100%);
+  box-shadow: 2px 0 10px 2px rgba(0, 0, 0, 0.2);
+  ${({showSideBar}) => {
+    if(showSideBar) return "transform: translateX(0);";
+  }}
+
+  @media screen and (min-width: 550px) {
+    min-width: 270px;
+  }
 
   @media screen and (min-width: 1280px) {
     position: initial;
+    transform: translateX(0);
+  box-shadow: initial;
   }
 `;
+
 
 
 

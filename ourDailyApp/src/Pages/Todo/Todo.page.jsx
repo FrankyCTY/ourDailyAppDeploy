@@ -2,14 +2,24 @@ import React, {useState, useEffect} from "react";
 import { useMediaQuery } from "react-responsive";
 import TodoMobileContainer from "../../Containers/TodoMobile.container";
 import TodoContainer from "../../Containers/Todo.container";
+import {useSelector, useDispatch} from "react-redux";
+import {Popup, Todo, Formik, Preloader} from "../../Components/Compound Components";
 
-import {Popup, Todo, Formik} from "../../Components/Compound Components";
+import {createTodoCollectionStart, fetchTodoCollectionsStart, 
+  fetchTodoItemsForACollectionStart, setOpenedTodoCollection} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 
 
 const TodoPage = () => {
+  const dispatch = useDispatch();
+
   const renderDesktopAppWithoutSideBar = useMediaQuery({ query: "(min-width: 640px" });
+  const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
+  const todos = useSelector(state => state.todo.todos);
+  const isSideBarOpened = useSelector(state => state.todo.isSideBarOpened);
+
+  const collections = useSelector(state => state.todo.collections);
 
   const [activeTodoItem, onTodoItemClick] = useRecordClickTgt(null);
 
@@ -21,18 +31,45 @@ const TodoPage = () => {
     setRenderPopup,
   }
 
+  const onCreateCollectionClick = () => {
+    popupProps.setRenderPopup("createCollection");
+    popupProps.setOpenPopup(true);
+  }
+
+  const onCollectionClick = (e, collectionId, collectionName, createdAt) => {
+    const isEmptyTodos = Object.keys(todos).length === 0;
+    const needToFetchTodoItems = isEmptyTodos || todos[collectionId] === undefined;
+    // set opened collection id
+    dispatch(setOpenedTodoCollection({id: collectionId, name: collectionName, createdAt}));
+
+    // Get todo items data for collection
+    if(needToFetchTodoItems) {
+      dispatch(fetchTodoItemsForACollectionStart(collectionId));
+    }
+    
+  }
+
+
+  useEffect(() => {
+    if(collections.length === 0) dispatch(fetchTodoCollectionsStart());
+  }, [dispatch, collections.length]);
+
 
   // 0 - 640px mobile view
-  return <> 
+  return <div className="flex"> 
+    {<Todo.TodoSideBar showSideBar={isSideBarOpened} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
+    collections={isFetchingCollections ? new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-4 w-3/4 mx-auto"/>)
+    : collections.map((collection) => <Todo.PairButton key={collection.id} onClick={(e) => onCollectionClick(e, collection.id, collection.name, collection.createdAt)} className="flex items-center sm:pl-16" buttonText={collection.name}><Todo.CollectionSingleLogo className="mr-4"/></Todo.PairButton>)}
+  />}
     {renderDesktopAppWithoutSideBar ? 
-    <TodoContainer activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
+    <TodoContainer collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
   : <TodoMobileContainer activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
   }
   <Popup.DefaultPopup open={openPopup} setOpenPopup={setOpenPopup} className="flex flex-col">
     {renderPopup === "addTodo" && <AddTodoPopup setOpenPopup={setOpenPopup}/>}
     {renderPopup === "createCollection" && <CreateCollectionPopup setOpenPopup={setOpenPopup}/>}
   </Popup.DefaultPopup>
-  </>
+  </div>
 }
 
 export default TodoPage;
@@ -74,7 +111,15 @@ const AddTodoPopup = ({setOpenPopup}) => {
 }
 
 const CreateCollectionPopup = ({setOpenPopup}) => {
+  const [name, setName] = useState("");
 
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    dispatch(createTodoCollectionStart(name));
+    setOpenPopup(false);
+    setName("");
+  }
   const onCancelClick = () => {
     setOpenPopup(false);
   }
@@ -87,13 +132,13 @@ const CreateCollectionPopup = ({setOpenPopup}) => {
       <Formik.Group className="mb-4">
           <Formik.Label className="text-sm" htmlFor={"name"}>Name</Formik.Label>
           <Formik.Group>
-              <Formik.Input className="text-xs" placeholder="Collection Name" disabled={false} onChange={() => {}}></Formik.Input>
+              <Formik.Input className="text-xs" placeholder="Collection Name" disabled={false} value={name} onChange={(e) => {setName(e.target.value)}}></Formik.Input>
           </Formik.Group>
       </Formik.Group>
     </Popup.Body>
     <Popup.Footer className="px-4 py-2 flex justify-end">
         <Formik.CancelBtn onClick={onCancelClick} className="text-xs capitalize text-white px-4 mr-2">Cancel</Formik.CancelBtn>
-        <Formik.CustomSubmitBtn className="text-xs capitalize text-white px-4">Create</Formik.CustomSubmitBtn>
+        <Formik.CustomSubmitBtn onClick={onSubmit} className="text-xs capitalize text-white px-4">Create</Formik.CustomSubmitBtn>
     </Popup.Footer>
   </>
 }

@@ -1,6 +1,9 @@
 import React from "react";
 import S from "./styles/Todo.style";
-
+import useDismiss from "../../../hooks/useDismiss.hooks";
+import useRouter from "../../../hooks/useRouter.hooks";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleSideBarOpen} from "../../../redux/Todo/todo.actions";
 import Formik from "../Formik/Formik.component";
 
 export default function Todo({ children, ...restProps }) {
@@ -89,15 +92,34 @@ Todo.SearchBar = function SearchBar({
   </Todo.Group>
 }
 
+Todo.CollectionSingleLogo = function CollectionSingleLogo({children, ...restProps}) {
+  return <S.CollectionSingleLogo {...restProps}></S.CollectionSingleLogo>
+}
+
 Todo.PairButton = function PairButton({
   withArrow, buttonText, children, ...restProps
 }) {
-  return (
-    <S.PairButton {...restProps}>
+  return <S.PairButton {...restProps}>
       {withArrow && <S.ArrowIcon className="iconfont icon-play"/>}
       {children}
       <S.PairButtonText>{buttonText}</S.PairButtonText>
-    </S.PairButton>)
+    </S.PairButton>
+}
+
+Todo.SideBarDropdown = function SideBarDropdown({
+  withArrow, dropdownItem, buttonText, children, ...restProps
+}) {
+
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
+  return <S.SideBarDropdown isExpanded={isExpanded}>
+    <S.PairButton {...restProps} onClick={() => setIsExpanded(!isExpanded)}>
+    {withArrow && <S.ArrowIcon className="iconfont icon-play"/>}
+    {children}
+      <S.PairButtonText>{buttonText}</S.PairButtonText>
+    </S.PairButton>
+    {isExpanded && dropdownItem}
+  </S.SideBarDropdown>
 }
 
 Todo.CreateCollectionBtn = function CreateCollectionBtn({
@@ -123,7 +145,7 @@ Todo.TodoHeader = function TodoHeader({
     <S.TodoHeader {...restProps}>
       <Formik.DropDown/>
       <S.Group>
-        <Todo.TitleText className="mr-2">{title}</Todo.TitleText>
+        <Todo.TitleText className="mr-2 text-base sm:text-2xl">{title}</Todo.TitleText>
         <S.TagBox>{tagBoxText}</S.TagBox>
       </S.Group>
       {children}
@@ -150,18 +172,25 @@ Todo.TodoListItemBlock = function TodoListItemBlock({
 }
 
 Todo.TodoSideBar = function TodoSideBar({
-  onCreateCollectionClick, children, ...restProps
+  showSideBar, onCreateCollectionClick, collections, children, ...restProps
 }) {
+
+  const router = useRouter();
+
   return (
-    <S.TodoSideBarContainer {...restProps}>
-      <div className="overflow-y-auto flex-auto">
-        <Todo.PairButton className="flex items-center" buttonText="Back to console"><S.ReturnSvg className="mr-4" /></Todo.PairButton>
-        <Todo.PairButton className="flex items-center" buttonText="Collection" withArrow={true}><S.CollectionSvg className="mr-4" /></Todo.PairButton>
-        {children}
-      </div>
-      <div className="flex justify-center mb-12">
-        <Todo.CreateCollectionBtn onClick={onCreateCollectionClick}/>
-      </div>
-    </S.TodoSideBarContainer>
+    <>
+      <S.TodoSideBarContainer showSideBar={showSideBar} {...restProps}>
+        <div className="overflow-y-auto flex-auto">
+          <Todo.PairButton className="flex items-center" buttonText="Back to console" onClick={() => router.push('/main')}><S.ReturnSvg className="mr-4" /></Todo.PairButton>
+          <Todo.SideBarDropdown className="flex items-center" buttonText="Collection" 
+            withArrow={true} dropdownItem={collections}>
+            <S.CollectionSvg className="mr-4"/>
+          </Todo.SideBarDropdown>
+        </div>
+        <div className="flex justify-center mb-12">
+          <Todo.CreateCollectionBtn onClick={onCreateCollectionClick}/>
+        </div>
+      </S.TodoSideBarContainer>
+    </>
   )
 }
