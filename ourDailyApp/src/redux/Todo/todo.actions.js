@@ -33,6 +33,20 @@ export const createTodoItemSuccess = (successCallbackFn) => ({
 export const createTodoItemFailure = () => ({
   type: TodoActionTypes.CREATE_TODO_ITEM_FAILURE,
 })
+export const modifyTodoItemStart = (title, body, todoItemId, successCallbackFn) => ({
+  type: TodoActionTypes.MODIFY_TODO_ITEM_START,
+  title,
+  body,
+  todoItemId,
+  successCallbackFn,
+})
+export const modifyTodoItemSuccess = (successCallbackFn) => ({
+  type: TodoActionTypes.MODIFY_TODO_ITEM_SUCCESS,
+  successCallbackFn,
+})
+export const modifyTodoItemFailure = () => ({
+  type: TodoActionTypes.MODIFY_TODO_ITEM_FAILURE,
+})
 export const addTodoItem = (todoItem, collectionId) => ({
   type: TodoActionTypes.ADD_TODO_ITEMS_TO_A_COLLECTION,
   todoItem,
@@ -76,6 +90,12 @@ export const isCreatingTodoItemTrue = () => ({
 export const isCreatingTodoItemFalse = () => ({
   type: TodoActionTypes.IS_CREATING_TODO_ITEM_FALSE
 })
+export const isModifyingTodoItemTrue = () => ({
+  type: TodoActionTypes.IS_MODIFYING_TODO_ITEM_TRUE
+})
+export const isModifyingTodoItemFalse = () => ({
+  type: TodoActionTypes.IS_MODIFYING_TODO_ITEM_FALSE
+})
 export const isFetchingTodoItemsTrue = () => ({
   type: TodoActionTypes.IS_FETCHING_TODO_ITEMS_TRUE
 })
@@ -94,4 +114,9 @@ export const closeTodoSideBar = () => ({
 export const setTodoSearchTerm = (term) => ({
   type: TodoActionTypes.SET_TODO_SEARCH_TERM,
   term,
+})
+
+export const modifyTodoItem = (todoItem) => ({
+  type: TodoActionTypes.MODIFY_TODO_ITEM,
+  todoItem,
 })

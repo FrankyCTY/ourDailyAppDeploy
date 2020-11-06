@@ -3,6 +3,7 @@ const Collection = require("../../models/collection/collection.model");
 const QueryStringHandler = require("../../helpers/QueryStringHandler");
 const OperationalErr = require("../../helpers/OperationalErr");
 const TodoItem = require("../../models/todoItem/todoItem.model");
+const { update } = require("../../models/collection/collection.model");
 
 exports.createTodoItems = withCatchErrAsync(async (req, res, next) => {
   const {collectionId} = req.params;
@@ -13,7 +14,7 @@ exports.createTodoItems = withCatchErrAsync(async (req, res, next) => {
   console.log({collectionId})
   console.log(req.params)
 
-  return res.status(210).json({
+  return res.status(201).json({
     status: "success",
     data: {
         todoItem: todoItemDoc,
@@ -43,3 +44,21 @@ exports.getAllTodoItems = withCatchErrAsync(async (req, res) => {
       },
   });
 });
+
+exports.modifyTodoItem = withCatchErrAsync(async (req, res, next) => {
+  const {todoItemId} = req.params;
+  const {title, body} = req.body;
+
+  const updatedTodoItemDoc = await TodoItem.findByIdAndUpdate(todoItemId, {title, body}, {new: true});
+
+  if(!updatedTodoItemDoc) {
+    return next(new OperationalErr("Target todo item not found.", 400, "local"));
+  }
+
+  return res.status(200).json({
+    status: "success",
+    data: {
+      todoItem: updatedTodoItemDoc
+    }
+  })
+})

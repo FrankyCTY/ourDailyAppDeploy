@@ -4,14 +4,32 @@ export const populateTodoItemsToCollection = (todos, todoItems, parentCollection
 }
 
 export const addTodoItemsToCollection = (todos, todoItemToAdd, parentCollectionId) => {
-  console.log({todos})
-  console.log({todoItemToAdd})
+  const newTodos = {...todos};
 
   if(!todos[parentCollectionId]) {
-    todos[parentCollectionId] = [];
+    newTodos[parentCollectionId] = [];
   }
 
-  todos[parentCollectionId].push(todoItemToAdd);
-  console.log({todos})
-  return todos;
+  newTodos[parentCollectionId].push(todoItemToAdd);
+  return newTodos;
+}
+
+export const modifyTodoItem = (todos, modifiedTodoItem, parentCollectionId) => {
+  console.log({parentCollectionId})
+  
+  if(!todos[parentCollectionId]) {
+    return;
+  }
+  
+  const targetTodoItemId = modifiedTodoItem.id;
+  const targetIndex = todos[parentCollectionId].findIndex(todoItem => todoItem.id === targetTodoItemId);
+  const newTodos = {...todos};
+
+  if(targetIndex !== -1) {
+    console.log("modify todoitem!")
+    console.log(todos[parentCollectionId]);
+    newTodos[parentCollectionId][targetIndex] = {...modifiedTodoItem};
+  }
+
+  return newTodos;
 }

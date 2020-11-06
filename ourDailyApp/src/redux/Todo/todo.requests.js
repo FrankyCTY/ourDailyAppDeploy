@@ -54,3 +54,19 @@ export async function createTodoItem([title, body, url]) {
 
   return res;
 }
+
+export async function modifyTodoItemToBackene([title, body, url]) {
+  const res = await axios({
+    method: "PUT",
+    data: {
+      title,
+      body,
+    },
+    url,
+    withCredentials: true,
+  })
+
+  console.log({res})
+
+  return res;
+}

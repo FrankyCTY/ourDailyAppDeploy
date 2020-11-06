@@ -8,5 +8,7 @@ const router = express.Router({ mergeParams: true });
 router.route('/').post(authController.protect, todoItemController.createTodoItems)
 .get(authController.protect, todoItemController.getAllTodoItems);
 
+router.route('/:todoItemId').put(authController.protect, todoItemController.modifyTodoItem);
+
 
 module.exports = router;

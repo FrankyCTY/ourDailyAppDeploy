@@ -186,10 +186,14 @@ Todo.TodoSideBar = function TodoSideBar({
     // add eventListener to document when mounted
     document.addEventListener("mousedown", dismissSidebar);
     // remove eventListener from document when unmounted
+    if(!showSideBar) {
+      document.removeEventListener("mousedown", dismissSidebar);
+    }
     return () => {
       document.removeEventListener("mousedown", dismissSidebar);
     };
-  }, [dismissSidebar]);
+
+  }, [dismissSidebar, showSideBar]);
 
   return <>
   {withOverlay ?

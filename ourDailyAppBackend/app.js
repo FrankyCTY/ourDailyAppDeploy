@@ -8,8 +8,8 @@ const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routers/user.router");
 const todoRouter = require('./routers/todo.router');
-const todoItemsRouter = require("./routers/todoItem.router");
-const cillectionsRouter = require("./routers/collection.router");
+// const todoItemsRouter = require("./routers/todoItem.router");
+// const cillectionsRouter = require("./routers/collection.router");
 const applicationRouter = require("./routers/application.router");
 const globalErrorHandler = require("./controllers/globalErrController");
 const OperationalErr = require("./helpers/OperationalErr");
@@ -111,10 +111,6 @@ app.use(`${process.env.URL}/users`, userRouter);
 app.use(`${process.env.URL}/applications`, applicationRouter);
 
 app.use(`${process.env.URL}/todo`, todoRouter);
-
-app.use(`${process.env.URL}/todoItems`, todoItemsRouter);
-
-app.use(`${process.env.URL}/collections`, cillectionsRouter);
 
 app.all("*", (req, res, next) => {
   return next(

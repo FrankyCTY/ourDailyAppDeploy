@@ -28,6 +28,7 @@ const TodoPage = () => {
   const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
   const collections = useSelector(state => state.todo.collections);
   const searchTerm = useSelector(state => state.todo.searchTerm);
+  
 
   const [activeTodoItem, onRecordTodoItemClick] = useRecordClickTgt(null);
 

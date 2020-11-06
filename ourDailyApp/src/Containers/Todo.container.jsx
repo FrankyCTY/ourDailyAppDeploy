@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Todo, Formik, Preloader} from "../Components/Compound Components";
 import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
-import {setTodoSearchTerm} from "../redux/Todo/todo.actions";
+import {setTodoSearchTerm, modifyTodoItemStart} from "../redux/Todo/todo.actions";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
 import useRouter from "../hooks/useRouter.hooks";
 
@@ -85,26 +85,44 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
 
 function TodoItemDetailsSection() {
 
+  const dispatch = useDispatch();
+
   const openedTodoItem = useSelector(state => state.todo.openedTodoItem);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
 
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const onfinishEditClick = () => {
-    setIsEditMode(false);
+  const onInputChange = (e, setFn) => {
+    const {value} = e.target;
+    console.log({value})
+    setFn(value);
+  }
+
+  const onfinishEditClick = (e, todoItemId) => {
+    dispatch(modifyTodoItemStart(title, body, todoItemId, () => setIsEditMode(false)));
   }
 
   const onCancelEditClick = () => {
     setIsEditMode(false);
   }
 
+  React.useEffect(() => {
+    if(openedTodoItem.title && openedTodoItem.body)
+    {
+      setTitle(openedTodoItem.title);
+      setBody(openedTodoItem.body);
+    }
+  }, [openedTodoItem.title, openedTodoItem.body]);
+
   const renderTitle = () => {
-    return isEditMode ? <Formik.Input className="font-normal text-sm lg:text-lg" defaultValue={openedTodoItem.title}></Formik.Input> 
+    return isEditMode ? <Formik.Input className="font-normal text-sm lg:text-lg" value={title} onChange={(e) => onInputChange(e, setTitle)}></Formik.Input> 
   : <Todo.TitleText className="font-normal text-sm lg:text-lg">{openedTodoItem.title}</Todo.TitleText>;
   }
 
   const renderBody = () => {
     return isEditMode ? <Formik.Textarea className="leading-6 text-xs lg:text-sm" disabled={false} rows="10" 
-    defaultValue={openedTodoItem.body} 
+    value={body} onChange={(e) => onInputChange(e, setBody)}
     type="text" id="bio" name="bio"></Formik.Textarea>
     : <Todo.Text className="leading-6 text-xs lg:text-sm">
       {openedTodoItem.body}
@@ -122,7 +140,7 @@ function TodoItemDetailsSection() {
 
     {isEditMode && <Todo.Group>
       <button className="text-white py-1 px-2 rounded-lg mr-2 mt-4" 
-      style={{background: `#0059A6`}} onClick={onfinishEditClick}><i className="iconfont icon-tick"/></button>
+      style={{background: `#0059A6`}} onClick={(e) => onfinishEditClick(e, openedTodoItem.id)}><i className="iconfont icon-tick"/></button>
       
       <button className="text-white py-1 px-2 rounded-lg" 
       style={{background: `#848484`}} onClick={onCancelEditClick}><i className="iconfont icon-chax"/></button>

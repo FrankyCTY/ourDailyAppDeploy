@@ -1,6 +1,6 @@
 import TodoActionTypes from "./todo.types";
 
-import {populateTodoItemsToCollection, addTodoItemsToCollection} from "./todo.utils";
+import {populateTodoItemsToCollection, addTodoItemsToCollection, modifyTodoItem} from "./todo.utils";
 
 const INITIATE_STATE = {
   // collections: [{id: 123, name: "new col"}],
@@ -13,6 +13,7 @@ const INITIATE_STATE = {
   isFetchingCollections: false,
   isFetchingTodoItems: false,
   isCreatingTodoItem: false,
+  isModifyingTodoItem: false,
   searchTerm: "",
 };
 
@@ -83,6 +84,16 @@ const todoReducer = (state = INITIATE_STATE, action) => {
         ...state,
         isCreatingTodoItem: false,
       }
+    case TodoActionTypes.IS_MODIFYING_TODO_ITEM_TRUE:
+      return {
+        ...state,
+        isModifyingTodoItem: true,
+      }
+    case TodoActionTypes.IS_MODIFYING_TODO_ITEM_FALSE:
+      return {
+        ...state,
+        isModifyingTodoItem: false,
+      }
     case TodoActionTypes.TOGGLE_SIDEBAR_OPEN:
       return {
         ...state,
@@ -102,6 +113,11 @@ const todoReducer = (state = INITIATE_STATE, action) => {
       return {
         ...state,
         searchTerm: action.term,
+      }
+    case TodoActionTypes.MODIFY_TODO_ITEM:
+      return {
+        ...state,
+        todos: modifyTodoItem(state.todos, action.todoItem, state.openedCollection.id),
       }
     default:
       return state;
