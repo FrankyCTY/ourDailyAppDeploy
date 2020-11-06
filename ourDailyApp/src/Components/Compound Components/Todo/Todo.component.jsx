@@ -60,6 +60,7 @@ Todo.MobileNav = function MobileNav({
     <S.MobileNav {...restProps}>
       <S.BackLogo/>
       <S.NavText>{navText}</S.NavText>
+      {children}
     </S.MobileNav>
     )
   }
@@ -72,20 +73,30 @@ Todo.TagBox = function TagBox({
     )
   }
 
+
+Todo.BinSvg = function BinSvg({
+  svgSize, svgMargin, children, itemId, ...restProps
+}) {
+  const dispatch = useDispatch();
+
+  const onBinSvgClick = () => {
+    dispatch(setRenderTodoPopup("deleteTodoItem"));
+    dispatch(toggleTodoPopupOpen());
+  }
+
+  return <S.BinSvg onClick={onBinSvgClick} svgsize={svgSize || "0.8rem"} 
+  svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg" {...restProps}/>
+}
+
 Todo.ToolBox = function ToolBox({
   svgSize, svgMargin, nobg, children, itemId, ...restProps
 }) {
 const dispatch = useDispatch();
 
-const onBinSvgClick = () => {
-  dispatch(setRenderTodoPopup("deleteTodoItem"));
-  dispatch(toggleTodoPopupOpen());
-}
-
 return <S.ToolBox nobg={nobg} {...restProps}>          
 <S.ModifySvg onClick={() => dispatch(toggleEditTodoItemMode())} svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="modifySvg"/>
 <S.PinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="pinSvg"/>
-<S.BinSvg onClick={onBinSvgClick} svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
+<Todo.BinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
 {children}
 </S.ToolBox>
 }

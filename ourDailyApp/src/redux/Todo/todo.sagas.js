@@ -10,7 +10,7 @@ import {fetchTodoCollectionsSuccess, fetchTodoCollectionsFailure
 isFetchingTodoItemsTrue, isFetchingTodoItemsFalse, populateTodoItemsToACollection
 , isCreatingTodoItemTrue, isCreatingTodoItemFalse, createTodoItemSuccess, createTodoItemFailure, addTodoItem,
 modifyTodoItemSuccess, modifyTodoItemFailure, modifyTodoItem, isModifyingTodoItemTrue, isModifyingTodoItemFalse
-, setOpenedTodoItem, isDeletingTodoItemsTrue, isDeletingTodoItemsFalse, deleteTodoItemsSuccess, deleteTodoItemsFailure, deleteTodoItems} from "./todo.actions";
+, setOpenedTodoItem, toggleCheckTodoItemsMode, isDeletingTodoItemsTrue, isDeletingTodoItemsFalse, deleteTodoItemsSuccess, deleteTodoItemsFailure, deleteTodoItems} from "./todo.actions";
 
 import TodoSagaUtils from "./todo.sagaUtils";
 

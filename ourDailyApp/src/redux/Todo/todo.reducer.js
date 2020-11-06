@@ -158,7 +158,7 @@ const todoReducer = (state = INITIATE_STATE, action) => {
     case TodoActionTypes.TOGGLE_FROM_CHECKED_TODO_ITEM_LIST:
       return {
         ...state,
-        checkedTodoItemList: toggleTodoItemFromList(state.checkedTodoItemList, action.todoItem),
+        checkedTodoItemList: toggleTodoItemFromList(state.checkedTodoItemList, action.todoItem, action.todoId),
       }
     case TodoActionTypes.TOGGLE_TODO_POPUP_OPEN:
       return {

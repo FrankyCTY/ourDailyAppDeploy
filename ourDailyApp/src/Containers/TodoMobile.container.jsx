@@ -19,7 +19,9 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
   }
   
   return <Todo className="flex-1">
-    <Todo.MobileNav navText="Console" />
+    <Todo.MobileNav navText="Console">
+    {checkTodoItemsMode && <Todo.BinSvg className="ml-auto" nobg="true" svgSize="1rem"/>}
+    </Todo.MobileNav>
     <Todo.TodoHeader className="mb-4" tagBoxText={filteredTodos.length} title={collectionName}/>
     <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
         {filteredTodos.map((todo) => <Todo.TodoListItemBlock key={todo.id} 

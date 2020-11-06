@@ -154,9 +154,10 @@ export const removeFromCheckedTodoItemList = (todoItemId) => ({
   type: TodoActionTypes.REMOVE_FROM_CHECKED_TODO_ITEM_LIST,
   todoItemId,
 })
-export const toggleFromCheckedTodoItemList = (todoItem) => ({
+export const toggleFromCheckedTodoItemList = (todoItem, todoId) => ({
   type: TodoActionTypes.TOGGLE_FROM_CHECKED_TODO_ITEM_LIST,
   todoItem,
+  todoId,
 })
 export const toggleTodoPopupOpen = () => ({
   type: TodoActionTypes.TOGGLE_TODO_POPUP_OPEN,

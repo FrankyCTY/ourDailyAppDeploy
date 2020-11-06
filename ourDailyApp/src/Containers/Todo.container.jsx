@@ -54,9 +54,7 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
   const dispatch = useDispatch();
 
   const isFetchingTodoItems = useSelector(state => state.todo.isFetchingTodoItems);
-  const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);
-  const checkedTodoItemList = useSelector(state => state.todo.checkedTodoItemList);
-  
+  const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);  
 
   const {name: collectionName, createdAt: collectionCreatedAt} = useSelector(state => state.todo.openedCollection);
 
@@ -66,8 +64,9 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
   }
 
   const onListItemBlockClick = (e, todo) => {
+    const todoId = todo.id || todo.item.id;
     if(checkTodoItemsMode) {
-      dispatch(toggleFromCheckedTodoItemList(todo));
+      dispatch(toggleFromCheckedTodoItemList(todo, todoId));
     } else {
       onTodoItemClick(e, todo)
     }
@@ -78,10 +77,10 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
     ? 
     new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-8 w-3/4 mx-auto"/>) 
     : 
-    filteredTodos.map((todo) => <Todo.TodoListItemBlock key={todo.id} 
-    onListItemBlockClick={(e) => onListItemBlockClick(e, todo)} active={activeTodoItem === todo.id} 
+    filteredTodos.map((todo) => <Todo.TodoListItemBlock key={todo.item ? todo.item.id : todo.id}
+    onListItemBlockClick={(e) => onListItemBlockClick(e, todo)} active={activeTodoItem === (todo.id || todo.item.id)} 
     checkMode={checkTodoItemsMode}
-    itemId={todo.id}
+    itemId={todo.item ? todo.item.id : todo.id}
     subTitle={todo.item ? todo.item.title : todo.title}
     previewText={todo.item ? todo.item.body : todo.body}
     ></Todo.TodoListItemBlock>)

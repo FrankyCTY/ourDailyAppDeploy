@@ -34,9 +34,9 @@ export const modifyTodoItem = (todos, modifiedTodoItem, parentCollectionId) => {
   return newTodos;
 }
 
-export const toggleTodoItemFromList = (checkedTodoItemList, todoItem) => {
+export const toggleTodoItemFromList = (checkedTodoItemList, todoItem, todoId) => {
 
-  var index = checkedTodoItemList.findIndex(todoItemObj => todoItemObj.id === todoItem.id);
+  var index = checkedTodoItemList.findIndex(todoItemObj => todoItemObj.id === todoId);
 
   if (index === -1) checkedTodoItemList.push(todoItem);
   else checkedTodoItemList.splice(index, 1);

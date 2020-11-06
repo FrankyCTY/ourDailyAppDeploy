@@ -10,7 +10,7 @@ import useFuse from "../../hooks/useFuse.hooks";
 
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
   fetchTodoItemsForACollectionStart, setOpenedTodoCollection
-, toggleSideBarOpen, closeTodoSideBar, createTodoItemStart, setOpenedTodoItem, deleteTodoItemsStart} from "../../redux/Todo/todo.actions";
+, toggleSideBarOpen, closeTodoSideBar, createTodoItemStart, setOpenedTodoItem, deleteTodoItemsStart, toggleCheckTodoItemsMode} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 
@@ -21,6 +21,7 @@ const TodoPage = () => {
   const renderDesktopApp = useMediaQuery({ query: "(min-width: 640px" });
   const showToolbar = useMediaQuery({ query: "(max-width: 1279px" });
 
+  
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
   const todos = useSelector(state => state.todo.todos);
   const isSideBarOpened = useSelector(state => state.todo.isSideBarOpened);
@@ -28,40 +29,44 @@ const TodoPage = () => {
   const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
   const collections = useSelector(state => state.todo.collections);
   const searchTerm = useSelector(state => state.todo.searchTerm);  
-
+  const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);  
+  
   const [activeTodoItem, onRecordTodoItemClick] = useRecordClickTgt(null);
-
+  
   const [openPopup, toggleOpenPopup, renderPopup, setRenderPopup] = usePopup();
 
-  const [filteredTodos] = useFuse(searchTerm, todoItemsToDisplay);
+  const showCheckModeBinSvg = renderDesktopApp && checkTodoItemsMode;
+  
 
+  const [filteredTodos] = useFuse(searchTerm, todoItemsToDisplay);
+  console.log({filteredTodos})
+  
   const popupProps = {
     toggleOpenPopup,
     setRenderPopup,
   }
-
+  
   const onCreateCollectionClick = () => {
     setRenderPopup("createCollection");
     toggleOpenPopup();
   }
-
+  
   const onAddTodoBtnClick = () => {
     setRenderPopup("addTodo");
     toggleOpenPopup();
   }
-
+  
   const onTodoItemClick = (e, todo) => {
-    console.log({todo})
     onRecordTodoItemClick(e, todo.id);
     dispatch(setOpenedTodoItem(todo));
   }
-
+  
   const onCollectionClick = (e, collectionId, collectionName, createdAt) => {
     const isEmptyTodos = Object.keys(todos).length === 0;
     const needToFetchTodoItems = isEmptyTodos || todos[collectionId] === undefined;
     // set opened collection id
     dispatch(setOpenedTodoCollection({id: collectionId, name: collectionName, createdAt}));
-
+    
     // Get todo items data for collection
     if(needToFetchTodoItems) {
       dispatch(fetchTodoItemsForACollectionStart(collectionId));
@@ -73,6 +78,16 @@ const TodoPage = () => {
   useEffect(() => {
     if(collections.length === 0) dispatch(fetchTodoCollectionsStart());
   }, [dispatch, collections.length]);
+
+  const renderToolBar = () => {
+    return <ToolBar className="expanded">
+    {showToolbar && <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>}
+    <ToolBar.Btn onClick={onAddTodoBtnClick}><ToolBar.BtnIcon className="iconfont icon-plus"/></ToolBar.Btn>
+    {showToolbar && <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x"/></ToolBar.Btn>}
+    <ToolBar.Btn onClick={() => dispatch(toggleCheckTodoItemsMode())}><ToolBar.BtnIcon className="iconfont icon-huabanfuben"/></ToolBar.Btn>
+    {showCheckModeBinSvg && <ToolBar.Btn ><ToolBar.BtnIcon><Todo.BinSvg className="mx-auto" nobg="true" svgSize="1.1rem"/></ToolBar.BtnIcon></ToolBar.Btn>}
+  </ToolBar>
+  }
 
 
   // 0 - 640px mobile view
@@ -86,11 +101,7 @@ const TodoPage = () => {
   : <TodoMobileContainer filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick}/>
   }
 
-  { showToolbar && <ToolBar className="expanded">
-    <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>
-    <ToolBar.Btn onClick={onAddTodoBtnClick}><ToolBar.BtnIcon className="iconfont icon-plus"/></ToolBar.Btn>
-    <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x"/></ToolBar.Btn>
-  </ToolBar>}
+  {renderToolBar()}
 
   <Popup.DefaultPopup open={openPopup} toggleOpenPopup={toggleOpenPopup} className="flex flex-col">
     {renderPopup === "addTodo" && <AddTodoPopup toggleOpenPopup={toggleOpenPopup} openedCollection={openedCollection}/>}
@@ -205,7 +216,13 @@ const DeleteTodoItemPopup = ({toggleOpenPopup}) => {
 
   const onSubmit = () => {
     if(checkTodoItemsMode) {
-      dispatch(deleteTodoItemsStart(checkedTodoItemList.map(todoItem => todoItem.id), openedCollectionId, () => toggleOpenPopup()));
+      const checkModeDeleteSuccessCallback = () => {
+        // turn off popup
+        toggleOpenPopup();
+        // turn off check mode
+        dispatch(toggleCheckTodoItemsMode());
+      }
+      dispatch(deleteTodoItemsStart(checkedTodoItemList.map(todoItem => todoItem.id), openedCollectionId, checkModeDeleteSuccessCallback));
     } 
     else {
       dispatch(deleteTodoItemsStart([openedTodoItem.id], openedCollectionId, () => toggleOpenPopup()));
