@@ -1,9 +1,7 @@
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
-const Collection = require("../../models/collection/collection.model");
 const QueryStringHandler = require("../../helpers/QueryStringHandler");
 const OperationalErr = require("../../helpers/OperationalErr");
 const TodoItem = require("../../models/todoItem/todoItem.model");
-const { update } = require("../../models/collection/collection.model");
 
 exports.createTodoItems = withCatchErrAsync(async (req, res, next) => {
   const {collectionId} = req.params;
@@ -60,5 +58,15 @@ exports.modifyTodoItem = withCatchErrAsync(async (req, res, next) => {
     data: {
       todoItem: updatedTodoItemDoc
     }
+  })
+})
+
+exports.deleteTodoItems = withCatchErrAsync(async (req, res, next) => {
+  const {todoItemIds} = req.body;
+
+  await TodoItem.deleteMany({_id: {$in: todoItemIds}});
+
+  return res.status(204).json({
+    status: "success",
   })
 })

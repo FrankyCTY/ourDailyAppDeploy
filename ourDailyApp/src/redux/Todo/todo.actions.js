@@ -19,6 +19,19 @@ export const fetchTodoItemsForACollectionSuccess = () => ({
 export const fetchTodoItemsForACollectionFailure = () => ({
   type: TodoActionTypes.FETCH_TODO_ITEMS_FOR_A_COLLECTION_FAILURE,
 })
+export const deleteTodoItemsStart = (todoItemIds, collectionId, successCallbackFn) => ({
+  type: TodoActionTypes.DELETE_TODO_ITEMS_START,
+  todoItemIds,
+  collectionId,
+  successCallbackFn,
+})
+export const deleteTodoItemsSuccess = (successCallbackFn) => ({
+  type: TodoActionTypes.DELETE_TODO_ITEMS_SUCCESS,
+  successCallbackFn,
+})
+export const deleteTodoItemsFailure = () => ({
+  type: TodoActionTypes.DELETE_TODO_ITEMS_FAILURE,
+})
 export const createTodoItemStart = (title, body, collectionId, successCallbackFn) => ({
   type: TodoActionTypes.CREATE_TODO_ITEM_START,
   title,
@@ -90,6 +103,12 @@ export const isCreatingTodoItemTrue = () => ({
 export const isCreatingTodoItemFalse = () => ({
   type: TodoActionTypes.IS_CREATING_TODO_ITEM_FALSE
 })
+export const isDeletingTodoItemsTrue = () => ({
+  type: TodoActionTypes.IS_DELETING_TODO_ITEMS_TRUE
+})
+export const isDeletingTodoItemsFalse = () => ({
+  type: TodoActionTypes.IS_DELETING_TODO_ITEMS_FALSE
+})
 export const isModifyingTodoItemTrue = () => ({
   type: TodoActionTypes.IS_MODIFYING_TODO_ITEM_TRUE
 })
@@ -119,4 +138,35 @@ export const setTodoSearchTerm = (term) => ({
 export const modifyTodoItem = (todoItem) => ({
   type: TodoActionTypes.MODIFY_TODO_ITEM,
   todoItem,
+})
+
+export const toggleEditTodoItemMode = () => ({
+  type: TodoActionTypes.TOGGLE_EDIT_TODO_ITEM_MODE,
+})
+export const toggleCheckTodoItemsMode = () => ({
+  type: TodoActionTypes.TOGGLE_CHECK_TODO_ITEMS_MODE,
+})
+export const addToCheckedTodoItemList = (todoItem) => ({
+  type: TodoActionTypes.ADD_TO_CHECKED_TODO_ITEM_LIST,
+  todoItem,
+})
+export const removeFromCheckedTodoItemList = (todoItemId) => ({
+  type: TodoActionTypes.REMOVE_FROM_CHECKED_TODO_ITEM_LIST,
+  todoItemId,
+})
+export const toggleFromCheckedTodoItemList = (todoItem) => ({
+  type: TodoActionTypes.TOGGLE_FROM_CHECKED_TODO_ITEM_LIST,
+  todoItem,
+})
+export const toggleTodoPopupOpen = () => ({
+  type: TodoActionTypes.TOGGLE_TODO_POPUP_OPEN,
+})
+export const setRenderTodoPopup = (popup) => ({
+  type: TodoActionTypes.SET_RENDER_TODO_POPUP,
+  popup,
+})
+export const deleteTodoItems = (todoItemIds, collectionId) => ({
+  type: TodoActionTypes.DELETE_TODO_ITEMS,
+  todoItemIds,
+  collectionId,
 })

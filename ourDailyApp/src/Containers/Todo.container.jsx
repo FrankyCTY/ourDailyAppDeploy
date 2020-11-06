@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {Todo, Formik, Preloader} from "../Components/Compound Components";
 import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
-import {setTodoSearchTerm, modifyTodoItemStart} from "../redux/Todo/todo.actions";
+import {setTodoSearchTerm, modifyTodoItemStart, toggleEditTodoItemMode, toggleFromCheckedTodoItemList} from "../redux/Todo/todo.actions";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
+import useTodoToolbox from "../hooks/useTodoToolbox.hooks";
 import useRouter from "../hooks/useRouter.hooks";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -50,13 +51,26 @@ function TodoHeader() {
 
 function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupProps}) {
 
+  const dispatch = useDispatch();
+
   const isFetchingTodoItems = useSelector(state => state.todo.isFetchingTodoItems);
+  const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);
+  const checkedTodoItemList = useSelector(state => state.todo.checkedTodoItemList);
+  
 
   const {name: collectionName, createdAt: collectionCreatedAt} = useSelector(state => state.todo.openedCollection);
 
   const onAddTodoBtnClick = () => {
     popupProps.setRenderPopup("addTodo");
-    popupProps.setOpenPopup(true);
+    popupProps.toggleOpenPopup();
+  }
+
+  const onListItemBlockClick = (e, todo) => {
+    if(checkTodoItemsMode) {
+      dispatch(toggleFromCheckedTodoItemList(todo));
+    } else {
+      onTodoItemClick(e, todo)
+    }
   }
 
   const renderTodoItems = () => {
@@ -65,7 +79,9 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
     new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-8 w-3/4 mx-auto"/>) 
     : 
     filteredTodos.map((todo) => <Todo.TodoListItemBlock key={todo.id} 
-    onClick={(e) => onTodoItemClick(e, todo)} active={activeTodoItem === todo.id} 
+    onListItemBlockClick={(e) => onListItemBlockClick(e, todo)} active={activeTodoItem === todo.id} 
+    checkMode={checkTodoItemsMode}
+    itemId={todo.id}
     subTitle={todo.item ? todo.item.title : todo.title}
     previewText={todo.item ? todo.item.body : todo.body}
     ></Todo.TodoListItemBlock>)
@@ -87,11 +103,10 @@ function TodoItemDetailsSection() {
 
   const dispatch = useDispatch();
 
-  const openedTodoItem = useSelector(state => state.todo.openedTodoItem);
+  const [openedTodoItem, isEditMode] = useTodoToolbox();
+
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-
-  const [isEditMode, setIsEditMode] = useState(false);
 
   const onInputChange = (e, setFn) => {
     const {value} = e.target;
@@ -100,11 +115,11 @@ function TodoItemDetailsSection() {
   }
 
   const onfinishEditClick = (e, todoItemId) => {
-    dispatch(modifyTodoItemStart(title, body, todoItemId, () => setIsEditMode(false)));
+    dispatch(modifyTodoItemStart(title, body, todoItemId, () => dispatch(toggleEditTodoItemMode())));
   }
 
   const onCancelEditClick = () => {
-    setIsEditMode(false);
+    dispatch(toggleEditTodoItemMode());
   }
 
   React.useEffect(() => {
@@ -134,7 +149,7 @@ function TodoItemDetailsSection() {
     <Todo.Group className="flex justify-between mb-4">
       {/* <Todo.TitleText className="font-normal text-sm lg:text-lg">Build backend for todolist</Todo.TitleText> */}
       {renderTitle()}
-      <Todo.ToolBox onModifyClick={() => setIsEditMode(!isEditMode)} nobg={true} svgSize="1rem" svgMargin="0.1rem 0.5rem"/>
+      {Object.keys(openedTodoItem).length !== 0 && <Todo.ToolBox nobg={true} svgSize="1rem" svgMargin="0.1rem 0.5rem"/>}
     </Todo.Group>
     {renderBody()}
 

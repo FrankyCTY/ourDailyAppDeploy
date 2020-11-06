@@ -70,3 +70,18 @@ export async function modifyTodoItemToBackene([title, body, url]) {
 
   return res;
 }
+
+export async function deleteTodoItemsFromBkEnd([todoItemIds, url]) {
+  const res = await axios({
+    method: "DELETE",
+    data: {
+      todoItemIds,
+    },
+    url,
+    withCredentials: true,
+  })
+
+  console.log({res})
+
+  return res;
+}

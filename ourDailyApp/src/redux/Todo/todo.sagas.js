@@ -2,7 +2,7 @@ import {takeLeading, call, put, all} from "redux-saga/effects";
 
 import TodoActionTypes from "./todo.types";
 
-import {createCollection, fetchCollections, fetchTodoItemsForACollection, createTodoItem, modifyTodoItemToBackene} from "./todo.requests";
+import {createCollection, fetchCollections, fetchTodoItemsForACollection, createTodoItem, modifyTodoItemToBackene, deleteTodoItemsFromBkEnd} from "./todo.requests";
 
 import {fetchTodoCollectionsSuccess, fetchTodoCollectionsFailure
 , isFetchingCollectionsTrue, isFetchingCollectionsFalse, populateTodoCollections
@@ -10,12 +10,19 @@ import {fetchTodoCollectionsSuccess, fetchTodoCollectionsFailure
 isFetchingTodoItemsTrue, isFetchingTodoItemsFalse, populateTodoItemsToACollection
 , isCreatingTodoItemTrue, isCreatingTodoItemFalse, createTodoItemSuccess, createTodoItemFailure, addTodoItem,
 modifyTodoItemSuccess, modifyTodoItemFailure, modifyTodoItem, isModifyingTodoItemTrue, isModifyingTodoItemFalse
-, setOpenedTodoItem} from "./todo.actions";
+, setOpenedTodoItem, isDeletingTodoItemsTrue, isDeletingTodoItemsFalse, deleteTodoItemsSuccess, deleteTodoItemsFailure, deleteTodoItems} from "./todo.actions";
 
 import TodoSagaUtils from "./todo.sagaUtils";
 
 // ========================= Sagas ==============================
 
+function* onDeleteTodoItemsSuccess() {
+  yield takeLeading(TodoActionTypes.DELETE_TODO_ITEMS_SUCCESS, fn_deleteTodoItemsSuccess);
+}
+
+function* onDeleteTodoItemsStart() {
+  yield takeLeading(TodoActionTypes.DELETE_TODO_ITEMS_START, fn_deleteTodoItemsStart);
+}
 function* onModifyTodoItemSuccess() {
   yield takeLeading(TodoActionTypes.MODIFY_TODO_ITEM_SUCCESS, fn_modifyTodoItemSuccess);
 }
@@ -53,7 +60,37 @@ export default function* todoSaga() {
     call(onCreateTodoItemSuccess),
     call(onModifyTodoItemStart),
     call(onModifyTodoItemSuccess),
+    call(onDeleteTodoItemsSuccess),
+    call(onDeleteTodoItemsStart),
   ])
+}
+
+function* fn_deleteTodoItemsSuccess({successCallbackFn}) {
+  yield call(successCallbackFn);
+}
+function* fn_deleteTodoItemsStart({todoItemIds, collectionId, successCallbackFn}) {
+  try {
+    // start spinner
+    yield put(isDeletingTodoItemsTrue());
+
+    // 1) create todo item - backend
+    console.log("ready to delete in backend")
+    yield call(deleteTodoItemsFromBkEnd, [todoItemIds, `${process.env.REACT_APP_URL}/todo/todoItems`]);
+
+    // 2) Populate new todo item to a collection in todos state
+    yield put(deleteTodoItems(todoItemIds, collectionId));
+
+    // // 3) Change the current opened todo item
+    // yield put(setOpenedTodoItem(res.data.data.todoItem));
+
+    // stops spinner
+    yield put(isDeletingTodoItemsFalse());
+    yield put(deleteTodoItemsSuccess(successCallbackFn));
+  } catch (error) {
+    // stops spinner
+    yield put(isDeletingTodoItemsFalse());
+    yield put(deleteTodoItemsFailure());
+  }
 }
 
 function* fn_modifyTodoItemSuccess({successCallbackFn}) {

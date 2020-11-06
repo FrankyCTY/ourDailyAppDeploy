@@ -1,6 +1,6 @@
 import TodoActionTypes from "./todo.types";
 
-import {populateTodoItemsToCollection, addTodoItemsToCollection, modifyTodoItem} from "./todo.utils";
+import {populateTodoItemsToCollection, addTodoItemsToCollection, deleteTodoItemsFromTodos, toggleTodoItemFromList, modifyTodoItem} from "./todo.utils";
 
 const INITIATE_STATE = {
   // collections: [{id: 123, name: "new col"}],
@@ -14,7 +14,13 @@ const INITIATE_STATE = {
   isFetchingTodoItems: false,
   isCreatingTodoItem: false,
   isModifyingTodoItem: false,
+  isDeletingTodoItems: false,
+  editTodoItemMode: false,
+  checkTodoItemsMode: false,
+  checkedTodoItemList: [],
   searchTerm: "",
+  openPopup: false,
+  renderPopup: null,
 };
 
 const todoReducer = (state = INITIATE_STATE, action) => {
@@ -109,6 +115,16 @@ const todoReducer = (state = INITIATE_STATE, action) => {
         ...state,
         isSideBarOpened: false,
       }
+    case TodoActionTypes.IS_DELETING_TODO_ITEMS_TRUE:
+      return {
+        ...state,
+        isDeletingTodoItems: true,
+      }
+    case TodoActionTypes.IS_DELETING_TODO_ITEMS_FALSE:
+      return {
+        ...state,
+        isDeletingTodoItems: false,
+      }
     case TodoActionTypes.SET_TODO_SEARCH_TERM:
       return {
         ...state,
@@ -118,6 +134,46 @@ const todoReducer = (state = INITIATE_STATE, action) => {
       return {
         ...state,
         todos: modifyTodoItem(state.todos, action.todoItem, state.openedCollection.id),
+      }
+    case TodoActionTypes.TOGGLE_EDIT_TODO_ITEM_MODE:
+      return {
+        ...state,
+        editTodoItemMode: !state.editTodoItemMode,
+      }
+    case TodoActionTypes.TOGGLE_CHECK_TODO_ITEMS_MODE:
+      return {
+        ...state,
+        checkTodoItemsMode: !state.checkTodoItemsMode,
+      }
+    case TodoActionTypes.ADD_TO_CHECKED_TODO_ITEM_LIST:
+      return {
+        ...state,
+        checkedTodoItemList: [...state.checkedTodoItemList, action.todoItem]
+      }
+    case TodoActionTypes.REMOVE_FROM_CHECKED_TODO_ITEM_LIST:
+      return {
+        ...state,
+        checkedTodoItemList: state.checkedTodoItemList.filter(checkedTodoItem => checkedTodoItem.id !== action.todoItemId),
+      }
+    case TodoActionTypes.TOGGLE_FROM_CHECKED_TODO_ITEM_LIST:
+      return {
+        ...state,
+        checkedTodoItemList: toggleTodoItemFromList(state.checkedTodoItemList, action.todoItem),
+      }
+    case TodoActionTypes.TOGGLE_TODO_POPUP_OPEN:
+      return {
+        ...state,
+        openPopup: !state.openPopup,
+      }
+    case TodoActionTypes.SET_RENDER_TODO_POPUP:
+      return {
+        ...state,
+        renderPopup: action.popup,
+      }
+    case TodoActionTypes.DELETE_TODO_ITEMS:
+      return {
+        ...state,
+        todos: deleteTodoItemsFromTodos(state.todos, action.todoItemIds, action.collectionId),
       }
     default:
       return state;

@@ -132,11 +132,34 @@ position: relative;
 ${textStyles}
 `;
 
+S.CheckIndicator = styled.div`
+--size: 1.5rem;
+display: grid;
+font-size: .7rem;
+place-items: center;
+width: var(--size);
+height: var(--size);
+border-radius: 100%;
+right: 8px;
+top: 10%;
+position: absolute;
+background: ${({theme}) => theme.attract_color};
+color: ${({theme}) => theme.general_text};
+`;
+
+S.CheckSvg = styled.i`
+color: ${({theme}) => theme.general_text};
+`;
+
 S.TodoListItemBlock = styled.div`
   padding: 1rem;
   border-radius: 22px;
   cursor: pointer;
   margin-bottom: .5rem;
+  position: relative;
+  ${({checkMode, theme}) => {
+    return checkMode && `border: 1px solid ${theme.general_text};`
+  }}
 
   ${({active, theme}) => {
     return active && `    

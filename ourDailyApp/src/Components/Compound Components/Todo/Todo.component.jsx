@@ -2,7 +2,8 @@ import React from "react";
 import S from "./styles/Todo.style";
 import useRouter from "../../../hooks/useRouter.hooks";
 import useDismiss from "../../../hooks/useDismiss.hooks";
-import {useDispatch} from "react-redux";
+import {toggleEditTodoItemMode, toggleTodoPopupOpen, setRenderTodoPopup} from "../../../redux/Todo/todo.actions";
+import {useDispatch, useSelector} from "react-redux";
 import Formik from "../Formik/Formik.component";
 
 export default function Todo({ children, ...restProps }) {
@@ -72,12 +73,19 @@ Todo.TagBox = function TagBox({
   }
 
 Todo.ToolBox = function ToolBox({
-  svgSize, svgMargin, nobg, onModifyClick, children, ...restProps
+  svgSize, svgMargin, nobg, children, itemId, ...restProps
 }) {
+const dispatch = useDispatch();
+
+const onBinSvgClick = () => {
+  dispatch(setRenderTodoPopup("deleteTodoItem"));
+  dispatch(toggleTodoPopupOpen());
+}
+
 return <S.ToolBox nobg={nobg} {...restProps}>          
-<S.ModifySvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} onClick={onModifyClick} className="modifySvg"/>
+<S.ModifySvg onClick={() => dispatch(toggleEditTodoItemMode())} svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="modifySvg"/>
 <S.PinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="pinSvg"/>
-<S.BinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
+<S.BinSvg onClick={onBinSvgClick} svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
 {children}
 </S.ToolBox>
 }
@@ -153,19 +161,27 @@ Todo.TodoHeader = function TodoHeader({
 }
 
 Todo.TodoListItemBlock = function TodoListItemBlock({
-  active, subTitle, previewText, children, ...restProps
+  onListItemBlockClick, itemId, checkMode, active, subTitle, previewText, children, ...restProps
 }) {
 
   const newPreviewText = previewText.slice(0, 70) + '...';
 
+  const checkedTodoItemList = useSelector(state => state.todo.checkedTodoItemList);
+
+  const isBlockChecked = checkedTodoItemList.findIndex(todoItemObj => todoItemObj.id === itemId) !== -1;
+
+  const showToolBar = active && !checkMode;
+  const showCheckIndicator = isBlockChecked && checkMode;
+
   return (
-    <S.TodoListItemBlock {...restProps} active={active}>
+    <S.TodoListItemBlock {...restProps} active={active} onClick={onListItemBlockClick} checkMode={checkMode}>
       <Todo.Group className="flex items-center justify-between">
         <Todo.SubtitleText className="block mb-4 xl:text-base">{subTitle}</Todo.SubtitleText>
-        { active && <Todo.ToolBox/>}
+        { showToolBar && <Todo.ToolBox/>}
       </Todo.Group>
 
       <Todo.Text className="xl:text-sm">{newPreviewText}</Todo.Text>
+    { showCheckIndicator && <S.CheckIndicator><S.CheckSvg className="iconfont icon-tick" /></S.CheckIndicator>}
     </S.TodoListItemBlock>
   )
 }

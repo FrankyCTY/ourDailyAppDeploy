@@ -33,3 +33,27 @@ export const modifyTodoItem = (todos, modifiedTodoItem, parentCollectionId) => {
 
   return newTodos;
 }
+
+export const toggleTodoItemFromList = (checkedTodoItemList, todoItem) => {
+
+  var index = checkedTodoItemList.findIndex(todoItemObj => todoItemObj.id === todoItem.id);
+
+  if (index === -1) checkedTodoItemList.push(todoItem);
+  else checkedTodoItemList.splice(index, 1);
+
+  const newCheckedList = [...checkedTodoItemList];
+
+  return newCheckedList;
+}
+
+export const deleteTodoItemsFromTodos = (todos, todoItemIds, collectionId) => {
+  const newTodos = {...todos};
+
+  const newCollection = todos[collectionId].filter((todoItem) => {
+    return !todoItemIds.includes(todoItem.id);
+  })
+
+  newTodos[collectionId] = newCollection;
+
+  return newTodos;
+}

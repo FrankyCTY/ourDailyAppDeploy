@@ -5,12 +5,12 @@ import TodoContainer from "../../Containers/Todo.container";
 import {useSelector, useDispatch} from "react-redux";
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import {Popup, Todo, Formik, Preloader, ToolBar} from "../../Components/Compound Components";
-import usePopup from "../../hooks/usePopup.hooks";
+import usePopup from "../../hooks/useTodoPopup.hooks";
 import useFuse from "../../hooks/useFuse.hooks";
 
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
   fetchTodoItemsForACollectionStart, setOpenedTodoCollection
-, toggleSideBarOpen, closeTodoSideBar, createTodoItemStart, setOpenedTodoItem} from "../../redux/Todo/todo.actions";
+, toggleSideBarOpen, closeTodoSideBar, createTodoItemStart, setOpenedTodoItem, deleteTodoItemsStart} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 
@@ -27,28 +27,27 @@ const TodoPage = () => {
   const openedCollection = useSelector(state => state.todo.openedCollection);
   const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
   const collections = useSelector(state => state.todo.collections);
-  const searchTerm = useSelector(state => state.todo.searchTerm);
-  
+  const searchTerm = useSelector(state => state.todo.searchTerm);  
 
   const [activeTodoItem, onRecordTodoItemClick] = useRecordClickTgt(null);
 
-  const [openPopup, setOpenPopup, renderPopup, setRenderPopup] = usePopup();
+  const [openPopup, toggleOpenPopup, renderPopup, setRenderPopup] = usePopup();
 
   const [filteredTodos] = useFuse(searchTerm, todoItemsToDisplay);
 
   const popupProps = {
-    setOpenPopup,
+    toggleOpenPopup,
     setRenderPopup,
   }
 
   const onCreateCollectionClick = () => {
     setRenderPopup("createCollection");
-    setOpenPopup(true);
+    toggleOpenPopup();
   }
 
   const onAddTodoBtnClick = () => {
     setRenderPopup("addTodo");
-    setOpenPopup(true);
+    toggleOpenPopup();
   }
 
   const onTodoItemClick = (e, todo) => {
@@ -93,16 +92,17 @@ const TodoPage = () => {
     <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x"/></ToolBar.Btn>
   </ToolBar>}
 
-  <Popup.DefaultPopup open={openPopup} setOpenPopup={setOpenPopup} className="flex flex-col">
-    {renderPopup === "addTodo" && <AddTodoPopup setOpenPopup={setOpenPopup} openedCollection={openedCollection}/>}
-    {renderPopup === "createCollection" && <CreateCollectionPopup setOpenPopup={setOpenPopup}/>}
+  <Popup.DefaultPopup open={openPopup} toggleOpenPopup={toggleOpenPopup} className="flex flex-col">
+    {renderPopup === "addTodo" && <AddTodoPopup toggleOpenPopup={toggleOpenPopup} openedCollection={openedCollection}/>}
+    {renderPopup === "createCollection" && <CreateCollectionPopup toggleOpenPopup={toggleOpenPopup}/>}
+    {renderPopup === "deleteTodoItem" && <DeleteTodoItemPopup toggleOpenPopup={toggleOpenPopup}/>}
   </Popup.DefaultPopup>
   </div>
 }
 
 export default TodoPage;
 
-const AddTodoPopup = ({setOpenPopup, openedCollection}) => {
+const AddTodoPopup = ({toggleOpenPopup, openedCollection}) => {
   const dispatch = useDispatch();
   const isCreatingTodoItem = useSelector(state => state.todo.isCreatingTodoItem);
 
@@ -115,11 +115,11 @@ const AddTodoPopup = ({setOpenPopup, openedCollection}) => {
   }
 
   const onCancelClick = () => {
-    setOpenPopup(false);
+    toggleOpenPopup();
   }
 
   const onSubmit = () => {
-    dispatch(createTodoItemStart(title, body, openedCollection.id, () => setOpenPopup(false)));
+    dispatch(createTodoItemStart(title, body, openedCollection.id, () => toggleOpenPopup()));
   }
 
   return <>
@@ -155,18 +155,18 @@ const AddTodoPopup = ({setOpenPopup, openedCollection}) => {
   </>
 }
 
-const CreateCollectionPopup = ({setOpenPopup}) => {
+const CreateCollectionPopup = ({toggleOpenPopup}) => {
   const [name, setName] = useState("");
 
   const dispatch = useDispatch();
 
   const onSubmit = () => {
     dispatch(createTodoCollectionStart(name));
-    setOpenPopup(false);
+    toggleOpenPopup();
     setName("");
   }
   const onCancelClick = () => {
-    setOpenPopup(false);
+    toggleOpenPopup();
   }
 
   return <>
@@ -184,6 +184,53 @@ const CreateCollectionPopup = ({setOpenPopup}) => {
     <Popup.Footer className="px-4 py-2 flex justify-end">
         <Formik.CancelBtn onClick={onCancelClick} className="text-xs capitalize text-white px-4 mr-2">Cancel</Formik.CancelBtn>
         <Formik.CustomSubmitBtn onClick={onSubmit} className="text-xs capitalize text-white px-4">Create</Formik.CustomSubmitBtn>
+    </Popup.Footer>
+  </>
+}
+const DeleteTodoItemPopup = ({toggleOpenPopup}) => {
+  const dispatch = useDispatch();
+
+  const checkedTodoItemList = useSelector(state => state.todo.checkedTodoItemList);
+  const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);
+  const openedTodoItem = useSelector(state => state.todo.openedTodoItem);
+  const openedCollectionId = useSelector(state => state.todo.openedCollection.id);
+  const isDeletingTodoItems = useSelector(state => state.todo.isDeletingTodoItems);
+
+  const renderDeletePopupList = () => {
+    return checkTodoItemsMode
+    ?
+      checkedTodoItemList.map(todoItemObj => <Todo.Text key={todoItemObj.id} className="text-sm mb-2">{todoItemObj.title}</Todo.Text>)
+    : <Todo.Text className="text-sm mb-2">{openedTodoItem.title}</Todo.Text> ;
+  }
+
+  const onSubmit = () => {
+    if(checkTodoItemsMode) {
+      dispatch(deleteTodoItemsStart(checkedTodoItemList.map(todoItem => todoItem.id), openedCollectionId, () => toggleOpenPopup()));
+    } 
+    else {
+      dispatch(deleteTodoItemsStart([openedTodoItem.id], openedCollectionId, () => toggleOpenPopup()));
+    }
+  }
+
+  const onCancelClick = () => {
+    toggleOpenPopup();
+  }
+
+  return <>
+    <Popup.Header className="px-4 py-2">
+      <Todo.Text className="lg:text-base">Delete Note(s)</Todo.Text>
+    </Popup.Header>
+    <Popup.Body className="px-4 py-6">
+    <Todo.Text className="text-sm mb-2">Items selected: </Todo.Text>
+      <div className="border-2 h-32 pl-2 py-2 overflow-auto">
+        {renderDeletePopupList()}
+      </div>
+    </Popup.Body>
+    <Popup.Footer className="px-4 py-2 flex justify-end">
+        <Formik.CancelBtn onClick={onCancelClick} className="text-xs capitalize text-white px-4 mr-2">Cancel</Formik.CancelBtn>
+        <Formik.CustomSubmitBtn onClick={onSubmit} className="text-xs 
+        capitalize text-white px-4">Delete{isDeletingTodoItems && <PixelSpinner size={1.2} animationDuration={1500} style={{marginLeft: "4px"}}/>}
+        </Formik.CustomSubmitBtn>
     </Popup.Footer>
   </>
 }
