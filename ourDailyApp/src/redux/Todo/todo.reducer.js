@@ -8,9 +8,11 @@ const INITIATE_STATE = {
   // todos: {#collection name: [{#todoItems}]}
   todos: {},
   openedCollection: {},
+  openedTodoItem: {},
   isSideBarOpened: false,
   isFetchingCollections: false,
   isFetchingTodoItems: false,
+  isCreatingTodoItem: false,
   searchTerm: "",
 };
 
@@ -29,7 +31,7 @@ const todoReducer = (state = INITIATE_STATE, action) => {
     case TodoActionTypes.ADD_TODO_ITEMS_TO_A_COLLECTION:
       return {
         ...state,
-        todos: addTodoItemsToCollection(state.todos, action.todos, action.parentCollectionId),
+        todos: addTodoItemsToCollection(state.todos, action.todoItem, action.collectionId),
       }
     case TodoActionTypes.ADD_TODO_COLLECTION:
       return {
@@ -40,6 +42,11 @@ const todoReducer = (state = INITIATE_STATE, action) => {
       return {
         ...state,
         openedCollection: action.collection,
+      }
+    case TodoActionTypes.SET_OPENED_TODO_ITEM:
+      return {
+        ...state,
+        openedTodoItem: action.todoItem,
       }
     case TodoActionTypes.SET_OPENED_TODO_COLLECTION_NAME:
       return {
@@ -65,6 +72,16 @@ const todoReducer = (state = INITIATE_STATE, action) => {
       return {
         ...state,
         isFetchingTodoItems: false,
+      }
+    case TodoActionTypes.IS_CREATING_TODO_ITEM_TRUE:
+      return {
+        ...state,
+        isCreatingTodoItem: true,
+      }
+    case TodoActionTypes.IS_CREATING_TODO_ITEM_FALSE:
+      return {
+        ...state,
+        isCreatingTodoItem: false,
       }
     case TodoActionTypes.TOGGLE_SIDEBAR_OPEN:
       return {

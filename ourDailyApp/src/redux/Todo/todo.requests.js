@@ -38,3 +38,19 @@ export async function fetchTodoItemsForACollection(url) {
 
   return res;
 }
+
+export async function createTodoItem([title, body, url]) {
+  const res = await axios({
+    method: "POST",
+    data: {
+      title,
+      body,
+    },
+    url,
+    withCredentials: true,
+  })
+
+  console.log({res})
+
+  return res;
+}

@@ -1,4 +1,3 @@
-import TodoPage from "../../Pages/Todo/Todo.page";
 import TodoActionTypes from "./todo.types";
 
 export const fetchTodoCollectionsStart = () => ({
@@ -20,6 +19,25 @@ export const fetchTodoItemsForACollectionSuccess = () => ({
 export const fetchTodoItemsForACollectionFailure = () => ({
   type: TodoActionTypes.FETCH_TODO_ITEMS_FOR_A_COLLECTION_FAILURE,
 })
+export const createTodoItemStart = (title, body, collectionId, successCallbackFn) => ({
+  type: TodoActionTypes.CREATE_TODO_ITEM_START,
+  title,
+  body,
+  collectionId,
+  successCallbackFn,
+})
+export const createTodoItemSuccess = (successCallbackFn) => ({
+  type: TodoActionTypes.CREATE_TODO_ITEM_SUCCESS,
+  successCallbackFn,
+})
+export const createTodoItemFailure = () => ({
+  type: TodoActionTypes.CREATE_TODO_ITEM_FAILURE,
+})
+export const addTodoItem = (todoItem, collectionId) => ({
+  type: TodoActionTypes.ADD_TODO_ITEMS_TO_A_COLLECTION,
+  todoItem,
+  collectionId,
+})
 export const populateTodoCollections = (collections) => ({
   type: TodoActionTypes.POPULATE_TODO_COLLECTIONS,
   collections,
@@ -32,6 +50,10 @@ export const populateTodoItemsToACollection = (todoItems, parentCollectionId) =>
 export const setOpenedTodoCollection = (collection) => ({
   type: TodoActionTypes.SET_OPENED_TODO_COLLECTION,
   collection,
+})
+export const setOpenedTodoItem = (todoItem) => ({
+  type: TodoActionTypes.SET_OPENED_TODO_ITEM,
+  todoItem,
 })
 
 export const createTodoCollectionStart = (name) => ({
@@ -47,6 +69,12 @@ export const isFetchingCollectionsTrue = () => ({
 })
 export const isFetchingCollectionsFalse = () => ({
   type: TodoActionTypes.IS_FETCHING_COLLECTIONS_FALSE
+})
+export const isCreatingTodoItemTrue = () => ({
+  type: TodoActionTypes.IS_CREATING_TODO_ITEM_TRUE
+})
+export const isCreatingTodoItemFalse = () => ({
+  type: TodoActionTypes.IS_CREATING_TODO_ITEM_FALSE
 })
 export const isFetchingTodoItemsTrue = () => ({
   type: TodoActionTypes.IS_FETCHING_TODO_ITEMS_TRUE

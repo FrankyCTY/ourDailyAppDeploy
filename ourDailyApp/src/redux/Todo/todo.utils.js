@@ -4,13 +4,14 @@ export const populateTodoItemsToCollection = (todos, todoItems, parentCollection
 }
 
 export const addTodoItemsToCollection = (todos, todoItemToAdd, parentCollectionId) => {
-  const targetCollection = todos[parentCollectionId];
+  console.log({todos})
+  console.log({todoItemToAdd})
 
-  if(!targetCollection) {
-    todos.targetCollection = [];
+  if(!todos[parentCollectionId]) {
+    todos[parentCollectionId] = [];
   }
 
-  todos.targetCollection.push(todoItemToAdd);
-
+  todos[parentCollectionId].push(todoItemToAdd);
+  console.log({todos})
   return todos;
 }

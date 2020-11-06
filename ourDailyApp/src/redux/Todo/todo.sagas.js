@@ -2,16 +2,25 @@ import {takeLeading, call, put, all} from "redux-saga/effects";
 
 import TodoActionTypes from "./todo.types";
 
-import {createCollection, fetchCollections, fetchTodoItemsForACollection} from "./todo.requests";
+import {createCollection, fetchCollections, fetchTodoItemsForACollection, createTodoItem} from "./todo.requests";
 
 import {fetchTodoCollectionsSuccess, fetchTodoCollectionsFailure
 , isFetchingCollectionsTrue, isFetchingCollectionsFalse, populateTodoCollections
 , fetchTodoItemsForACollectionSuccess, fetchTodoItemsForACollectionFailure,
-isFetchingTodoItemsTrue, isFetchingTodoItemsFalse, populateTodoItemsToACollection} from "./todo.actions";
+isFetchingTodoItemsTrue, isFetchingTodoItemsFalse, populateTodoItemsToACollection
+, isCreatingTodoItemTrue, isCreatingTodoItemFalse, createTodoItemSuccess, createTodoItemFailure, addTodoItem} from "./todo.actions";
 
 import TodoSagaUtils from "./todo.sagaUtils";
 
 // ========================= Sagas ==============================
+
+function* onCreateTodoItemSuccess() {
+  yield takeLeading(TodoActionTypes.CREATE_TODO_ITEM_SUCCESS, fn_createTodoItemSuccess);
+}
+
+function* onCreateTodoItemStart() {
+  yield takeLeading(TodoActionTypes.CREATE_TODO_ITEM_START, fn_createTodoItemStart);
+}
 
 function* onFetchTodoItemsForACollectionStart() {
   yield takeLeading(TodoActionTypes.FETCH_TODO_ITEMS_FOR_A_COLLECTION_START, fn_fetchTodoItemsForACollectionStart);
@@ -30,7 +39,37 @@ export default function* todoSaga() {
     call(onCreateCollectionStart),
     call(onFetchCollectionStart),
     call(onFetchTodoItemsForACollectionStart),
+    call(onCreateTodoItemStart),
+    call(onCreateTodoItemSuccess),
   ])
+}
+
+function* fn_createTodoItemStart({title, body, collectionId, successCallbackFn}) {
+  try {
+    // start spinner
+    yield put(isCreatingTodoItemTrue());
+
+    // 1) create todo item - backend
+    const res = yield call(createTodoItem, [title, body, `${process.env.REACT_APP_URL}/todo/collections/${collectionId}/todoItems`]);
+
+    // 2) Populate new todo item to a collection in todos state
+    yield put(addTodoItem(res.data.data.todoItem, collectionId));
+
+    // // 3) Callback Fn
+    // yield call(callbackFn);
+
+    // stops spinner
+    yield put(isCreatingTodoItemFalse());
+    yield put(createTodoItemSuccess(successCallbackFn));
+  } catch (error) {
+    // stops spinner
+    yield put(isCreatingTodoItemFalse());
+    yield put(createTodoItemFailure());
+  }
+}
+
+function* fn_createTodoItemSuccess({successCallbackFn}) {
+  yield call(successCallbackFn);
 }
 
 function* fn_fetchTodoItemsForACollectionStart({collectionId}) {

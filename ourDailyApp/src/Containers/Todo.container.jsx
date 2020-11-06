@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Todo, Formik} from "../Components/Compound Components";
+import {Todo, Formik, Preloader} from "../Components/Compound Components";
 import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
 import {setTodoSearchTerm} from "../redux/Todo/todo.actions";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
@@ -14,7 +14,7 @@ function TodoContainer(props) {
     <Todo className="TodoContainer">
       <TodoHeader/>
       <div className="todoBodyContainer flex">
-        <TodoListSection todoItemsQuantity={props.todoItemsQuantity} filteredTodos={props.filteredTodos} activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} popupProps={props.popupProps}/>
+        <TodoListSection filteredTodos={props.filteredTodos} activeTodoItem={props.activeTodoItem} onTodoItemClick={props.onTodoItemClick} popupProps={props.popupProps}/>
         <TodoItemDetailsSection/>
       </div>
     </Todo>
@@ -48,30 +48,44 @@ function TodoHeader() {
   )
 }
 
-function TodoListSection({todoItemsQuantity, filteredTodos, activeTodoItem, onTodoItemClick, popupProps}) {
+function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupProps}) {
 
-  const {name: collectionName, createdAt} = useSelector(state => state.todo.openedCollection);
+  const isFetchingTodoItems = useSelector(state => state.todo.isFetchingTodoItems);
+
+  const {name: collectionName, createdAt: collectionCreatedAt} = useSelector(state => state.todo.openedCollection);
 
   const onAddTodoBtnClick = () => {
     popupProps.setRenderPopup("addTodo");
     popupProps.setOpenPopup(true);
   }
 
+  const renderTodoItems = () => {
+    return isFetchingTodoItems 
+    ? 
+    new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-8 w-3/4 mx-auto"/>) 
+    : 
+    filteredTodos.map((todo) => <Todo.TodoListItemBlock key={todo.id} 
+    onClick={(e) => onTodoItemClick(e, todo)} active={activeTodoItem === todo.id} 
+    subTitle={todo.item ? todo.item.title : todo.title}
+    previewText={todo.item ? todo.item.body : todo.body}
+    ></Todo.TodoListItemBlock>)
+  }
+
   return (
     <div style={{borderRight: "1px solid #303030", height: "calc(100vh - 71px)"}} className="w-1/2 p-3 xl:w-1/3">
-      <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText={todoItemsQuantity} title={collectionName}>
+      <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText={filteredTodos.length} title={collectionName}>
         <Todo.AddTodoBtn onClick={onAddTodoBtnClick}/>
       </Todo.TodoHeader>
       <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
-        {filteredTodos.map((todo, idx) => <Todo.TodoListItemBlock key={idx} onClick={(e) => onTodoItemClick(e, idx)} active={activeTodoItem === idx} subTitle={todo.item ? todo.item.title : todo.title}
-        previewText={todo.item ? todo.item.body : todo.body}
-        ></Todo.TodoListItemBlock>)}
+        {renderTodoItems()}
       </div>
     </div>
   )
 }
 
 function TodoItemDetailsSection() {
+
+  const openedTodoItem = useSelector(state => state.todo.openedTodoItem);
 
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -84,18 +98,16 @@ function TodoItemDetailsSection() {
   }
 
   const renderTitle = () => {
-    return isEditMode ? <Formik.Input className="font-normal text-sm lg:text-lg" defaultValue="Build backend for todolist"></Formik.Input> 
-    : <Todo.TitleText className="font-normal text-sm lg:text-lg">Build backend for todolist</Todo.TitleText>;
+    return isEditMode ? <Formik.Input className="font-normal text-sm lg:text-lg" defaultValue={openedTodoItem.title}></Formik.Input> 
+  : <Todo.TitleText className="font-normal text-sm lg:text-lg">{openedTodoItem.title}</Todo.TitleText>;
   }
 
   const renderBody = () => {
     return isEditMode ? <Formik.Textarea className="leading-6 text-xs lg:text-sm" disabled={false} rows="10" 
-    defaultValue="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been..." 
+    defaultValue={openedTodoItem.body} 
     type="text" id="bio" name="bio"></Formik.Textarea>
     : <Todo.Text className="leading-6 text-xs lg:text-sm">
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been...
+      {openedTodoItem.body}
     </Todo.Text>;
   }
 

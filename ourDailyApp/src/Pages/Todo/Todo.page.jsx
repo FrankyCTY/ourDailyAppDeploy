@@ -3,13 +3,14 @@ import { useMediaQuery } from "react-responsive";
 import TodoMobileContainer from "../../Containers/TodoMobile.container";
 import TodoContainer from "../../Containers/Todo.container";
 import {useSelector, useDispatch} from "react-redux";
+import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import {Popup, Todo, Formik, Preloader, ToolBar} from "../../Components/Compound Components";
 import usePopup from "../../hooks/usePopup.hooks";
 import useFuse from "../../hooks/useFuse.hooks";
 
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
   fetchTodoItemsForACollectionStart, setOpenedTodoCollection
-, toggleSideBarOpen, closeTodoSideBar} from "../../redux/Todo/todo.actions";
+, toggleSideBarOpen, closeTodoSideBar, createTodoItemStart, setOpenedTodoItem} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 
@@ -28,7 +29,7 @@ const TodoPage = () => {
   const collections = useSelector(state => state.todo.collections);
   const searchTerm = useSelector(state => state.todo.searchTerm);
 
-  const [activeTodoItem, onTodoItemClick] = useRecordClickTgt(null);
+  const [activeTodoItem, onRecordTodoItemClick] = useRecordClickTgt(null);
 
   const [openPopup, setOpenPopup, renderPopup, setRenderPopup] = usePopup();
 
@@ -49,6 +50,12 @@ const TodoPage = () => {
     setOpenPopup(true);
   }
 
+  const onTodoItemClick = (e, todo) => {
+    console.log({todo})
+    onRecordTodoItemClick(e, todo.id);
+    dispatch(setOpenedTodoItem(todo));
+  }
+
   const onCollectionClick = (e, collectionId, collectionName, createdAt) => {
     const isEmptyTodos = Object.keys(todos).length === 0;
     const needToFetchTodoItems = isEmptyTodos || todos[collectionId] === undefined;
@@ -61,9 +68,6 @@ const TodoPage = () => {
     }
     
   }
- 
-
-  const todoItemsQuantity = filteredTodos.length;
 
 
   useEffect(() => {
@@ -73,13 +77,13 @@ const TodoPage = () => {
 
   // 0 - 640px mobile view
   return <div className="flex"> 
-    {<Todo.TodoSideBar showSideBar={isSideBarOpened} closeTodoSideBar={closeTodoSideBar} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
+    {<Todo.TodoSideBar showSideBar={isSideBarOpened} withOverlay={showToolbar} closeTodoSideBar={closeTodoSideBar} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
     collections={isFetchingCollections ? new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-4 w-3/4 mx-auto"/>)
     : collections.map((collection) => <Todo.PairButton key={collection.id} onClick={(e) => onCollectionClick(e, collection.id, collection.name, collection.createdAt)} className="flex items-center sm:pl-16" buttonText={collection.name}><Todo.CollectionSingleLogo className="mr-4"/></Todo.PairButton>)}
   />}
     {renderDesktopApp ? 
-    <TodoContainer todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
-  : <TodoMobileContainer todoItemsQuantity={todoItemsQuantity} filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick}/>
+    <TodoContainer filteredTodos={filteredTodos} collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps}/>
+  : <TodoMobileContainer filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick}/>
   }
 
   { showToolbar && <ToolBar className="expanded">
@@ -89,7 +93,7 @@ const TodoPage = () => {
   </ToolBar>}
 
   <Popup.DefaultPopup open={openPopup} setOpenPopup={setOpenPopup} className="flex flex-col">
-    {renderPopup === "addTodo" && <AddTodoPopup setOpenPopup={setOpenPopup}/>}
+    {renderPopup === "addTodo" && <AddTodoPopup setOpenPopup={setOpenPopup} openedCollection={openedCollection}/>}
     {renderPopup === "createCollection" && <CreateCollectionPopup setOpenPopup={setOpenPopup}/>}
   </Popup.DefaultPopup>
   </div>
@@ -97,10 +101,24 @@ const TodoPage = () => {
 
 export default TodoPage;
 
-const AddTodoPopup = ({setOpenPopup}) => {
+const AddTodoPopup = ({setOpenPopup, openedCollection}) => {
+  const dispatch = useDispatch();
+  const isCreatingTodoItem = useSelector(state => state.todo.isCreatingTodoItem);
+
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
+  const onInputChange = (e, setFnc) => {
+    const {value} = e.target;
+    setFnc(value);
+  }
 
   const onCancelClick = () => {
     setOpenPopup(false);
+  }
+
+  const onSubmit = () => {
+    dispatch(createTodoItemStart(title, body, openedCollection.id, () => setOpenPopup(false)));
   }
 
   return <>
@@ -111,9 +129,9 @@ const AddTodoPopup = ({setOpenPopup}) => {
       <Todo.Text className="text-sm">Notes in here are saved in collections (a group of notes).</Todo.Text>
       <Todo.AttractText className="text-sm mb-4 inline-block">Learn more about creating collections</Todo.AttractText>
       <Formik.Group className="mb-4">
-          <Formik.Label className="text-sm" htmlFor={"name"}>Note Title</Formik.Label>
+          <Formik.Label className="text-sm" htmlFor={"title"}>Note Title</Formik.Label>
           <Formik.Group>
-              <Formik.Input className="text-xs" disabled={false} value={"todo text"} onChange={() => {}}></Formik.Input>
+              <Formik.Input className="text-xs" id="title" disabled={false} value={title} onChange={(e) => onInputChange(e, setTitle)}></Formik.Input>
           </Formik.Group>
       </Formik.Group>
 
@@ -122,13 +140,16 @@ const AddTodoPopup = ({setOpenPopup}) => {
         <Formik.Group>
             <Formik.Textarea className="text-xs w-full" disabled={false} rows="4" 
             placeholder="e.g., Independent software developer focused on clean and elegant web designs. Avid reader. Active writer. Enthusiastic traveler." 
-            type="text" id="bio" name="bio" style={{resize:"none"}}></Formik.Textarea>
+            type="text" id="body" name="body" style={{resize:"none"}} onChange={(e) => onInputChange(e, setBody)}></Formik.Textarea>
         </Formik.Group>
       </Formik.Group>
     </Popup.Body>
     <Popup.Footer className="px-4 py-2 flex justify-end">
         <Formik.CancelBtn onClick={onCancelClick} className="text-xs capitalize text-white px-4 mr-2">Cancel</Formik.CancelBtn>
-        <Formik.CustomSubmitBtn className="text-xs capitalize text-white px-4">Save to Todo</Formik.CustomSubmitBtn>
+<Formik.CustomSubmitBtn className="text-xs capitalize text-white px-4" onClick={onSubmit}>
+  Save to {openedCollection.name}
+  {isCreatingTodoItem && <PixelSpinner size={1.2} animationDuration={1500} style={{marginLeft: "4px"}}/>}
+  </Formik.CustomSubmitBtn>
     </Popup.Footer>
   </>
 }

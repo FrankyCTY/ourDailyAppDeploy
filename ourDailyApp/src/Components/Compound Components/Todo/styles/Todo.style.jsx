@@ -277,7 +277,6 @@ left: 0;
 top: 0;
 transition: opacity 250ms ease-in-out;
 opacity: 0;
-cursor: pointer;
 pointer-events: none;
 
 ${({showSideBar}) => {
@@ -298,6 +297,7 @@ S.TodoSideBarContainer = styled.div`
   user-select: none;
   transition: transform 250ms ease-in-out;
   transform: translateX(-100%);
+  z-index: 10;
 
   ${({showSideBar}) => {
     if(showSideBar) return "transform: translateX(0);";
@@ -310,7 +310,7 @@ S.TodoSideBarContainer = styled.div`
   @media screen and (min-width: 1280px) {
     position: initial;
     transform: translateX(0);
-  box-shadow: initial;
+    box-shadow: initial;
   }
 `;
 

@@ -11,9 +11,6 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./utils/styled/globalStyle";
 import { lightTheme, darkTheme } from "./utils/styled/theme";
 import PixelSpinner from "./Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
-import {WholePageLoader} from "./Components/Compound Components/";
-
-import {isCheckingJwtTrue, isCheckingJwtFalse} from "./redux/Auth/auth.actions";
 
 // import NavUIComponents from "./Components/NavUIComponents/NavUIComponents.component";
 import PageNotFoundPage from "./Pages/PageNotFound/PageNotFound.page";

@@ -171,7 +171,7 @@ Todo.TodoListItemBlock = function TodoListItemBlock({
 }
 
 Todo.TodoSideBar = function TodoSideBar({
-  showSideBar, closeTodoSideBar, onCreateCollectionClick, collections, children, ...restProps
+  showSideBar, withOverlay, closeTodoSideBar, onCreateCollectionClick, collections, children, ...restProps
 }) {
 
   const dispatch = useDispatch();
@@ -191,7 +191,9 @@ Todo.TodoSideBar = function TodoSideBar({
     };
   }, [dismissSidebar]);
 
-  return (
+  return <>
+  {withOverlay ?
+  (
     <S.TodoSideBarOverLay showSideBar={showSideBar}>
       <S.TodoSideBarContainer showSideBar={showSideBar} {...restProps} ref={node}>
         <div className="overflow-y-auto flex-auto">
@@ -205,6 +207,17 @@ Todo.TodoSideBar = function TodoSideBar({
           <Todo.CreateCollectionBtn onClick={onCreateCollectionClick}/>
         </div>
       </S.TodoSideBarContainer>
-    </S.TodoSideBarOverLay>
-  )
+    </S.TodoSideBarOverLay>) : (<S.TodoSideBarContainer showSideBar={showSideBar} {...restProps}>
+    <div className="overflow-y-auto flex-auto">
+      <Todo.PairButton className="flex items-center" buttonText="Back to console" onClick={() => router.push('/main')}><S.ReturnSvg className="mr-4" /></Todo.PairButton>
+      <Todo.SideBarDropdown className="flex items-center" buttonText="Collection" 
+        withArrow={true} dropdownItem={collections}>
+        <S.CollectionSvg className="mr-4"/>
+      </Todo.SideBarDropdown>
+    </div>
+    <div className="flex justify-center mb-12">
+      <Todo.CreateCollectionBtn onClick={onCreateCollectionClick}/>
+    </div>
+  </S.TodoSideBarContainer>
+  )}</>
 }
