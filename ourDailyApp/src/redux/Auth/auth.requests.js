@@ -14,9 +14,9 @@ export const signUpUser = async (signUpDetails) => {
   return res;
 };
 
-export const logInUser = async (logInDetails) => {
+export const logInUser = async ([logInDetails, url]) => {
   const res = await axios.post(
-    `${process.env.REACT_APP_URL}/users/login`,
+    url,
     {
       ...logInDetails,
     },
