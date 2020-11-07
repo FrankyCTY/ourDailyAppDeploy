@@ -54,12 +54,14 @@ Todo.Group = function Group({
 
 
 Todo.MobileNav = function MobileNav({
-  navText, children, ...restProps
+  navText, onPrevLinkClick, children, ...restProps
 }) {
   return (
     <S.MobileNav {...restProps}>
-      <S.BackLogo/>
-      <S.NavText>{navText}</S.NavText>
+      <div className="flex" onClick={onPrevLinkClick}>
+        <S.BackLogo/>
+        <S.NavText>{navText}</S.NavText>
+      </div>
       {children}
     </S.MobileNav>
     )

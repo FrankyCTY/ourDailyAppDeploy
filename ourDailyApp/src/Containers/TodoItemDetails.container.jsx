@@ -5,7 +5,7 @@ import {modifyTodoItemStart, toggleEditTodoItemMode} from "../redux/Todo/todo.ac
 import useTodoToolbox from "../hooks/useTodoToolbox.hooks";
 
 
-function TodoItemDetailsContainer() {
+function TodoItemDetailsContainer({children}) {
 
   const dispatch = useDispatch();
 
@@ -51,7 +51,7 @@ function TodoItemDetailsContainer() {
   }
 
   return (
-    <div className="border-4">
+    <div>
     <Todo.Group className="flex justify-between mb-4">
       {/* <Todo.TitleText className="font-normal text-sm lg:text-lg">Build backend for todolist</Todo.TitleText> */}
       {renderTitle()}

@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import {Todo, Formik} from "../../Components/Compound Components";
-import {toggleFromCheckedTodoItemList, modifyTodoItemStart, toggleEditTodoItemMode} from "../../redux/Todo/todo.actions";
-import useTodoToolbox from "../../hooks/useTodoToolbox.hooks";
+import React from "react";
+import {Todo} from "../../Components/Compound Components";
+import {toggleFromCheckedTodoItemList, renderTodoItemsDetailSectionTrue, renderTodoItemsDetailSectionFalse} from "../../redux/Todo/todo.actions";
+import useRouter from "../../hooks/useRouter.hooks";
 import TodoItemDetailsContainer from "../TodoItemDetails.container";
 import { CSSTransition } from "react-transition-group";
 import "./TodoMobile.scss";
@@ -12,16 +12,18 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
   const {name: collectionName, createdAt: collectionCreatedAt} = useSelector(state => state.todo.openedCollection);
  
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);
+  const openedCollection = useSelector(state => state.todo.openedCollection);
+  const renderDetailSection = useSelector(state => state.todo.renderTodoItemDetailSection);
 
-  const [renderDetailSection, setRenderDetailSection] = useState(false);
   const onListItemBlockClick = (e, todo) => {
     if(checkTodoItemsMode) {
       dispatch(toggleFromCheckedTodoItemList(todo));
     } else {
       onTodoItemClick(e, todo)
-      setRenderDetailSection(true);
+      dispatch(renderTodoItemsDetailSectionTrue());
     }
   }
   
@@ -33,7 +35,7 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
     >
       <div className="pageTransition">
         <Todo className="flex-1">
-          <Todo.MobileNav navText="Console">
+          <Todo.MobileNav navText="Console" onPrevLinkClick={() => router.push('/main')}>
           {checkTodoItemsMode && <Todo.BinSvg className="ml-auto" nobg="true" svgSize="1rem"/>}
           </Todo.MobileNav>
           <Todo.TodoHeader className="mb-4" tagBoxText={filteredTodos.length} title={collectionName}/>
@@ -51,12 +53,15 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
     </CSSTransition>
 
     <CSSTransition in={renderDetailSection === true}
-    timeout={600}
+    timeout={300}
     classNames="pageTransition-secondary"
     unmountOnExit
     >
-      <div className="pageTransition" onClick={() => setRenderDetailSection(false)}>
+      <div className="pageTransition">
+      <Todo className="flex-1">
+        <Todo.MobileNav navText={openedCollection.name} onPrevLinkClick={() => dispatch(renderTodoItemsDetailSectionFalse())}></Todo.MobileNav>
         <TodoItemDetailsContainer/>
+      </Todo>
       </div>
     </CSSTransition>
   </div>

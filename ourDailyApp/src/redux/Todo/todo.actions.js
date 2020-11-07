@@ -171,3 +171,9 @@ export const deleteTodoItems = (todoItemIds, collectionId) => ({
   todoItemIds,
   collectionId,
 })
+export const renderTodoItemsDetailSectionTrue = () => ({
+  type: TodoActionTypes.RENDER_TODO_ITEM_DETAIL_SECTION_TRUE
+})
+export const renderTodoItemsDetailSectionFalse = () => ({
+  type: TodoActionTypes.RENDER_TODO_ITEM_DETAIL_SECTION_FALSE
+})

@@ -17,6 +17,7 @@ const INITIATE_STATE = {
   isDeletingTodoItems: false,
   editTodoItemMode: false,
   checkTodoItemsMode: false,
+  renderTodoItemDetailSection: false,
   checkedTodoItemList: [],
   searchTerm: "",
   openPopup: false,
@@ -99,6 +100,16 @@ const todoReducer = (state = INITIATE_STATE, action) => {
       return {
         ...state,
         isModifyingTodoItem: false,
+      }
+    case TodoActionTypes.RENDER_TODO_ITEM_DETAIL_SECTION_TRUE:
+      return {
+        ...state,
+        renderTodoItemDetailSection: true,
+      }
+    case TodoActionTypes.RENDER_TODO_ITEM_DETAIL_SECTION_FALSE:
+      return {
+        ...state,
+        renderTodoItemDetailSection: false,
       }
     case TodoActionTypes.TOGGLE_SIDEBAR_OPEN:
       return {

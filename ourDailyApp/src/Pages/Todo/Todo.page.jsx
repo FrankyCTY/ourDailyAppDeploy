@@ -9,7 +9,7 @@ import usePopup from "../../hooks/useTodoPopup.hooks";
 import useFuse from "../../hooks/useFuse.hooks";
 
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
-  fetchTodoItemsForACollectionStart, setOpenedTodoCollection
+  fetchTodoItemsForACollectionStart, setOpenedTodoCollection, renderTodoItemsDetailSectionFalse
 , toggleSideBarOpen, closeTodoSideBar, createTodoItemStart, setOpenedTodoItem, deleteTodoItemsStart, toggleCheckTodoItemsMode} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
@@ -225,7 +225,12 @@ const DeleteTodoItemPopup = ({toggleOpenPopup}) => {
       dispatch(deleteTodoItemsStart(checkedTodoItemList.map(todoItem => todoItem.id), openedCollectionId, checkModeDeleteSuccessCallback));
     } 
     else {
-      dispatch(deleteTodoItemsStart([openedTodoItem.id], openedCollectionId, () => toggleOpenPopup()));
+      const deleteSuccessCallback = () => {
+        toggleOpenPopup();
+        // for mobile view, return to todo items page from deleted detail page
+        dispatch(renderTodoItemsDetailSectionFalse());
+      }
+      dispatch(deleteTodoItemsStart([openedTodoItem.id], openedCollectionId, deleteSuccessCallback));
     }
   }
 
