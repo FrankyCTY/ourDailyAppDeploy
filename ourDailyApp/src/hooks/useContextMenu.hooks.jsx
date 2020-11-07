@@ -14,6 +14,7 @@ const useContextMenu = (extendHandleFn) => {
       setXPos(`${e.pageX}px`);
       setYPos(`${e.pageY}px`);
       setRenderMenu(renderMenuName);
+      
       extendHandleFn(otherProps);
     },
     [setXPos, setYPos]

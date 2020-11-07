@@ -16,7 +16,7 @@ const logger = require("./helpers/logger");
 connectToMongoDB(DB);
 
 // 2) Start server
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
   logger.log("error", `Listening on port ${port}...`);
