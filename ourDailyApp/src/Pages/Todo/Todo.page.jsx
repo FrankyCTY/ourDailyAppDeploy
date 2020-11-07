@@ -71,6 +71,9 @@ const TodoPage = () => {
     if(needToFetchTodoItems) {
       dispatch(fetchTodoItemsForACollectionStart(collectionId));
     }
+
+    // Close Sidebar
+    dispatch(closeTodoSideBar());
     
   }
 
