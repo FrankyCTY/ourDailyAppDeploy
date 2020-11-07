@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useMediaQuery } from "react-responsive";
-import TodoMobileContainer from "../../Containers/TodoMobile.container";
+import TodoMobileContainer from "../../Containers/TodoMobile/TodoMobile.container";
 import TodoContainer from "../../Containers/Todo.container";
 import {useSelector, useDispatch} from "react-redux";
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
