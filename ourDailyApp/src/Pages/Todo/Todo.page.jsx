@@ -49,16 +49,6 @@ const TodoPage = () => {
     setRenderPopup,
   }
   
-  // const onCreateCollectionClick = () => {
-  //   setRenderPopup("createCollection");
-  //   toggleOpenPopup();
-  // }
-  
-  // const onAddTodoBtnClick = () => {
-  //   setRenderPopup("addTodo");
-  //   toggleOpenPopup();
-  // }
-  
   const onTodoItemClick = (e, todo) => {
     onRecordTodoItemClick(e, todo.id);
     dispatch(setOpenedTodoItem(todo));
