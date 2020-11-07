@@ -16,6 +16,7 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
 
   const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);
   const openedCollection = useSelector(state => state.todo.openedCollection);
+  const isOpenedCollectionBlank = Object.keys(openedCollection).length === 0;
   const renderDetailSection = useSelector(state => state.todo.renderTodoItemDetailSection);
 
   const onListItemBlockClick = (e, todo) => {
@@ -41,7 +42,12 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
           <Todo.MobileNav navText="Console" onPrevLinkClick={() => router.push('/main')}>
           {checkTodoItemsMode && <Todo.BinSvg className="ml-auto" nobg="true" svgSize="1rem"/>}
           </Todo.MobileNav>
-          <Todo.TodoHeader className="mb-4" tagBoxText={filteredTodos.length} title={collectionName}/>
+
+          {isOpenedCollectionBlank ? <div className="w-100 h-100 flex flex-col justify-center items-center">
+          <Todo.CollectionSvg svgSize="4rem" className="mt-12 mb-4"/>
+          <Todo.TitleText>Welcome back</Todo.TitleText>
+          </div> : <Todo.TodoHeader className="mb-4" tagBoxText={filteredTodos.length} title={collectionName}/>}
+
           <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
               {filteredTodos.map((todo) => <Todo.TodoListItemBlock key={todo.id} 
           onListItemBlockClick={(e) => onListItemBlockClick(e, todo)} active={activeTodoItem === todo.id} 

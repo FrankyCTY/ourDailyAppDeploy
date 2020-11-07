@@ -6,8 +6,6 @@ const OperationalErr = require("../helpers/OperationalErr");
 const S3 = require("../helpers/S3");
 
 class UserService {
-  constructor() {}
-
   getUserBg = async (bg) => {
     let userBg = undefined;
 

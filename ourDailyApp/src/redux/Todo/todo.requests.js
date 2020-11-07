@@ -85,3 +85,15 @@ export async function deleteTodoItemsFromBkEnd([todoItemIds, url]) {
 
   return res;
 }
+
+export async function deleteTodoCollectionFromBkEnd(url) {
+  const res = await axios({
+    method: "DELETE",
+    url,
+    withCredentials: true,
+  })
+
+  console.log({res})
+
+  return res;
+}

@@ -1,9 +1,8 @@
-import React, {useState} from "react";
-import {Todo, Formik, Preloader} from "../Components/Compound Components";
+import React from "react";
+import {Todo, Preloader} from "../Components/Compound Components";
 import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
-import {setTodoSearchTerm, modifyTodoItemStart, toggleEditTodoItemMode, toggleFromCheckedTodoItemList} from "../redux/Todo/todo.actions";
+import {setTodoSearchTerm, toggleFromCheckedTodoItemList} from "../redux/Todo/todo.actions";
 import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
-import useTodoToolbox from "../hooks/useTodoToolbox.hooks";
 import TodoItemDetailsContainer from "../Containers/TodoItemDetails.container";
 import useRouter from "../hooks/useRouter.hooks";
 
@@ -57,7 +56,9 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
   const dispatch = useDispatch();
 
   const isFetchingTodoItems = useSelector(state => state.todo.isFetchingTodoItems);
-  const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);  
+  const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode);
+  const openedCollection = useSelector(state => state.todo.openedCollection);
+  const isOpenedCollectionBlank = Object.keys(openedCollection).length === 0;
 
   const {name: collectionName, createdAt: collectionCreatedAt} = useSelector(state => state.todo.openedCollection);
 
@@ -95,13 +96,20 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
 
   return (
     <div style={{borderRight: "1px solid #303030", height: "calc(100vh - 71px)"}} className="w-1/2 p-3 xl:w-1/3">
+    { isOpenedCollectionBlank ?  
+      <div className="w-100 h-100 flex flex-col justify-center items-center">
+          <Todo.CollectionSvg svgSize="8rem" className="mb-4"/>
+          <Todo.TitleText>Welcome back</Todo.TitleText>
+      </div>
+    : <>
       <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText={filteredTodos.length} title={collectionName}>
         <Todo.AddTodoBtn onClick={onAddTodoBtnClick}/>
       </Todo.TodoHeader>
       <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
         {renderTodoItems()}
       </div>
-    </div>
+    </>}
+  </div>
   )
 }
 

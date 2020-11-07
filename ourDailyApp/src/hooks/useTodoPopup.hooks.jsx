@@ -1,4 +1,3 @@
-import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleTodoPopupOpen, setRenderTodoPopup} from "../redux/Todo/todo.actions";
 
@@ -10,7 +9,22 @@ export default function usePopup() {
   const toggleOpenPopup = () => dispatch(toggleTodoPopupOpen());
   const setRenderPopup = (popup) => dispatch(setRenderTodoPopup(popup));
 
+  const onCreateCollectionClick = () => {
+    setRenderPopup("createCollection");
+    toggleOpenPopup();
+  }
+
+  const onAddTodoBtnClick = () => {
+    setRenderPopup("addTodo");
+    toggleOpenPopup();
+  }
+
+  const onDeleteCollectionClick= () => {
+    setRenderPopup("deleteCollection");
+    toggleOpenPopup();
+  }
+
   
 
-  return [openPopup, toggleOpenPopup, renderPopup, setRenderPopup];
+  return {openPopup, toggleOpenPopup, renderPopup, setRenderPopup, onCreateCollectionClick, onAddTodoBtnClick, onDeleteCollectionClick};
 }

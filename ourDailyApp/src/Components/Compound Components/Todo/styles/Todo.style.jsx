@@ -67,6 +67,10 @@ S.SearchSvg = styled.i`
   font-size: 1.5rem;
   ${textStyles};
 `;
+S.CollectionSvgBig = styled(CollectionLogo)`
+  ${pairButtonStyles};
+  ${toolBoxSvgStyles};
+`;
 
 S.ToolBox = styled.div`
   display: flex;
@@ -274,7 +278,7 @@ S.CollectionSvg = styled(CollectionLogo)`
   width: 1.2rem;
 
   @media screen and (min-width: 550px) {
-    width: initial;
+    width: 1.8rem;
   }
 `;
 

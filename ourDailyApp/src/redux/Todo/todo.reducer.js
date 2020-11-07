@@ -1,6 +1,8 @@
 import TodoActionTypes from "./todo.types";
 
-import {populateTodoItemsToCollection, addTodoItemsToCollection, deleteTodoItemsFromTodos, toggleTodoItemFromList, modifyTodoItem} from "./todo.utils";
+import {populateTodoItemsToCollection, deleteCollectionFromTodos,
+  addTodoItemsToCollection, deleteTodoItemsFromTodos, 
+  toggleTodoItemFromList, modifyTodoItem, deleteTodoItemsBaseOnCollectionFromTodos} from "./todo.utils";
 
 const INITIATE_STATE = {
   // collections: [{id: 123, name: "new col"}],
@@ -18,10 +20,12 @@ const INITIATE_STATE = {
   editTodoItemMode: false,
   checkTodoItemsMode: false,
   renderTodoItemDetailSection: false,
+  isDeletingTodoCollection:false,
   checkedTodoItemList: [],
   searchTerm: "",
   openPopup: false,
-  renderPopup: null,
+  contextMenuTgt: {},
+  renderPopup: "",
 };
 
 const todoReducer = (state = INITIATE_STATE, action) => {
@@ -136,6 +140,16 @@ const todoReducer = (state = INITIATE_STATE, action) => {
         ...state,
         isDeletingTodoItems: false,
       }
+    case TodoActionTypes.IS_DELETING_COLLECTION_TRUE:
+      return {
+        ...state,
+        isDeletingTodoCollection: true,
+      }
+    case TodoActionTypes.IS_DELETING_COLLECTION_FALSE:
+      return {
+        ...state,
+        isDeletingTodoCollection: false,
+      }
     case TodoActionTypes.SET_TODO_SEARCH_TERM:
       return {
         ...state,
@@ -185,6 +199,21 @@ const todoReducer = (state = INITIATE_STATE, action) => {
       return {
         ...state,
         todos: deleteTodoItemsFromTodos(state.todos, action.todoItemIds, action.collectionId),
+      }
+    case TodoActionTypes.SET_TODO_CONTEXT_MENU_TGT:
+      return {
+        ...state,
+        contextMenuTgt: action.target,
+      }
+    case TodoActionTypes.DELETE_TODO_COLLECTION:
+      return {
+        ...state,
+        collections: deleteCollectionFromTodos(state.collections, action.collectionId),
+      }
+    case TodoActionTypes.DELETE_TODOITEMS_BASE_ON_COLLECTIONID:
+      return {
+        ...state,
+        todos: deleteTodoItemsBaseOnCollectionFromTodos(state.todos, action.collectionId),
       }
     default:
       return state;

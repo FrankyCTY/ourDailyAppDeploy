@@ -1,13 +1,19 @@
 import {put, call} from "redux-saga/effects";
 
-import {addTodoCollection} from "./todo.actions";
+import {addTodoCollection, deleteTodoCollection, deleteTodoItemsBaseOnCollectionId} from "./todo.actions";
 
 class TodoSagaUtils {
   * createCollection(collection) {
     // add new collection to redux
-    console.log("todo saga utils")
-    console.log({collection})
     yield put(addTodoCollection(collection));
+  }
+
+  * deleteCollection(collectionId) {
+    // 2) delete collection from todos state
+    yield put(deleteTodoCollection(collectionId));
+
+    // 3) delete todo items that are in the target collection from todos state
+    yield put(deleteTodoItemsBaseOnCollectionId(collectionId));
   }
 }
 

@@ -1,9 +1,8 @@
 const withCatchErrAsync = require("../../utils/error/withCatchErrorAsync");
 const Collection = require("../../models/collection/collection.model");
 const QueryStringHandler = require("../../helpers/QueryStringHandler");
-const OperationalErr = require("../../helpers/OperationalErr");
-const UserService = require("../../services/User.service");
-const AuthService = require("../../services/Auth.service");
+const CollectionService = require("../../services/Collection.service");
+
 
 exports.createCollection = withCatchErrAsync(async (req, res, next) => {
 
@@ -42,3 +41,15 @@ exports.getAllCollections = withCatchErrAsync(async (req, res) => {
       },
   });
 });
+
+exports.deleteCollection = withCatchErrAsync(async (req, res) => {
+  const {collectionId} = req.params;
+
+  // EXECUTE OPERATION
+  const collectionService = new CollectionService();
+  await collectionService.deleteCollection(collectionId);
+
+  return res.status(204).json({
+    status: "success",
+  })
+})

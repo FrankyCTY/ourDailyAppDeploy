@@ -115,7 +115,7 @@ function* signInWithEmail({ logInDetails }) {
     yield put(setIsLoggingInTRUE());
     
     // 1) Log in user
-    const response = yield call(logInUser, [logInDetails, `/api/v1/users/login`]);
+    const response = yield call(logInUser, [logInDetails, `${process.env.REACT_APP_URL}/users/login`]);
     console.log({response});
     // 2) Populate user data
     yield call(populateUserData, response);

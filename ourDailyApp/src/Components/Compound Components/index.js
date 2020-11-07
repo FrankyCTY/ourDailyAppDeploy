@@ -24,3 +24,4 @@ export { default as FloatBtn } from "./FloatButton/floatButton.component";
 export { default as Todo } from "./Todo/Todo.component";
 export { default as Popup } from "./Popup/Popup.component";
 export { default as Preloader } from "./Preloader/Preloader.component";
+export { default as ContextMenu } from "./ContextMenu/ContextMenu.component";

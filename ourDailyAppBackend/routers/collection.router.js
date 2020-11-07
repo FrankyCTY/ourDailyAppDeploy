@@ -10,4 +10,6 @@ router.use("/:collectionId/todoItems", todoItemRouter);
 router.route('/').post(authController.protect, collectionController.createCollection)
 .get(authController.protect, collectionController.getAllCollections);
 
+router.route('/:collectionId').delete(authController.protect, collectionController.deleteCollection);
+
 module.exports = router;

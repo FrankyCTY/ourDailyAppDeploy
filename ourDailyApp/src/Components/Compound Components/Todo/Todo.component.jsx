@@ -90,6 +90,14 @@ Todo.BinSvg = function BinSvg({
   svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg" {...restProps}/>
 }
 
+Todo.CollectionSvg = function CollectionSvg({
+  svgSize, children, itemId, ...restProps
+}) {
+
+  return <S.CollectionSvgBig svgsize={svgSize || "0.8rem"} 
+  className="binSvg" {...restProps}/>
+}
+
 Todo.ToolBox = function ToolBox({
   svgSize, svgMargin, nobg, children, itemId, ...restProps
 }) {

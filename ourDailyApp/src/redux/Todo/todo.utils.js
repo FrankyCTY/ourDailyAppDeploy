@@ -57,3 +57,23 @@ export const deleteTodoItemsFromTodos = (todos, todoItemIds, collectionId) => {
 
   return newTodos;
 }
+
+export const deleteCollectionFromTodos = (collections, collectionId) => {
+  // delete todos[collectionId];
+  // const newTodos = {...todos};
+
+  // console.log({newTodos})
+  console.log({collections});
+  const newCollections = collections.filter(collection => collection.id !== collectionId);
+  console.log({newCollections})
+  return newCollections;
+}
+
+export const deleteTodoItemsBaseOnCollectionFromTodos = (todos, collectionId) => {
+  delete todos[collectionId];
+  const newTodos = {...todos};
+
+  console.log({newTodos})
+
+  return newTodos;
+}

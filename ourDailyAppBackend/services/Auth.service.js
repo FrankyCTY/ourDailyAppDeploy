@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
 
 class AuthService {
-  constructor() {}
-
   signToken = (id) => {
     return jwt.sign(
       {

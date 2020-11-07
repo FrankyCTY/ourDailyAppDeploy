@@ -1,8 +1,8 @@
-import {takeLeading, call, put, all} from "redux-saga/effects";
+import {takeLeading, call, put, all, select} from "redux-saga/effects";
 
 import TodoActionTypes from "./todo.types";
 
-import {createCollection, fetchCollections, fetchTodoItemsForACollection, createTodoItem, modifyTodoItemToBackene, deleteTodoItemsFromBkEnd} from "./todo.requests";
+import {createCollection, fetchCollections, fetchTodoItemsForACollection, deleteTodoCollectionFromBkEnd, createTodoItem, modifyTodoItemToBackene, deleteTodoItemsFromBkEnd} from "./todo.requests";
 
 import {fetchTodoCollectionsSuccess, fetchTodoCollectionsFailure
 , isFetchingCollectionsTrue, isFetchingCollectionsFalse, populateTodoCollections
@@ -10,12 +10,20 @@ import {fetchTodoCollectionsSuccess, fetchTodoCollectionsFailure
 isFetchingTodoItemsTrue, isFetchingTodoItemsFalse, populateTodoItemsToACollection
 , isCreatingTodoItemTrue, isCreatingTodoItemFalse, createTodoItemSuccess, createTodoItemFailure, addTodoItem,
 modifyTodoItemSuccess, modifyTodoItemFailure, modifyTodoItem, isModifyingTodoItemTrue, isModifyingTodoItemFalse
-, setOpenedTodoItem, toggleCheckTodoItemsMode, isDeletingTodoItemsTrue, isDeletingTodoItemsFalse, deleteTodoItemsSuccess, deleteTodoItemsFailure, deleteTodoItems} from "./todo.actions";
+, setOpenedTodoItem, isDeletingTodoItemsTrue, isDeletingTodoItemsFalse, deleteTodoItemsSuccess, deleteTodoItemsFailure, 
+deleteTodoItems, isDeletingCollectionFalse, isDeletingCollectionTrue ,deleteTodoCollectionSuccess, deleteTodoCollectionFailure, setOpenedTodoCollection} from "./todo.actions";
 
 import TodoSagaUtils from "./todo.sagaUtils";
 
 // ========================= Sagas ==============================
 
+function* onDeleteTodoCollectionSuccess() {
+  yield takeLeading(TodoActionTypes.DELETE_TODO_COLLECTION_SUCCESS, fn_deleteTodoCollectionSuccess);
+}
+
+function* onDeleteTodoCollectionStart() {
+  yield takeLeading(TodoActionTypes.DELETE_TODO_COLLECTION_START, fn_deleteTodoCollectionStart);
+}
 function* onDeleteTodoItemsSuccess() {
   yield takeLeading(TodoActionTypes.DELETE_TODO_ITEMS_SUCCESS, fn_deleteTodoItemsSuccess);
 }
@@ -62,7 +70,38 @@ export default function* todoSaga() {
     call(onModifyTodoItemSuccess),
     call(onDeleteTodoItemsSuccess),
     call(onDeleteTodoItemsStart),
+    call(onDeleteTodoCollectionSuccess),
+    call(onDeleteTodoCollectionStart),
   ])
+}
+
+function* fn_deleteTodoCollectionSuccess({collectionId, successCallbackFn}) {
+  yield call(successCallbackFn);
+  // clean the openedCollectionState and openedTodoItemsState
+  const openedCollectionId = yield select(state => state.todo.openedCollection.id);
+  const openedTodoItemCollectionId = yield select(state => state.todo.openedTodoItem.parentCollection);
+  if(openedCollectionId === collectionId) yield put(setOpenedTodoCollection({}));
+  if(openedTodoItemCollectionId === collectionId) yield put(setOpenedTodoItem({}));
+}
+function* fn_deleteTodoCollectionStart({collectionId, successCallbackFn}) {
+  try {
+    // start spinner
+    yield put(isDeletingCollectionTrue());
+
+    // 1) create collection - backend
+    yield call(deleteTodoCollectionFromBkEnd, `${process.env.REACT_APP_URL}/todo/collections/${collectionId}`);
+
+    const todoSagaUtils = new TodoSagaUtils();
+    yield call(todoSagaUtils.deleteCollection, collectionId);
+
+    // stops spinner
+    yield put(deleteTodoCollectionSuccess(collectionId, successCallbackFn));
+    yield put(isDeletingCollectionFalse());
+  } catch (error) {
+    // stops spinner
+    yield put(deleteTodoCollectionFailure());
+    yield put(isDeletingCollectionFalse());
+  }
 }
 
 function* fn_deleteTodoItemsSuccess({successCallbackFn}) {
