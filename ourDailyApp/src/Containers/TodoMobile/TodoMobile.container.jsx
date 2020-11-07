@@ -19,10 +19,13 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
   const renderDetailSection = useSelector(state => state.todo.renderTodoItemDetailSection);
 
   const onListItemBlockClick = (e, todo) => {
+    const todoId = todo.id || todo.item.id;
+
+    const todoToAdd = todo.id ? todo : todo.item;
     if(checkTodoItemsMode) {
-      dispatch(toggleFromCheckedTodoItemList(todo));
+      dispatch(toggleFromCheckedTodoItemList(todoToAdd, todoId));
     } else {
-      onTodoItemClick(e, todo)
+      onTodoItemClick(e, todoToAdd)
       dispatch(renderTodoItemsDetailSectionTrue());
     }
   }
