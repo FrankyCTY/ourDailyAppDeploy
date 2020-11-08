@@ -23,9 +23,9 @@ const INITIATE_STATE = {
   isDeletingTodoCollection:false,
   checkedTodoItemList: [],
   searchTerm: "",
-  openPopup: false,
+  // openPopup: false,
+  // renderPopup: "",
   contextMenuTgt: {},
-  renderPopup: "",
 };
 
 const todoReducer = (state = INITIATE_STATE, action) => {
@@ -185,16 +185,16 @@ const todoReducer = (state = INITIATE_STATE, action) => {
         ...state,
         checkedTodoItemList: toggleTodoItemFromList(state.checkedTodoItemList, action.todoItem, action.todoId),
       }
-    case TodoActionTypes.TOGGLE_TODO_POPUP_OPEN:
-      return {
-        ...state,
-        openPopup: !state.openPopup,
-      }
-    case TodoActionTypes.SET_RENDER_TODO_POPUP:
-      return {
-        ...state,
-        renderPopup: action.popup,
-      }
+    // case TodoActionTypes.TOGGLE_TODO_POPUP_OPEN:
+    //   return {
+    //     ...state,
+    //     openPopup: !state.openPopup,
+    //   }
+    // case TodoActionTypes.SET_RENDER_TODO_POPUP:
+    //   return {
+    //     ...state,
+    //     renderPopup: action.popup,
+    //   }
     case TodoActionTypes.DELETE_TODO_ITEMS:
       return {
         ...state,

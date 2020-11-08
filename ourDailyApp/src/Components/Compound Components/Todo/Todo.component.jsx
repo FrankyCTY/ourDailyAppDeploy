@@ -2,7 +2,8 @@ import React from "react";
 import S from "./styles/Todo.style";
 import useRouter from "../../../hooks/useRouter.hooks";
 import useDismiss from "../../../hooks/useDismiss.hooks";
-import {toggleEditTodoItemMode, toggleTodoPopupOpen, setRenderTodoPopup} from "../../../redux/Todo/todo.actions";
+import {toggleEditTodoItemMode} from "../../../redux/Todo/todo.actions";
+import {toggleTodoPopupOpen, setRenderTodoPopup} from "../../../redux/General/general.actions";
 import {useDispatch, useSelector} from "react-redux";
 import Formik from "../Formik/Formik.component";
 

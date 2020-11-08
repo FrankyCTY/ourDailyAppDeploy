@@ -1,11 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
-import {toggleTodoPopupOpen, setRenderTodoPopup} from "../redux/Todo/todo.actions";
+import {toggleTodoPopupOpen, setRenderTodoPopup} from "../redux/General/general.actions";
 
 export default function usePopup() {
   const dispatch = useDispatch();
 
-  const openPopup = useSelector(state => state.todo.openPopup);
-  const renderPopup = useSelector(state => state.todo.renderPopup);
+  const openPopup = useSelector(state => state.general.openPopup);
+  const renderPopup = useSelector(state => state.general.renderPopup);
   const toggleOpenPopup = () => dispatch(toggleTodoPopupOpen());
   const setRenderPopup = (popup) => dispatch(setRenderTodoPopup(popup));
 

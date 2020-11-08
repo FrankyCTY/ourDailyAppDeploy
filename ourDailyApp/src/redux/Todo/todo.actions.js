@@ -178,13 +178,13 @@ export const toggleFromCheckedTodoItemList = (todoItem, todoId) => ({
   todoItem,
   todoId,
 })
-export const toggleTodoPopupOpen = () => ({
-  type: TodoActionTypes.TOGGLE_TODO_POPUP_OPEN,
-})
-export const setRenderTodoPopup = (popup) => ({
-  type: TodoActionTypes.SET_RENDER_TODO_POPUP,
-  popup,
-})
+// export const toggleTodoPopupOpen = () => ({
+//   type: TodoActionTypes.TOGGLE_TODO_POPUP_OPEN,
+// })
+// export const setRenderTodoPopup = (popup) => ({
+//   type: TodoActionTypes.SET_RENDER_TODO_POPUP,
+//   popup,
+// })
 export const deleteTodoItems = (todoItemIds, collectionId) => ({
   type: TodoActionTypes.DELETE_TODO_ITEMS,
   todoItemIds,
