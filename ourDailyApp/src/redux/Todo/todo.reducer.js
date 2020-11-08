@@ -25,7 +25,7 @@ const INITIATE_STATE = {
   searchTerm: "",
   // openPopup: false,
   // renderPopup: "",
-  contextMenuTgt: {},
+  // contextMenuTgt: {},
 };
 
 const todoReducer = (state = INITIATE_STATE, action) => {
@@ -200,11 +200,11 @@ const todoReducer = (state = INITIATE_STATE, action) => {
         ...state,
         todos: deleteTodoItemsFromTodos(state.todos, action.todoItemIds, action.collectionId),
       }
-    case TodoActionTypes.SET_TODO_CONTEXT_MENU_TGT:
-      return {
-        ...state,
-        contextMenuTgt: action.target,
-      }
+    // case TodoActionTypes.SET_TODO_CONTEXT_MENU_TGT:
+    //   return {
+    //     ...state,
+    //     contextMenuTgt: action.target,
+    //   }
     case TodoActionTypes.DELETE_TODO_COLLECTION:
       return {
         ...state,

@@ -8,13 +8,7 @@ export default function General({ children, ...restProps }) {
 General.Svg = function Svg({
   svgSize, svgMargin, children, itemId, ...restProps
 }) {
-  const dispatch = useDispatch();
 
-  const onBinSvgClick = () => {
-    dispatch(setRenderTodoPopup("deleteTodoItem"));
-    dispatch(toggleTodoPopupOpen());
-  }
-
-  return <S.SvgContainer onClick={onBinSvgClick} svgsize={svgSize || "0.8rem"} 
+  return <S.SvgContainer svgsize={svgSize || "0.8rem"} 
   svgmargin={svgMargin || "0.1rem 0.2rem"} {...restProps}>{children}</S.SvgContainer>
 }

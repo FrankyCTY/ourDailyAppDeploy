@@ -3,6 +3,7 @@ import GeneralActionTypes from "./general.types";
 const INITIATE_STATE = {
   openPopup: false,
   renderPopup: "",
+  contextMenuTgt: {},
 };
 
 const generalReducer = (state = INITIATE_STATE, action) => {
@@ -17,6 +18,11 @@ const generalReducer = (state = INITIATE_STATE, action) => {
         ...state,
         renderPopup: action.popup,
       }
+      case GeneralActionTypes.SET_TODO_CONTEXT_MENU_TGT:
+        return {
+          ...state,
+          contextMenuTgt: action.target,
+        }
     default:
       return state;
   }

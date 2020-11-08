@@ -1,10 +1,12 @@
 import React from "react";
-import {Todo, Preloader} from "../Components/Compound Components";
-import ImageFrame from "../Components/ImageFrames/ImageFrame/ImageFrame.component";
-import {setTodoSearchTerm, toggleFromCheckedTodoItemList} from "../redux/Todo/todo.actions";
-import _arrayBufferToBase64 from "../utils/bufferArrayToBase64";
-import TodoItemDetailsContainer from "../Containers/TodoItemDetails.container";
-import useRouter from "../hooks/useRouter.hooks";
+import {Todo, Preloader, General} from "../../Components/Compound Components";
+import ImageFrame from "../../Components/ImageFrames/ImageFrame/ImageFrame.component";
+import {setTodoSearchTerm, toggleFromCheckedTodoItemList} from "../../redux/Todo/todo.actions";
+import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
+import TodoItemDetailsContainer from "../../Containers/TodoItemDetails.container";
+import useRouter from "../../hooks/useRouter.hooks";
+import {ReactComponent as CollectionLogo} from '../../assets/svg/collection.svg';
+
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -98,7 +100,7 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
     <div style={{borderRight: "1px solid #303030", height: "calc(100vh - 71px)"}} className="w-1/2 p-3 xl:w-1/3">
     { isOpenedCollectionBlank ?  
       <div className="w-100 h-100 flex flex-col justify-center items-center">
-          <Todo.CollectionSvg svgSize="8rem" className="mb-4"/>
+          <General.Svg svgSize="8rem" className="mb-4"><CollectionLogo /></General.Svg>
           <Todo.TitleText>Welcome back</Todo.TitleText>
       </div>
     : <>

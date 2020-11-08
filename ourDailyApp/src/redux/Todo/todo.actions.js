@@ -196,10 +196,10 @@ export const renderTodoItemsDetailSectionTrue = () => ({
 export const renderTodoItemsDetailSectionFalse = () => ({
   type: TodoActionTypes.RENDER_TODO_ITEM_DETAIL_SECTION_FALSE
 })
-export const setTodoContextMenuTgt = (target) => ({
-  type: TodoActionTypes.SET_TODO_CONTEXT_MENU_TGT,
-  target,
-})
+// export const setTodoContextMenuTgt = (target) => ({
+//   type: TodoActionTypes.SET_TODO_CONTEXT_MENU_TGT,
+//   target,
+// })
 export const deleteTodoCollection = (collectionId) => ({
   type: TodoActionTypes.DELETE_TODO_COLLECTION,
   collectionId,

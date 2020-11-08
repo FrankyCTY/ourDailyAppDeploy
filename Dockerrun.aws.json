@@ -27,7 +27,7 @@
         }
       ],
       "links": ["client", "server"],
-      "memory": 400
+      "memory": 200
     }
   ]
 }

@@ -1,9 +1,10 @@
 import React from "react";
-import {Todo} from "../../Components/Compound Components";
+import {Todo, General} from "../../Components/Compound Components";
 import {toggleFromCheckedTodoItemList, renderTodoItemsDetailSectionTrue, renderTodoItemsDetailSectionFalse} from "../../redux/Todo/todo.actions";
 import useRouter from "../../hooks/useRouter.hooks";
 import TodoItemDetailsContainer from "../TodoItemDetails.container";
 import { CSSTransition } from "react-transition-group";
+import {ReactComponent as CollectionLogo} from '../../assets/svg/collection.svg';
 import "./TodoMobile.scss";
 
 import {useSelector, useDispatch} from "react-redux";
@@ -44,7 +45,7 @@ function TodoMobileContainer({filteredTodos, activeTodoItem, onTodoItemClick}) {
           </Todo.MobileNav>
 
           {isOpenedCollectionBlank ? <div className="w-100 h-100 flex flex-col justify-center items-center">
-          <Todo.CollectionSvg svgSize="4rem" className="mt-12 mb-4"/>
+          <General.Svg svgSize="4rem" className="mb-4 my-16"><CollectionLogo /></General.Svg>
           <Todo.TitleText>Welcome back</Todo.TitleText>
           </div> : <Todo.TodoHeader className="mb-4" tagBoxText={filteredTodos.length} title={collectionName}/>}
 

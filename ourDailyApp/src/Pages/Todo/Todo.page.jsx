@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from "react";
 import { useMediaQuery } from "react-responsive";
-import TodoMobileContainer from "../../Containers/TodoMobile/TodoMobile.container";
-import TodoContainer from "../../Containers/Todo.container";
+import TodoMobileContainer from "../../Containers/Todo/TodoMobile.container";
+import TodoContainer from "../../Containers/Todo/Todo.container";
 import {useSelector, useDispatch} from "react-redux";
 import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
 import {Popup, Todo, Formik, Preloader, ToolBar, ContextMenu} from "../../Components/Compound Components";
 import useTodoPopup from "../../hooks/useTodoPopup.hooks";
 import useFuse from "../../hooks/useFuse.hooks";
 import useContextMenu from "../../hooks/useContextMenu.hooks";
-
+import {setTodoContextMenuTgt} from "../../redux/General/general.actions";
 import {createTodoCollectionStart, fetchTodoCollectionsStart, 
   fetchTodoItemsForACollectionStart, setOpenedTodoCollection, renderTodoItemsDetailSectionFalse
-, toggleSideBarOpen, closeTodoSideBar, setTodoContextMenuTgt, deleteTodoCollectionStart, 
+, toggleSideBarOpen, closeTodoSideBar, deleteTodoCollectionStart, 
  createTodoItemStart, setOpenedTodoItem, deleteTodoItemsStart, toggleCheckTodoItemsMode} from "../../redux/Todo/todo.actions";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
@@ -32,7 +32,7 @@ const TodoPage = () => {
   const collections = useSelector(state => state.todo.collections);
   const searchTerm = useSelector(state => state.todo.searchTerm);  
   const checkTodoItemsMode = useSelector(state => state.todo.checkTodoItemsMode); 
-  const contextMenuTgt = useSelector(state => state.todo.contextMenuTgt); 
+  const contextMenuTgt = useSelector(state => state.general.contextMenuTgt); 
   
   const [activeTodoItem, onRecordTodoItemClick] = useRecordClickTgt(null);
   
