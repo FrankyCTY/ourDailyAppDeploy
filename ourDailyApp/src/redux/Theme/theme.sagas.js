@@ -24,8 +24,8 @@ function* fn_setThemeStart({theme}) {
         yield put(setTheme(theme));
 
         // 2) Change User Doc in DB
-        const res = yield call(setThemeInDb, theme, `/api/v1/users/changeTheme`);
-        // const res = yield call(setThemeInDb, theme, `${process.env.REACT_APP_URL}/users/changeTheme`);
+        // const res = yield call(setThemeInDb, theme, `/api/v1/users/changeTheme`);
+        const res = yield call(setThemeInDb, theme, `${process.env.REACT_APP_URL}/users/changeTheme`);
         console.log({res})
     } catch (error) {
         console.log("set theme failed", error);

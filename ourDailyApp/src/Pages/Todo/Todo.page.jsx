@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Todo.style.scss";
 import { useMediaQuery } from "react-responsive";
 import TodoMobileContainer from "../../Containers/Todo/TodoMobile.container";
 import TodoContainer from "../../Containers/Todo/Todo.container";
@@ -7,6 +8,7 @@ import PixelSpinner from "../../Components/Molecules/Spinners/PixelSpinner/Pixel
 import { Popup, Todo, Formik, Preloader, ToolBar, ContextMenu } from "../../Components/Compound Components";
 import useTodoPopup from "../../hooks/useTodoPopup.hooks";
 import useFuse from "../../hooks/useFuse.hooks";
+import { CSSTransition } from "react-transition-group";
 import useContextMenu from "../../hooks/useContextMenu.hooks";
 import { setTodoContextMenuTgt } from "../../redux/General/general.actions";
 import {
@@ -23,7 +25,7 @@ const TodoPage = () => {
   const dispatch = useDispatch();
 
   const renderDesktopApp = useMediaQuery({ query: "(min-width: 640px" });
-  const showToolbar = useMediaQuery({ query: "(max-device-width: 1279px" });
+  const showToolbar = useMediaQuery({ query: "(max-width: 1279px" });
 
 
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
@@ -90,13 +92,17 @@ const TodoPage = () => {
   }, [dispatch, collections.length]);
 
   const renderToolBar = () => {
-    return <ToolBar className="expanded">
-      {showToolbar && <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>}
+    return     <ToolBar className="expanded">
+      <CSSTransition in={showToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
+        <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>
+      </CSSTransition>
       <ToolBar.Btn onClick={onAddTodoBtnClick}><ToolBar.BtnIcon className="iconfont icon-plus" /></ToolBar.Btn>
-      {showToolbar && <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x" /></ToolBar.Btn>}
+      <CSSTransition in={showToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
+        <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x" /></ToolBar.Btn>
+      </CSSTransition>
       <ToolBar.Btn onClick={() => dispatch(toggleCheckTodoItemsMode())}><ToolBar.BtnIcon className="iconfont icon-huabanfuben" /></ToolBar.Btn>
       {showCheckModeBinSvg && <ToolBar.Btn ><ToolBar.BtnIcon><Todo.BinSvg className="mx-auto" nobg="true" svgSize="1.1rem" /></ToolBar.BtnIcon></ToolBar.Btn>}
-    </ToolBar>
+  </ToolBar>
   }
 
 

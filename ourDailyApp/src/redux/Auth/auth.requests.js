@@ -4,8 +4,8 @@ import axios from "axios";
 export const signUpUser = async (signUpDetails) => {
   const res = await axios({
     method: "POST",
-    url: `/api/v1/users/signup`,
-    // url: `${process.env.REACT_APP_URL}users/signup`,
+    // url: `/api/v1/users/signup`,
+    url: `${process.env.REACT_APP_URL}users/signup`,
     data: {
       ...signUpDetails,
     },
