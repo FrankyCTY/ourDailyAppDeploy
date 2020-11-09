@@ -90,6 +90,7 @@ function* fn_deleteTodoCollectionStart({collectionId, successCallbackFn}) {
 
     // 1) create collection - backend
     yield call(deleteTodoCollectionFromBkEnd, `/api/v1/todo/collections/${collectionId}`);
+    // yield call(deleteTodoCollectionFromBkEnd, `${process.env.REACT_APP_URL}/todo/collections/${collectionId}`);
 
     const todoSagaUtils = new TodoSagaUtils();
     yield call(todoSagaUtils.deleteCollection, collectionId);
@@ -115,6 +116,7 @@ function* fn_deleteTodoItemsStart({todoItemIds, collectionId, successCallbackFn}
     // 1) create todo item - backend
     console.log("ready to delete in backend")
     yield call(deleteTodoItemsFromBkEnd, [todoItemIds, `/api/v1/todo/todoItems`]);
+    // yield call(deleteTodoItemsFromBkEnd, [todoItemIds, `${process.env.REACT_APP_URL}/todo/todoItems`]);
 
     // 2) Populate new todo item to a collection in todos state
     yield put(deleteTodoItems(todoItemIds, collectionId));
@@ -145,6 +147,7 @@ function* fn_modifyTodoItemStart({title, body, todoItemId, successCallbackFn}) {
     console.log("ready to create in backend")
     console.log({title, body, todoItemId});
     const res = yield call(modifyTodoItemToBackene, [title, body, `/api/v1/todo/todoItems/${todoItemId}`]);
+    // const res = yield call(modifyTodoItemToBackene, [title, body, `${process.env.REACT_APP_URL}/todo/todoItems/${todoItemId}`]);
 
     // 2) Populate new todo item to a collection in todos state
     yield put(modifyTodoItem(res.data.data.todoItem));
@@ -169,6 +172,7 @@ function* fn_createTodoItemStart({title, body, collectionId, successCallbackFn})
 
     // 1) create todo item - backend
     const res = yield call(createTodoItem, [title, body, `/api/v1/todo/collections/${collectionId}/todoItems`]);
+    // const res = yield call(createTodoItem, [title, body, `${process.env.REACT_APP_URL}/todo/collections/${collectionId}/todoItems`]);
 
     // 2) Populate new todo item to a collection in todos state
     yield put(addTodoItem(res.data.data.todoItem, collectionId));
@@ -196,6 +200,7 @@ function* fn_fetchTodoItemsForACollectionStart({collectionId, query}) {
     console.log({query})
     if(!query) query = "";
     const res = yield call(fetchTodoItemsForACollection, `/api/v1/todo/collections/${collectionId}/todoItems?${query}`);
+    // const res = yield call(fetchTodoItemsForACollection, `${process.env.REACT_APP_URL}/todo/collections/${collectionId}/todoItems?${query}`);
 
     // 2) Populate todo items to a collection in todos state
     console.log("todoitems", res.data.data.todoItems)
@@ -218,6 +223,7 @@ function* fn_fetchCollectionStart() {
 
     // 1) Fetch Collections from backend
     const res = yield call(fetchCollections, `/api/v1/todo/collections`);
+    // const res = yield call(fetchCollections, `${process.env.REACT_APP_URL}/todo/collections`);
     
     // 2) Populate Collections data
     yield put(populateTodoCollections(res.data.data.collections));
@@ -237,6 +243,7 @@ function* fn_createCollectionStart({name}) {
     // 1) Create Collection to backend
     console.log("creating collection")
     const res = yield call(createCollection, [name, `/api/v1/todo/collections`])
+    // const res = yield call(createCollection, [name, `${process.env.REACT_APP_URL}/todo/collections`])
 
     // 2) Populate collection to redux
     const todoSagaUtils = new TodoSagaUtils();

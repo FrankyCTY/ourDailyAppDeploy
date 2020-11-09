@@ -23,7 +23,7 @@ const TodoPage = () => {
   const dispatch = useDispatch();
 
   const renderDesktopApp = useMediaQuery({ query: "(min-width: 640px" });
-  const showToolbar = useMediaQuery({ query: "(max-width: 1279px" });
+  const showToolbar = useMediaQuery({ query: "(max-device-width: 1279px" });
 
 
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
