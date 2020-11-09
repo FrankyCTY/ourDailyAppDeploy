@@ -227,7 +227,17 @@ border-bottom: 0;
 }
 
 // Select Menu List
-& 
+& #select {
+    ${textStyles};
+}
+& option {
+    background: ${({theme}) => theme.secondary_bg} !important;
+    transition: background 100ms ease-in-out;
+    &:hover {
+        background-color: red !important;
+        box-shadow: 0 0 10px 100px #fff inset;
+    }
+}
 `;
 
 S.Select = styled(Select)`

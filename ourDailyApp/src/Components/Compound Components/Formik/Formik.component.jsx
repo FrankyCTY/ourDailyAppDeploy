@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import S from "./styles/Formik.style";
 
-import {MenuItem} from "@material-ui/core";
+import {MenuItem, NativeSelect} from "@material-ui/core";
 import "react-datepicker/dist/react-datepicker.css";
 import {UploadImageContext} from "../../../context/uploadAvatar.context";
 import userActions from "../../../redux/User/user.actions";
@@ -126,29 +126,13 @@ Formik.AvatarContainer = function AvatarContainer({src, ...restProps}) {
             </S.AvatarContainer>
 }
 
-Formik.DropDown = function DropDown({src, ...restProps}) {
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event) => {
-        setAge(event.target.value);
-    };
+Formik.DropDown = function DropDown({value, onChange, DropDownItems, src, ...restProps}) {
     //   className={classes.formControl}
     return (
-    <S.FormSelectContainer>
-        <S.Select
-        value={age}
-        onChange={handleChange}
-        displayEmpty
-        // className={classes.selectEmpty}
-        inputProps={{ 'aria-label': 'Without label' }}
-    >
-            <MenuItem value="">
-            <span>Recent</span>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-        </S.Select>
+    <S.FormSelectContainer {...restProps}>
+        <NativeSelect id="select" value={value}>
+            {DropDownItems && DropDownItems()}
+        </NativeSelect>
     </S.FormSelectContainer>
     )
 }

@@ -77,3 +77,14 @@ export const deleteTodoItemsBaseOnCollectionFromTodos = (todos, collectionId) =>
 
   return newTodos;
 }
+
+export const modifyCollectionSortMethod = (collections, collectionId, sortMethod) => {
+  console.log({collections});
+  const newCollections = [...collections];
+  /* newCollections[collectionId].sortMethod = sortMethod; */
+
+  const targetIdx = newCollections.findIndex(collection => collection.id === collectionId);
+  newCollections[targetIdx].sortMethod = sortMethod;
+  console.log({newCollections})
+  return newCollections;
+}

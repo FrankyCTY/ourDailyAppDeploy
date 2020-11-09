@@ -22,9 +22,10 @@ export const deleteTodoCollectionSuccess = (collectionId, successCallbackFn) => 
 export const deleteTodoCollectionFailure = () => ({
   type: TodoActionTypes.DELETE_TODO_COLLECTION_FAILURE,
 })
-export const fetchTodoItemsForACollectionStart = (collectionId) => ({
+export const fetchTodoItemsForACollectionStart = (collectionId, query) => ({
   type: TodoActionTypes.FETCH_TODO_ITEMS_FOR_A_COLLECTION_START,
   collectionId,
+  query,
 })
 export const fetchTodoItemsForACollectionSuccess = () => ({
   type: TodoActionTypes.FETCH_TODO_ITEMS_FOR_A_COLLECTION_SUCCESS,
@@ -207,4 +208,9 @@ export const deleteTodoCollection = (collectionId) => ({
 export const deleteTodoItemsBaseOnCollectionId = (collectionId) => ({
   type: TodoActionTypes.DELETE_TODOITEMS_BASE_ON_COLLECTIONID,
   collectionId,
+})
+export const modifyTodoCollectionSortMethod = (collectionId, sortMethod) => ({
+  type: TodoActionTypes.MODIFY_TODO_COLLECTION_SORT_METHOD,
+  collectionId,
+  sortMethod,
 })

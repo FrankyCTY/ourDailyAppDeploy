@@ -56,11 +56,11 @@ const TodoPage = () => {
     dispatch(setOpenedTodoItem(todo));
   }
 
-  const onCollectionClick = (e, collectionId, collectionName, createdAt) => {
+  const onCollectionClick = (e, collectionId, collectionName, createdAt, sortMethod) => {
     const isEmptyTodos = Object.keys(todos).length === 0;
     const needToFetchTodoItems = isEmptyTodos || todos[collectionId] === undefined;
     // set opened collection id
-    dispatch(setOpenedTodoCollection({ id: collectionId, name: collectionName, createdAt }));
+    dispatch(setOpenedTodoCollection({ id: collectionId, name: collectionName, createdAt, sortMethod }));
 
     // Get todo items data for collection
     if (needToFetchTodoItems) {
@@ -104,7 +104,7 @@ const TodoPage = () => {
   return <div className="flex">
     {<Todo.TodoSideBar showSideBar={isSideBarOpened} withOverlay={showToolbar} closeTodoSideBar={closeTodoSideBar} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
       collections={isFetchingCollections ? new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-4 w-3/4 mx-auto" />)
-        : collections.map((collection) => <Todo.PairButton key={collection.id} onContextMenu={(e) => handleContextMenu(e, "todoCollection", { collection })} onClick={(e) => onCollectionClick(e, collection.id, collection.name, collection.createdAt)} className="flex items-center sm:pl-16" buttonText={collection.name}><Todo.CollectionSingleLogo className="mr-4" /></Todo.PairButton>)}
+        : collections.map((collection) => <Todo.PairButton key={collection.id} onContextMenu={(e) => handleContextMenu(e, "todoCollection", { collection })} onClick={(e) => onCollectionClick(e, collection.id, collection.name, collection.createdAt, collection.sortMethod)} className="flex items-center sm:pl-16" buttonText={collection.name}><Todo.CollectionSingleLogo className="mr-4" /></Todo.PairButton>)}
     />}
     {renderDesktopApp ?
       <TodoContainer filteredTodos={filteredTodos} collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps} />

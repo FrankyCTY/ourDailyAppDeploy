@@ -104,7 +104,9 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
           <Todo.TitleText>Welcome back</Todo.TitleText>
       </div>
     : <>
-      <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" tagBoxText={filteredTodos.length} title={collectionName}>
+      <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" 
+      tagBoxText={filteredTodos.length} title={collectionName}
+      >
         <Todo.AddTodoBtn onClick={onAddTodoBtnClick}/>
       </Todo.TodoHeader>
       <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>

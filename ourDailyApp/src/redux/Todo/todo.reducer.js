@@ -2,7 +2,7 @@ import TodoActionTypes from "./todo.types";
 
 import {populateTodoItemsToCollection, deleteCollectionFromTodos,
   addTodoItemsToCollection, deleteTodoItemsFromTodos, 
-  toggleTodoItemFromList, modifyTodoItem, deleteTodoItemsBaseOnCollectionFromTodos} from "./todo.utils";
+  toggleTodoItemFromList, modifyTodoItem, deleteTodoItemsBaseOnCollectionFromTodos, modifyCollectionSortMethod} from "./todo.utils";
 
 const INITIATE_STATE = {
   // collections: [{id: 123, name: "new col"}],
@@ -185,16 +185,11 @@ const todoReducer = (state = INITIATE_STATE, action) => {
         ...state,
         checkedTodoItemList: toggleTodoItemFromList(state.checkedTodoItemList, action.todoItem, action.todoId),
       }
-    // case TodoActionTypes.TOGGLE_TODO_POPUP_OPEN:
-    //   return {
-    //     ...state,
-    //     openPopup: !state.openPopup,
-    //   }
-    // case TodoActionTypes.SET_RENDER_TODO_POPUP:
-    //   return {
-    //     ...state,
-    //     renderPopup: action.popup,
-    //   }
+    case TodoActionTypes.MODIFY_TODO_COLLECTION_SORT_METHOD:
+      return {
+        ...state,
+        collections: modifyCollectionSortMethod(state.collections, action.collectionId, action.sortMethod),
+      }
     case TodoActionTypes.DELETE_TODO_ITEMS:
       return {
         ...state,

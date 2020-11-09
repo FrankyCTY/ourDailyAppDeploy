@@ -2,7 +2,7 @@ import React from "react";
 import S from "./styles/Todo.style";
 import useRouter from "../../../hooks/useRouter.hooks";
 import useDismiss from "../../../hooks/useDismiss.hooks";
-import {toggleEditTodoItemMode} from "../../../redux/Todo/todo.actions";
+import {toggleEditTodoItemMode, modifyTodoCollectionSortMethod, setOpenedTodoCollection, fetchTodoItemsForACollectionStart} from "../../../redux/Todo/todo.actions";
 import {toggleTodoPopupOpen, setRenderTodoPopup} from "../../../redux/General/general.actions";
 import {useDispatch, useSelector} from "react-redux";
 import Formik from "../Formik/Formik.component";
@@ -170,9 +170,38 @@ Todo.AddTodoBtn = function AddTodoBtn({
 Todo.TodoHeader = function TodoHeader({
   tagBoxText, title, children, ...restProps
 }) {
+
+  const dispatch = useDispatch();
+
+  const openedCollection = useSelector(state => state.todo.openedCollection);
+
+
+  const onDropdownItemClick = (e, query) => {
+    const {value} = e.target;
+    const shouldFetch = value !== openedCollection.sortMethod;
+    if(shouldFetch) {
+      // modified in overall collections array
+      dispatch(modifyTodoCollectionSortMethod(openedCollection.id, value));
+      // Modify in Opened todo collection
+      dispatch(setOpenedTodoCollection({ ...openedCollection, sortMethod: value }));
+      // reFetch todo items according to new sorting method
+  
+      dispatch(fetchTodoItemsForACollectionStart(openedCollection.id, query));
+    }
+  }
+
+  const openedCollectionSortMethod = useSelector(state => state.todo.openedCollection).sortMethod;
+
   return (
     <S.TodoHeader {...restProps}>
-      <Formik.DropDown/>
+      <Formik.DropDown 
+        DropDownItems={            
+          () => <>
+            <option  value="Recent" onClick={(e) => onDropdownItemClick(e)}>Recent</option>
+            <option  value="Old to Recent" onClick={(e) => onDropdownItemClick(e, "sort=+createdAt")}>Old to Recent</option>
+          </>
+        }
+      value={openedCollectionSortMethod || "Recent"} />
       <S.Group>
         <Todo.TitleText className="mr-2 text-base sm:text-2xl">{title}</Todo.TitleText>
         <S.TagBox>{tagBoxText}</S.TagBox>
@@ -186,7 +215,9 @@ Todo.TodoListItemBlock = function TodoListItemBlock({
   onListItemBlockClick, itemId, checkMode, active, subTitle, previewText, children, ...restProps
 }) {
 
-  const newPreviewText = previewText.slice(0, 70) + '...';
+  const newPreviewText = () => {
+    return (previewText.length > 70) ? previewText.slice(0, 70) + '...' : previewText;
+  };
 
   const checkedTodoItemList = useSelector(state => state.todo.checkedTodoItemList);
 
@@ -202,7 +233,7 @@ Todo.TodoListItemBlock = function TodoListItemBlock({
         { showToolBar && <Todo.ToolBox/>}
       </Todo.Group>
 
-      <Todo.Text className="xl:text-sm">{newPreviewText}</Todo.Text>
+      <Todo.Text className="xl:text-sm">{newPreviewText()}</Todo.Text>
     { showCheckIndicator && <S.CheckIndicator><S.CheckSvg className="iconfont icon-tick" /></S.CheckIndicator>}
     </S.TodoListItemBlock>
   )

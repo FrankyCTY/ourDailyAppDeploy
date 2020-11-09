@@ -187,13 +187,15 @@ function* fn_createTodoItemSuccess({successCallbackFn}) {
   yield call(successCallbackFn);
 }
 
-function* fn_fetchTodoItemsForACollectionStart({collectionId}) {
+function* fn_fetchTodoItemsForACollectionStart({collectionId, query}) {
   try {
     // start spinner
     yield put(isFetchingTodoItemsTrue());
 
     // 1) Fetch todo items from backend
-    const res = yield call(fetchTodoItemsForACollection, `${process.env.REACT_APP_URL}/todo/collections/${collectionId}/todoItems`);
+    console.log({query})
+    if(!query) query = "";
+    const res = yield call(fetchTodoItemsForACollection, `${process.env.REACT_APP_URL}/todo/collections/${collectionId}/todoItems?${query}`);
 
     // 2) Populate todo items to a collection in todos state
     console.log("todoitems", res.data.data.todoItems)
