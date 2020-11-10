@@ -15,6 +15,8 @@ const logger = require("./helpers/logger");
 // Connecting to the database
 connectToMongoDB(DB);
 
+// Initialize Stripe
+
 // 2) Start server
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {

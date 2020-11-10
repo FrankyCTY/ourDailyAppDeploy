@@ -16,8 +16,6 @@ import {
     setIsLoggedTrue,
     setUserDetails,
     signOut,
-    isCheckingJwtTrue,
-    isCheckingJwtFalse,
 } from "../Auth/auth.actions";
 
 

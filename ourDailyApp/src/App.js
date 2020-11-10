@@ -16,6 +16,9 @@ import PixelSpinner from "./Components/Molecules/Spinners/PixelSpinner/PixelSpin
 import PageNotFoundPage from "./Pages/PageNotFound/PageNotFound.page";
 import HomePage from "./Pages/Home/Home.page";
 
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
 import "./App.scss";
 
 const AuthRouter = React.lazy(() =>
@@ -24,9 +27,7 @@ const AuthRouter = React.lazy(() =>
 
 const LoggedInRouter = React.lazy(() => import ("./Routers/LoggedInRouter/LoggedInRouter.component"));
 
-
-
-
+export const stripePromise = loadStripe('pk_test_51HcNpdJYtYSmYHOamYmfJifaZwVKjd0vVngDH8X6fdVWBodmHoeCT6yRh5PEYIiBwjaTl8447ojEB5uhQ7U8Bzvx00nH4DFlXo');
 
 const App = () => {
   const isUserLogged = useSelector((state) => state.auth_P.isLogged);
@@ -38,43 +39,45 @@ const App = () => {
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <GlobalStyle />
-      <React.Suspense 
-        fallback={
-          <PixelSpinner
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-            size={2}
-            animationDuration={800}
-          />
-        }
-      >
-        <Switch>
-          <Route
-            exact
-            path="/"
-            loggedInPath={"/main"}
-          >
-            <HomePage />
+      <Elements stripe={stripePromise}>
+        <React.Suspense 
+          fallback={
+            <PixelSpinner
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+              size={2}
+              animationDuration={800}
+            />
+          }
+        >
+          <Switch>
+            <Route
+              exact
+              path="/"
+              loggedInPath={"/main"}
+            >
+              <HomePage />
+            </Route>
+            <Route exact path="/404"><PageNotFoundPage/></Route>
+            <IsUserRedirect
+              isLogged={isUserLogged}
+              path={"/auth"}
+              loggedInPath={"/main"}
+            >
+              <AuthRouter />
+          </IsUserRedirect>
+          <Route path="/">
+            <LoggedInRouter/>
           </Route>
-          <Route exact path="/404"><PageNotFoundPage/></Route>
-          <IsUserRedirect
-            isLogged={isUserLogged}
-            path={"/auth"}
-            loggedInPath={"/main"}
-          >
-            <AuthRouter />
-        </IsUserRedirect>
-        <Route path="/">
-          <LoggedInRouter/>
-        </Route>
 
-        </Switch>
-        {/* {isCheckingJwt && <WholePageLoader.CheckingJwtLoader/>} */}
-      </React.Suspense>
+          </Switch>
+          {/* {isCheckingJwt && <WholePageLoader.CheckingJwtLoader/>} */}
+        </React.Suspense>
+      </Elements>
     </ThemeProvider>
   );
 };

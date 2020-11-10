@@ -49,6 +49,7 @@ const CartPage = ({
         <PaymentSection
           cartItemsQuantity={cartItemsQuantity}
           totalPrice={totalPrice}
+          cartItems={cartItems}
         />
       </S.ContentContainer>
     </S.CartPageContainer>

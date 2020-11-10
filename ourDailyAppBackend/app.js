@@ -8,6 +8,7 @@ const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routers/user.router");
 const todoRouter = require('./routers/todo.router');
+const stripeRouter = require('./routers/stripe.router');
 // const todoItemsRouter = require("./routers/todoItem.router");
 // const cillectionsRouter = require("./routers/collection.router");
 const applicationRouter = require("./routers/application.router");
@@ -111,6 +112,8 @@ app.use(`${process.env.URL}/users`, userRouter);
 app.use(`${process.env.URL}/applications`, applicationRouter);
 
 app.use(`${process.env.URL}/todo`, todoRouter);
+
+app.use(`${process.env.URL}/stripe`, stripeRouter);
 
 app.all("*", (req, res, next) => {
   return next(
