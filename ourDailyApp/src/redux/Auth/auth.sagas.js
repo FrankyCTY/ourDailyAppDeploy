@@ -1,4 +1,5 @@
 import { takeLeading, takeLatest, call, put, all } from "redux-saga/effects";
+import Url from "../../url";
 
 import AuthActionTypes from "./auth.types";
 import {
@@ -115,8 +116,8 @@ function* signInWithEmail({ logInDetails }) {
     yield put(setIsLoggingInTRUE());
     
     // 1) Log in user
-    const response = yield call(logInUser, [logInDetails, `/api/v1/users/login`]);
-    // const response = yield call(logInUser, [logInDetails, `${process.env.REACT_APP_URL}/users/login`]);
+    // const response = yield call(logInUser, [logInDetails, `/api/v1/users/login`]);
+    const response = yield call(logInUser, [logInDetails, `${Url}/users/login`]);
     console.log({response});
     // 2) Populate user data
     yield call(populateUserData, response);
@@ -141,7 +142,7 @@ function* signInWithGoogle({ authorizeServerRes }) {
     const googleLogInRes = yield call(
       checkAuthInfoFromDB,
       authorizeServerRes,
-      `/api/v1/users/googlelogin`
+      `${Url}/users/googlelogin`
       // `${process.env.REACT_APP_URL}/users/googlelogin`
     );
 

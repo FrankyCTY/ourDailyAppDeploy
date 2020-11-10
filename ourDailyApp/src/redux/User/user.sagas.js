@@ -2,15 +2,13 @@ import { takeLeading, takeLatest, take, fork, cancel, call, put, all, delay } fr
 import storage from "redux-persist/lib/storage";
 import UserActionTypes from "./user.types";
 import AuthActionTypes from "../Auth/auth.types";
+import Url from "../../url";
 
 import UserActions from "./user.actions";
 
 import {setWholePageLoaderBigText} from "../WholePageLoader/wholePageLoader.action";
 
 import {changeAuthPage} from "../AuthPage/AuthPage.actions";
-
-import {setIsGettingCartAppsTrue, setIsGettingCartAppsFalse, 
-  setIsGettingWishlistAppsTrue, setIsGettingWishlistAppsFalse} from "../cart/cart.actions";
 
 import globalErrHandler from "../../utils/globalErrHandler";
 
@@ -149,7 +147,7 @@ function* onUpdateUserDetailsStart() {
 
       // 1) Get user web data from backend
       // const response = yield call(getUserWebData, `/api/v1/users/getDataForUser`);
-      const response = yield call(getUserWebData, `${process.env.REACT_APP_URL}/users/getDataForUser`);
+      const response = yield call(getUserWebData, `${Url}/users/getDataForUser`);
 
       // 2) If user didn't get any error at this point
       // that means the user has proper JWT authorization
@@ -178,7 +176,7 @@ function* onUpdateUserDetailsStart() {
 
       // 1) get image from backend
       // const response = yield call(getUserBackground, `/api/v1/users/getUserBg`);
-      const response = yield call(getUserBackground, `${process.env.REACT_APP_URL}/users/getUserBg`);
+      const response = yield call(getUserBackground, `${Url}/users/getUserBg`);
 
       // 2) populate user bg to redux state
       // url || buffer
@@ -197,7 +195,7 @@ function* onUpdateUserDetailsStart() {
       
       // 1) request backend to change user background
       // const res = yield call(changeUserBackground, formData, `/api/v1/users/updateBg`);
-      const res = yield call(changeUserBackground, formData, `${process.env.REACT_APP_URL}/users/updateBg`);
+      const res = yield call(changeUserBackground, formData, `${Url}/users/updateBg`);
       console.log({res})
       // 2) populate user bg to redux state
       // url || buffer
@@ -225,7 +223,7 @@ function* onUpdateUserDetailsStart() {
       // 1) Request Backend to resetPassword
       console.log("ready to reset password", {param})
       // const res = yield call(resetPassword, resetPwObj, `/api/v1/users/resetPassword/${param}`);
-      const res = yield call(resetPassword, resetPwObj, `${process.env.REACT_APP_URL}/users/resetPassword/${param}`);
+      const res = yield call(resetPassword, resetPwObj, `${Url}/users/resetPassword/${param}`);
       console.log({res})
       // Stop Spinner
       yield put(UserActions.isResettingPwFalse());
@@ -253,7 +251,7 @@ function* fn_sendForgotPwEmailStart ({email}) {
 
     // 1) Request to send email via backend
     // const res = yield call(sendForgotPwEmail, email, `/api/v1/users/forgotPassword`);
-    const res = yield call(sendForgotPwEmail, email, `${process.env.REACT_APP_URL}/users/forgotPassword`);
+    const res = yield call(sendForgotPwEmail, email, `${Url}/users/forgotPassword`);
     console.log({resetEmailRes: res});
 
     // Loading -> false
@@ -290,7 +288,7 @@ function* fn_deleteMeStart() {
     yield delay(2000);
     // 1) Delete Me request tp bkEnd
     // yield call(deleteMe, `/api/v1/users/deleteMe`);
-    yield call(deleteMe, `${process.env.REACT_APP_URL}/users/deleteMe`);
+    yield call(deleteMe, `${Url}/users/deleteMe`);
     // 2) Remove local storage data
     yield storage.removeItem('persist:root');
     yield put(setWholePageLoaderBigText("Complete. Thanks for using my services, I will miss you."));
@@ -319,7 +317,7 @@ function* fn_changeUserPasswordStart(changePasswordDetails) {
 
     // 2) Change user Password Logic in Backend
     // yield call(changeUserPassword, changePasswordDetails, `/api/v1/users/changePassword`);
-    yield call(changeUserPassword, changePasswordDetails, `${process.env.REACT_APP_URL}/users/changePassword`);
+    yield call(changeUserPassword, changePasswordDetails, `${Url}/users/changePassword`);
     //@planToImplement
 
     // Loading -> false
