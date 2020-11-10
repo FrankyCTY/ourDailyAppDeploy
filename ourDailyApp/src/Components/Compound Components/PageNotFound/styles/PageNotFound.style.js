@@ -38,7 +38,7 @@ S.WarningIcon = styled.div`
 
 S.BigText = styled.p`
     font-size: 2.8rem;
-    color: #F8F8F8;
+    color: ${({theme}) => theme.general_text};
 
     @media screen and (min-width: 650px) {
         font-size: 3.4rem;
@@ -51,7 +51,7 @@ S.BigText = styled.p`
 
 S.DescText = styled.p`
 font-size: 1.5rem;
-color: #F8F8F8;
+color: ${({theme}) => theme.general_text};
 
 `;
 

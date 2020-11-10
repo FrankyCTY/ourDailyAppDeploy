@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const API = 'http://localhost:5000/api/v1';
+import Url from "../url";
 
 /**
  * A helper function to fetch data from your API.
@@ -8,7 +7,7 @@ const API = 'http://localhost:5000/api/v1';
 export async function fetchFromAPI(endpointURL, opts) {
   const res = await axios({
     method: "POST",
-    url: `${API}/${endpointURL}`,
+    url: `${Url}/${endpointURL}`,
     data: {
       ...opts
     },

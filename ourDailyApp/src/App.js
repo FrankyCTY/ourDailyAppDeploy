@@ -73,6 +73,7 @@ const App = () => {
           <Route path="/">
             <LoggedInRouter/>
           </Route>
+          
 
           </Switch>
           {/* {isCheckingJwt && <WholePageLoader.CheckingJwtLoader/>} */}
