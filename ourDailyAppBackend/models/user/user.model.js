@@ -89,6 +89,10 @@ const userSchema = new mongoose.Schema(
     isOauthAccount: {
       type: Boolean,
       default: false,
+    },
+    stripeCustomerId: {
+      type: String,
+      select: false,
     }
   },
   {

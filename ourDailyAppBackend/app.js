@@ -70,6 +70,7 @@ app.use("/api", limiter);
 app.use(
   express.json({
     limit: "1000kb",
+    verify: (req, res, buffer) => (req['rawBody'] = buffer),
   })
 );
 app.use(cookieParser());

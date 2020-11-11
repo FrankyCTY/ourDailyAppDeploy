@@ -1,4 +1,5 @@
 const Stripe = require("stripe");
+const User = require("../models/user/user.model");
 
 const webapp_url = process.env.NODE_ENV === "development" ? `http://localhost:3000` : `http://ourdailyapps.com/`;
 
@@ -22,6 +23,115 @@ async function createStripeCheckoutSession(
   return session;
 }
 
+
+
+// ================= Webhooks =================
+const webhookHandlers = {
+  'checkout.session.completed': async (data) => {
+    console.log("checkout session completed");
+    console.log("data")
+    console.log(data)
+    console.log("retrieve a session");
+    const session = await stripe.checkout.sessions.retrieve(
+      data.id, {
+        expand: ['line_items']
+      }
+    )
+    console.log({items: session.line_items.data})
+    // map the items objs and populate applications user has bought into user doc
+  },
+  'checkout.session.async_payment_failed': async (data) => {
+    console.log('checkout session failed');
+  },
+  'checkout.session.async_payment_succeeded': async (data) => {
+    console.log('checkout session succeeded');
+    console.log("data")
+    console.log(data)
+  },
+  'payment_intent.succeeded': async (data) => {
+    // Add your business logic here
+    console.log("payment_intent.succeeded");
+    console.log("data")
+    console.log(data)
+  },
+  'payment_intent.payment_failed': async (data) => {
+    // Add your business logic here
+    console.log("payment_intent.payment_failed");
+  },
+}
+
+/**
+ * Validate the stripe webhook secret, then call the handler for the event type
+ */
+const handleStripeWebhook = async(req, res) => {
+  // Make sure the request is sent from stripe
+  const sig = req.headers['stripe-signature'];
+  const event = stripe.webhooks.constructEvent(req['rawBody'], sig, process.env.STRIPE_WEBHOOK_SECRET);
+  const type = event.type;
+
+  try {
+    await webhookHandlers[type](event.data.object);
+    res.send({received: true});
+  } catch (err) {
+    console.error(err);
+    res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+}
+
+// ================= Customers =================
+
+/**
+ * Creates a SetupIntent used to save a credit card for later use
+ */
+async function createSetupIntent(user) {
+  const customer = await getOrCreateCustomer(user);
+
+  return stripe.setupIntents.create({ 
+      customer: customer.id,
+  })
+}
+
+/**
+ * Returns all payment sources associated to the user
+ */
+async function listPaymentMethods(user) {
+  const customer = await getOrCreateCustomer(user);
+
+  return stripe.paymentMethods.list({
+      customer: customer.id,
+      type: 'card',
+  });
+}
+
+/**
+ * Gets the exsiting Stripe customer or creates a new record
+ */
+async function getOrCreateCustomer(user, params) {
+  const {stripeCustomerId, email, _id} = user;
+
+  // If missing customerId, create it
+  if(!stripeCustomerId) {
+    // CREATE new customer in stripe
+    // and add metadata(db userId) to customer in stripe
+    const customer = await stripe.customer.create({
+      email,
+      metadata: {
+        mongoUID: _id
+      },
+      ...params
+    });
+
+    // Grab the stripe customer id and save it into the db user doc
+    await User.findByIdAndUpdate(_id, {stripeCustomerId: customer.id});
+    return customer;
+  } else {
+    return await stripe.customers.retrieve(stripeCustomerId);
+  }
+}
 module.exports = {
-  createStripeCheckoutSession
+  createStripeCheckoutSession,
+  handleStripeWebhook,
+  getOrCreateCustomer,
+  createSetupIntent,
+  listPaymentMethods,
 }

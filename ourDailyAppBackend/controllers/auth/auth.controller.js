@@ -44,7 +44,7 @@ exports.protect = withCatchErrAsync(async (req, res, next) => {
   );
 
   // 3) Check if user still exists @error [can check if user still active]
-  const currentUser = await User.findById(decodedPayload.id);
+  const currentUser = await User.findById(decodedPayload.id).select("+stripeCustomerId");
   console.log(decodedPayload.id)
 
   if (currentUser === null) {
@@ -68,6 +68,7 @@ exports.protect = withCatchErrAsync(async (req, res, next) => {
 
   // GRANT ACCESS TO PROTECTED ROUTE
   console.log("I am in the protect middleware");
+  console.log({user: currentUser})
   req.user = currentUser;
   next();
 });
