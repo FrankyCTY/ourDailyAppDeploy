@@ -6,6 +6,7 @@ const authController = require("../controllers/auth/auth.controller");
 const router = express.Router();
 
 router.route('/checkouts').post(authController.protect, withCatchErrAsync(async (req, res, next) => {
+  console.log('i am here')
   const {line_items} = req.body;
   const {email} = req.user;
   // console.log({email})
