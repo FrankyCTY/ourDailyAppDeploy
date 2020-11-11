@@ -1,6 +1,6 @@
 import React from "react";
 import { useStripe } from '@stripe/react-stripe-js';
-import {fetchFromAPI} from "../../utils/stripeApi";
+import {fetchFromAPI} from "../../utils/stripeFetcher";
 import S from "./PaymentSection.styles";
 
 
