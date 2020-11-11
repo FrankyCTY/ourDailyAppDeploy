@@ -24,8 +24,8 @@ import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 const TodoPage = () => {
   const dispatch = useDispatch();
 
-  const renderMobileApp = useMediaQuery({ query: "(max-device-width: 640px" });
-  const showMoreToolbar = useMediaQuery({ query: "(max-device-width: 1279px" });
+  const renderMobileApp = useMediaQuery({ query: "(max-device-width: 640px)" });
+  const showMoreToolbar = useMediaQuery({ query: "(max-device-width: 1279px)" });
 
 
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
