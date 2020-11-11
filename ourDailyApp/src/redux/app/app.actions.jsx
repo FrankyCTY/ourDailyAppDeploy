@@ -15,10 +15,6 @@ export const fetchApplicationsFailure = (errorMsg) => ({
 });
 
 // ====================== ACCESS APP BUTTONS =================
-export const fetchAccessAppBtnsStart = () => ({
-  type: AppActionTypes.FETCH_ACCESS_APP_BTN_START,
-});
-
 export const fetchAccessAppBtnsSuccess = (accessAppBtns) => ({
   type: AppActionTypes.FETCH_ACCESS_APP_BTN_SUCCESS,
   payload: accessAppBtns,

@@ -9,10 +9,9 @@ const router = express.Router();
 router.route('/checkouts').post(authController.protect, withCatchErrAsync(async (req, res, next) => {
   console.log('i am here')
   const {line_items} = req.body;
-  const {email} = req.user;
-  // console.log({email})
+  const user = req.user;
   console.log({line_items})
-    res.send(await createStripeCheckoutSession(line_items, email));
+    res.send(await createStripeCheckoutSession(line_items, user));
   })
 );
 

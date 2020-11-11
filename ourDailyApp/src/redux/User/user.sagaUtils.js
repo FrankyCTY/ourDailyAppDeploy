@@ -2,6 +2,7 @@ import {put, call} from "redux-saga/effects";
 import {setUserBackground} from "../Theme/theme.actions";
 import {populateCartApps, populateWishlistApps, updateCartTotalPrice} from "../cart/cart.actions";
 import {setUserAvatar} from "../Auth/auth.actions";
+import {fetchAccessAppBtnsSuccess} from "../app/app.actions";
 
 class UserSagaUtils {
 
@@ -34,6 +35,9 @@ class UserSagaUtils {
         // url || buffer
 
         yield call(userSagaUtils.populateUserBg, response);
+
+        // 5) Populate MainPage app button
+        yield put(fetchAccessAppBtnsSuccess(response.data.data.ownedApplications));
 
         // 5) Populate user avatar to redux state
         yield put(setUserAvatar(response.data.data.avatar.data));

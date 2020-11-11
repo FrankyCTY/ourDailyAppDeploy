@@ -22,9 +22,9 @@ const MainPage = () => {
   const userBg = useSelector(state => state.theme.background);
   // ============= Life Cycle Hooks =============
 
-  useEffect(() => {
-    dispatch(fetchAccessAppBtnsStart());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchAccessAppBtnsStart());
+  // }, [dispatch]);
 
 
   return (

@@ -2,22 +2,21 @@ import React from "react";
 import S from "./MainPageAccessAppBtn.style";
 
 import { Link } from "react-router-dom";
-import {useSelector} from "react-redux";
 
 import PropTypes from "prop-types";
 
 const MainPageAccessAppBtn = ({ app, index }) => {
 
 
-  const { name, route, imageUrl, border } = app;
+  const { name, appRoute, imgSrc, border } = app;
   return (
-    <Link to={`/${route}`} className={`link`}>
+    <Link to={`/${appRoute}`} className={`link`}>
       <S.ApplicationItemContainer
         className="application-item"
         stagger={(index + 1) * 0.1}
       >
         <S.Image
-          src={`${imageUrl}.jpeg`}
+          src={`${imgSrc}`}
           loading="lazy"
           className={`${border ? "border" : ""}`}
         />

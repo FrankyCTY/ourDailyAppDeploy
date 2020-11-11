@@ -1,7 +1,8 @@
 const Stripe = require("stripe");
 const User = require("../models/user/user.model");
 
-const webapp_url = process.env.NODE_ENV === "development" ? `http://localhost:3000` : `http://ourdailyapps.com/`;
+const env = "dev";
+const webapp_url = env === "dev" ? `http://localhost:3000` : `https://ourdailyapps.com/`;
 
 stripe = new Stripe(process.env.STRIPE_SECRET, {
   apiVersion: '2020-03-02',
@@ -10,14 +11,26 @@ stripe = new Stripe(process.env.STRIPE_SECRET, {
 // ================= Stripe Checkout =================
 async function createStripeCheckoutSession(
   line_items,
-  customer_email,
+  user,
 ) {
+  const customer = await getOrCreateCustomer(user);
+  console.log({customerId: customer.id})
+  // const customer_email = user.email;
+  const prodIds = line_items.map(item => item.id).join(" ");
+  // delete prod id from line_item to fit the required format for stripe
+  line_items.forEach(item => delete item.id);
+  
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items,
     success_url: `${webapp_url}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${webapp_url}/payment/failed`,
-    customer_email,
+    // customer_email,
+    customer: customer.id,
+    metadata: {
+      //string
+      prodIds: prodIds
+    }
   });
 
   return session;
@@ -27,18 +40,25 @@ async function createStripeCheckoutSession(
 
 // ================= Webhooks =================
 const webhookHandlers = {
-  'checkout.session.completed': async (data) => {
+  'checkout.session.completed': async (session) => {
     console.log("checkout session completed");
-    console.log("data")
-    console.log(data)
-    console.log("retrieve a session");
-    const session = await stripe.checkout.sessions.retrieve(
-      data.id, {
-        expand: ['line_items']
-      }
-    )
-    console.log({items: session.line_items.data})
+    console.log("session")
+    console.log(session)
+
+    const prodIdArray = session.metadata.prodIds.split(" ");
+
+    // Get the user id from stripe customer id metadata
+    const stripeCustomerId = session.customer;
+    // const stripeCustomerId = "cus_IN2OYcHWFCPSs5";
+    const customer = await stripe.customers.retrieve(
+      stripeCustomerId
+    );
+
+    const userMongoId = customer.metadata.mongoUID;
+    console.log({userMongoId});
+
     // map the items objs and populate applications user has bought into user doc
+    await User.findByIdAndUpdate(userMongoId, {$push: {ownedApplications: {$each: prodIdArray}}});
   },
   'checkout.session.async_payment_failed': async (data) => {
     console.log('checkout session failed');
@@ -107,22 +127,22 @@ async function listPaymentMethods(user) {
  * Gets the exsiting Stripe customer or creates a new record
  */
 async function getOrCreateCustomer(user, params) {
-  const {stripeCustomerId, email, _id} = user;
-
+  const {stripeCustomerId, email, id} = user;
+  console.log({stripeCustomerId})
   // If missing customerId, create it
   if(!stripeCustomerId) {
     // CREATE new customer in stripe
     // and add metadata(db userId) to customer in stripe
-    const customer = await stripe.customer.create({
+    const customer = await stripe.customers.create({
       email,
       metadata: {
-        mongoUID: _id
+        mongoUID: id
       },
       ...params
     });
 
     // Grab the stripe customer id and save it into the db user doc
-    await User.findByIdAndUpdate(_id, {stripeCustomerId: customer.id});
+    await User.findByIdAndUpdate(id, {stripeCustomerId: customer.id});
     return customer;
   } else {
     return await stripe.customers.retrieve(stripeCustomerId);

@@ -14,6 +14,9 @@ const applicationSchema = new mongoose.Schema(
         route: {
             type: String
         },
+        appRoute: {
+            type: String
+        },
         imgSrc: {
             type: String
         },

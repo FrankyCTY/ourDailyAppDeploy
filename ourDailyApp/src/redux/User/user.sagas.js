@@ -10,6 +10,8 @@ import {setWholePageLoaderBigText} from "../WholePageLoader/wholePageLoader.acti
 
 import {changeAuthPage} from "../AuthPage/AuthPage.actions";
 
+import {fetchAccessAppBtnsSuccess} from "../app/app.actions";
+
 import globalErrHandler from "../../utils/globalErrHandler";
 
 import {

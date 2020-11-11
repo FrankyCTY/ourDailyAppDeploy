@@ -374,7 +374,7 @@ exports.getDataForUser = withCatchErrAsync(async(req, res, next) => {
   console.log({photo})
 
   const userDoc = await User.findById(_id).populate([{path: 'applicationsInCart', select: {'name': 1, 'createdAt': 1, 'imgSrc': 1, 'price': 1, 'route': 1, 'creator': 1}}, 
-  {path: 'wishlistApplications', select: {'name': 1, 'createdAt': 1, 'imgSrc': 1, 'price': 1, 'route': 1, 'creator': 1}}]);
+  {path: 'wishlistApplications', select: {'name': 1, 'createdAt': 1, 'imgSrc': 1, 'price': 1, 'route': 1, 'creator': 1}}, {path: 'ownedApplications', select: {'name': 1, 'imgSrc': 1, 'price': 1, 'appRoute': 1, 'route': 1}}]);
   
   
   // 1) get cart
@@ -384,7 +384,10 @@ exports.getDataForUser = withCatchErrAsync(async(req, res, next) => {
     totalPriceInCart = userDoc.applicationsInCart.reduce((totalPrice, app) => totalPrice + app.price, 0);
   }
 
-  const appInCartDocs = userDoc.applicationsInCart
+  const appInCartDocs = userDoc.applicationsInCart;
+
+  const ownedApplications = userDoc.ownedApplications;
+  console.log({ownedApplications});
 
   
   // 2) get wishlist
@@ -408,6 +411,7 @@ exports.getDataForUser = withCatchErrAsync(async(req, res, next) => {
       cartItems: appInCartDocs,
       totalPriceInCart,
       wishlistItems: appInWishlistDocs,
+      ownedApplications,
       bg: userBg,
       avatar: userAvatar,
     }

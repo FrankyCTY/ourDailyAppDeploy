@@ -2,7 +2,7 @@ import AppActionTypes from "./app.types";
 
 const INITIAL_STATE = {
   applications: null,
-  accessAppBtns: null,
+  accessAppBtns: [],
   errorMsg: null,
 };
 
