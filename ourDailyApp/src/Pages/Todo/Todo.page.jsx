@@ -24,8 +24,8 @@ import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 const TodoPage = () => {
   const dispatch = useDispatch();
 
-  const renderDesktopApp = useMediaQuery({ query: "(min-width: 640px" });
-  const showToolbar = useMediaQuery({ query: "(max-width: 1279px" });
+  const renderMobileApp = useMediaQuery({ query: "(max-device-width: 640px" });
+  const showMoreToolbar = useMediaQuery({ query: "(max-device-width: 1279px" });
 
 
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
@@ -42,7 +42,7 @@ const TodoPage = () => {
 
   const { openPopup, toggleOpenPopup, renderPopup, setRenderPopup, onCreateCollectionClick, onAddTodoBtnClick } = useTodoPopup();
 
-  const showCheckModeBinSvg = renderDesktopApp && checkTodoItemsMode;
+  const showCheckModeBinSvg = !renderMobileApp && checkTodoItemsMode;
 
 
   const [filteredTodos] = useFuse(searchTerm, todoItemsToDisplay);
@@ -93,11 +93,11 @@ const TodoPage = () => {
 
   const renderToolBar = () => {
     return     <ToolBar className="expanded">
-      <CSSTransition in={showToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
+      <CSSTransition in={showMoreToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
         <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>
       </CSSTransition>
       <ToolBar.Btn onClick={onAddTodoBtnClick}><ToolBar.BtnIcon className="iconfont icon-plus" /></ToolBar.Btn>
-      <CSSTransition in={showToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
+      <CSSTransition in={showMoreToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
         <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x" /></ToolBar.Btn>
       </CSSTransition>
       <ToolBar.Btn onClick={() => dispatch(toggleCheckTodoItemsMode())}><ToolBar.BtnIcon className="iconfont icon-huabanfuben" /></ToolBar.Btn>
@@ -108,13 +108,13 @@ const TodoPage = () => {
 
   // 0 - 640px mobile view
   return <div className="flex">
-    {<Todo.TodoSideBar showSideBar={isSideBarOpened} withOverlay={showToolbar} closeTodoSideBar={closeTodoSideBar} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
+    {<Todo.TodoSideBar showSideBar={isSideBarOpened} withOverlay={showMoreToolbar} closeTodoSideBar={closeTodoSideBar} onCreateCollectionClick={onCreateCollectionClick} className="TodoSideBar"
       collections={isFetchingCollections ? new Array(5).fill(1).map((row, idx) => <Preloader.PreloaderRow key={idx} className="h-5 mb-4 w-3/4 mx-auto" />)
         : collections.map((collection) => <Todo.PairButton key={collection.id} onContextMenu={(e) => handleContextMenu(e, "todoCollection", { collection })} onClick={(e) => onCollectionClick(e, collection.id, collection.name, collection.createdAt, collection.sortMethod)} className="flex items-center sm:pl-16" buttonText={collection.name}><Todo.CollectionSingleLogo className="mr-4" /></Todo.PairButton>)}
     />}
-    {renderDesktopApp ?
-      <TodoContainer filteredTodos={filteredTodos} collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps} />
-      : <TodoMobileContainer filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} />
+    {renderMobileApp ?
+      <TodoMobileContainer filteredTodos={filteredTodos} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} />
+      : <TodoContainer filteredTodos={filteredTodos} collections={collections} activeTodoItem={activeTodoItem} onTodoItemClick={onTodoItemClick} popupProps={popupProps} />
     }
 
     {renderToolBar()}
