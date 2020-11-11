@@ -45,7 +45,7 @@ export function PaidAppRoute({isPaid, children, redirectUrl, ...restProps}) {
   return (
     <Route {...restProps}
       render={() => {
-        if(!isPaid) {
+        if(isPaid) {
           return children;
         } else {
           return (
