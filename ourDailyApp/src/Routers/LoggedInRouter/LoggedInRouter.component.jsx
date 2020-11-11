@@ -18,7 +18,6 @@ const ShopRouter = componentWithPreload(() =>
 import("../ShopRouter/ShopRouter.component")
 );
 const ApplicationRouter = React.lazy(() => import("../ApplicationRouter/ApplicationRouter.component"));
-const PaymentRouter = React.lazy(() => import("../Payment/PaymentRouter.component"));
 
 export const routes = [
     {
@@ -86,9 +85,6 @@ const LoggedInRouter = () => {
         </ProtectedRoute>
         <ProtectedRoute isLogged={isUserLogged} path='/applications'>
           <ApplicationRouter/>
-        </ProtectedRoute>
-        <ProtectedRoute isLogged={isUserLogged} path='/payment'>
-          <PaymentRouter/>
         </ProtectedRoute>
         <Route
             // render={() => (isUserLogged ? <NoMatch /> : <Redirect to="/login" />)}

@@ -11,16 +11,17 @@ const PaymentSection = ({ cartItemsQuantity, totalPrice, cartItems }) => {
     const line_items = cartItems.map(cartItem => {return {name: cartItem.name, 
       amount: cartItem.price * 100, 
       currency: "nzd", quantity: 1, images: ["https://i.ibb.co/pPTQXLB/todolist-Demo.png"]}})
-    // const body = { line_items: [product] };
-    const body = { line_items };
-    const { data: {id: sessionId} } = await fetchFromAPI('stripe/checkouts', body);
-
-    const { error } = await stripe.redirectToCheckout({
-      sessionId,
-    });
-
-    if (error) {
+      // const body = { line_items: [product] };
+      const body = { line_items };
+      const { data: {id: sessionId} } = await fetchFromAPI('stripe/checkouts', body);
+      
+      const { error } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+      if (error) {
       console.log(error);
+    } else {
+      console.log("payment success")
     }
   };
 

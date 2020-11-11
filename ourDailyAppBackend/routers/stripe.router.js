@@ -5,7 +5,6 @@ const authController = require("../controllers/auth/auth.controller");
 
 const router = express.Router();
 
-// @NOTE Todo Item must belong to a collection
 router.route('/checkouts').post(authController.protect, withCatchErrAsync(async (req, res, next) => {
   const {line_items} = req.body;
   const {email} = req.user;

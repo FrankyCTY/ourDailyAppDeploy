@@ -2,7 +2,7 @@ import React from "react";
 import {PageNotFound} from "../Components/Compound Components";
 import useRouter from "../hooks/useRouter.hooks";
 
-const WarningContainer = ({bigText, descText}) => {
+const PaymentSuccessContainer = ({bigText, descText}) => {
 
     const router = useRouter();
 
@@ -10,7 +10,7 @@ const WarningContainer = ({bigText, descText}) => {
         <PageNotFound.Container>
 
             <PageNotFound.IconAndTextGroup>
-                <PageNotFound.WarningIcon className="text-center"/>
+                <PageNotFound.SuccessIcon className="text-center"/>
                 <PageNotFound.ColGroup>
                     <PageNotFound.BigText>{bigText}</PageNotFound.BigText>
                     <PageNotFound.DescText>{descText}</PageNotFound.DescText>
@@ -18,20 +18,14 @@ const WarningContainer = ({bigText, descText}) => {
 
             </PageNotFound.IconAndTextGroup>
 
-
-
             <PageNotFound.Group>
                 <PageNotFound.Button variant="contained" color="primary" onClick={() => {
-                    router.push("/cart");
-                }}>Back To Cart</PageNotFound.Button>
-
-
-                {/* @planToImplement Report Problem functionality (may be report via email) */}
-                <PageNotFound.Button variant="contained" color="secondary">Report this Problem</PageNotFound.Button>
+                    router.push("/main");
+                }}>Back To Main</PageNotFound.Button>
             </PageNotFound.Group>
 
         </PageNotFound.Container>
     </PageNotFound>
 }
 
-export default WarningContainer;
+export default PaymentSuccessContainer;

@@ -13,6 +13,10 @@ PageNotFound.WarningIcon = function WarningIcon({children, ...restProps}) {
     return <S.WarningIcon {...restProps}><i className="iconfont icon-warning"/>{children}</S.WarningIcon>
 }
 
+PageNotFound.SuccessIcon = function SuccessIcon({children, ...restProps}) {
+    return <S.SuccessIcon {...restProps}><i className="iconfont icon-tick"/>{children}</S.SuccessIcon>
+}
+
 PageNotFound.BigText = function BigText({children, ...restProps}) {
     return <S.BigText {...restProps}>{children}</S.BigText>
 }

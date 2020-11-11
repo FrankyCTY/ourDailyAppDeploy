@@ -11,6 +11,7 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./utils/styled/globalStyle";
 import { lightTheme, darkTheme } from "./utils/styled/theme";
 import PixelSpinner from "./Components/Molecules/Spinners/PixelSpinner/PixelSpinner.component";
+import {ProtectedRoute } from "./helpers/routes.helper";
 
 // import NavUIComponents from "./Components/NavUIComponents/NavUIComponents.component";
 import PageNotFoundPage from "./Pages/PageNotFound/PageNotFound.page";
@@ -26,6 +27,8 @@ const AuthRouter = React.lazy(() =>
 );
 
 const LoggedInRouter = React.lazy(() => import ("./Routers/LoggedInRouter/LoggedInRouter.component"));
+const PaymentRouter = React.lazy(() => import("./Routers/Payment/PaymentRouter.component"));
+
 
 export const stripePromise = loadStripe('pk_test_51HcNpdJYtYSmYHOamYmfJifaZwVKjd0vVngDH8X6fdVWBodmHoeCT6yRh5PEYIiBwjaTl8447ojEB5uhQ7U8Bzvx00nH4DFlXo');
 
@@ -70,6 +73,9 @@ const App = () => {
             >
               <AuthRouter />
           </IsUserRedirect>
+          <ProtectedRoute isLogged={isUserLogged} path='/payment'>
+            <PaymentRouter/>
+          </ProtectedRoute>
           <Route path="/">
             <LoggedInRouter/>
           </Route>

@@ -35,6 +35,22 @@ S.WarningIcon = styled.div`
 
     
 `;
+S.SuccessIcon = styled.div`
+
+    & i {
+        font-size: 5rem;
+        color: #f44336;
+
+        @media screen and (min-width: 650px) {
+            font-size: 7rem;
+        }
+    }
+    @media screen and (min-width: 520px) {
+        margin-right: 2rem;
+    }
+
+    
+`;
 
 S.BigText = styled.p`
     font-size: 2.8rem;
