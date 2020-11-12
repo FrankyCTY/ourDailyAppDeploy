@@ -223,7 +223,8 @@ S.TodoListItemBlock = styled.div`
 
 S.BackLogo = styled(BackLogo)`
   fill: ${({theme}) => theme.RouteBlock.prevRouteText};
-  margin-right: .7rem;
+  margin-right: .9rem;
+  width: 0.8rem;
 `;
 
 S.TagBox = styled.div`
@@ -237,7 +238,7 @@ background: ${({theme}) => theme.minor};
 
 S.NavText = styled.span`
 color: ${({theme}) => theme.RouteBlock.prevRouteText};
-font-size: 0.8rem;`;
+font-size: 1rem;`;
 
 S.AddTodoBtn = styled.button`
 ${attractBtnStyles};
@@ -273,11 +274,7 @@ S.PairButton = styled.div`
 
 S.PairButtonText = styled.span`
   ${pairButtonStyles};
-  font-size: .7rem;
-
-  @media screen and (min-width: 550px) {
-    font-size: .9rem;
-  }
+  font-size: .9rem;
 `;
 
 S.ArrowIcon = styled.i`
@@ -294,7 +291,7 @@ left: 0rem;
 
 S.ReturnSvg = styled(ReturnLogo)`
   ${pairButtonStyles};
-  width: 1.2rem;
+  width: 1.4rem;
 
   @media screen and (min-width: 550px) {
     width: initial;
@@ -302,7 +299,7 @@ S.ReturnSvg = styled(ReturnLogo)`
 `;
 S.CollectionSingleLogo = styled(CollectionSingleLogo)`
   ${pairButtonStyles};
-  width: 1.2rem;
+  width: 1.4rem;
 
   @media screen and (min-width: 550px) {
     width: initial;
@@ -310,7 +307,7 @@ S.CollectionSingleLogo = styled(CollectionSingleLogo)`
 `;
 S.CollectionSvg = styled(CollectionLogo)`
   ${pairButtonStyles};
-  width: 1.2rem;
+  width: 1.4rem;
 
   @media screen and (min-width: 550px) {
     width: 1.8rem;
@@ -319,14 +316,10 @@ S.CollectionSvg = styled(CollectionLogo)`
 
 S.CreateCollectionBtn = styled.button`
   ${attractBtnStyles};
-  font-size: .6rem;
   border-radius: 12px;
-  padding: .5rem 1.2rem;
 
-  @media screen and (min-width: 550px) {
-    font-size: .8rem;
-    padding: .8rem 1.5rem;
-  }
+  font-size: .8rem;
+  padding: .8rem 1.5rem;
 `;
 
 S.TodoSideBarOverLay = styled.div`
@@ -349,7 +342,7 @@ ${({showSideBar}) => {
 
 S.TodoSideBarContainer = styled.div`
   height: 100vh;
-  min-width: 180px;
+  min-width: 220px;
   background: ${({theme}) => theme.body};
   position: absolute;
   padding-top: 71px;
