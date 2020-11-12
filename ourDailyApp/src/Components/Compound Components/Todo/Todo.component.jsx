@@ -194,14 +194,20 @@ Todo.TodoHeader = function TodoHeader({
 
   return (
     <S.TodoHeader {...restProps}>
-      <Formik.DropDown 
+      {/* <Formik.DropDown 
         DropDownItems={            
           () => <>
             <option  value="Recent" onClick={(e) => onDropdownItemClick(e)}>Recent</option>
             <option  value="Old to Recent" onClick={(e) => onDropdownItemClick(e, "sort=+createdAt")}>Old to Recent</option>
           </>
         }
-      value={openedCollectionSortMethod || "Recent"} />
+      value={openedCollectionSortMethod || "Recent"} /> */}
+      <div>
+        <select>
+          <option value="Recent" onClick={(e) => onDropdownItemClick(e)} selected={openedCollectionSortMethod === "Recent"}>Recent</option>
+          <option value="Old to Recent" onClick={(e) => onDropdownItemClick(e, "sort=+createdAt")} selected={openedCollectionSortMethod === "Old to Recent"}>Old to Recent</option>
+        </select>
+      </div>
       <S.Group>
         <Todo.TitleText className="mr-2 text-base sm:text-2xl">{title}</Todo.TitleText>
         <S.TagBox>{tagBoxText}</S.TagBox>

@@ -320,6 +320,7 @@ S.TodoSideBarContainer = styled.div`
   position: absolute;
   padding-top: 71px;
   padding-right: 1px;
+  padding-left: 10px;
   display: flex;
   flex-direction: column;
   user-select: none;
