@@ -8,9 +8,10 @@ const PaymentSection = ({ cartItemsQuantity, totalPrice, cartItems }) => {
   const stripe = useStripe();
 
   const onHandleClick = async (event) => {
+    console.log({img: cartItems[0]})
     const line_items = cartItems.map(cartItem => {return {name: cartItem.name, 
       amount: cartItem.price * 100, 
-      currency: "nzd", quantity: 1, images: [cartItem.imgSrc], id: cartItem._id}})
+      currency: "nzd", quantity: 1, images: [cartItem.imgSm], id: cartItem._id}})
       // const body = { line_items: [product] };
       const body = { line_items };
       const { data: {id: sessionId} } = await fetchFromAPI('stripe/checkouts', body);

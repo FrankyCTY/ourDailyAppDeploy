@@ -1,7 +1,7 @@
 const Stripe = require("stripe");
 const User = require("../models/user/user.model");
 
-const env = "prod";
+const env = "dev";
 const webapp_url = env === "dev" ? `http://localhost:3000` : `https://ourdailyapps.com/`;
 
 stripe = new Stripe(process.env.STRIPE_SECRET, {
@@ -19,7 +19,7 @@ async function createStripeCheckoutSession(
   const prodIds = line_items.map(item => item.id).join(" ");
   // delete prod id from line_item to fit the required format for stripe
   line_items.forEach(item => delete item.id);
-  
+  console.log(line_items.images)
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items,
@@ -32,6 +32,8 @@ async function createStripeCheckoutSession(
       prodIds: prodIds
     }
   });
+
+  console.log({session})
 
   return session;
 }
