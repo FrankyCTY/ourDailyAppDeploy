@@ -373,8 +373,8 @@ exports.getDataForUser = withCatchErrAsync(async(req, res, next) => {
   const {_id, bg, photo} = req.user;
   console.log({photo})
 
-  const userDoc = await User.findById(_id).populate([{path: 'applicationsInCart', select: {'name': 1, 'createdAt': 1, 'imgSrc': 1, 'price': 1, 'route': 1, 'creator': 1}}, 
-  {path: 'wishlistApplications', select: {'name': 1, 'createdAt': 1, 'imgSrc': 1, 'price': 1, 'route': 1, 'creator': 1}}, {path: 'ownedApplications', select: {'name': 1, 'imgSrc': 1, 'price': 1, 'appRoute': 1, 'route': 1}}]);
+  const userDoc = await User.findById(_id).populate([{path: 'applicationsInCart', select: {'name': 1, 'createdAt': 1, 'imgSm': 1, 'price': 1, 'route': 1, 'creator': 1}}, 
+  {path: 'wishlistApplications', select: {'name': 1, 'createdAt': 1, 'imgSm': 1, 'price': 1, 'route': 1, 'creator': 1}}, {path: 'ownedApplications', select: {'name': 1, 'imgSm': 1, 'price': 1, 'appRoute': 1, 'route': 1}}]);
   
   
   // 1) get cart

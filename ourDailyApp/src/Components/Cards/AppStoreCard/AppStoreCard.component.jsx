@@ -12,19 +12,12 @@ const AppStoreCard = ({ match, app }) => {
       <Link className="link" to={`${match.path}/${route}`}>
         <S.CardContainer className="card-app">
           <S.ImgWrapper className="img-wrapper">
-            <picture>
-              <source
-                type="image/webp"
-                media="(min-width: 1000px)"
-                srcSet={`${imgSrc}.webp`}
-              />
               <img
-                src={`${imgSrc}.jpeg`}
+                src={`${imgSrc}`}
                 loading="lazy"
                 alt={`${name} img`}
                 className="app-img"
               />
-            </picture>
           </S.ImgWrapper>
           <S.TitleText className="app-title">{name}</S.TitleText>
           <S.DescriptionText className="app-description">

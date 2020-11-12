@@ -20,6 +20,9 @@ const applicationSchema = new mongoose.Schema(
         imgSrc: {
             type: String
         },
+        imgSm: {
+            type: String
+        },
         videoSrc: {
             type: String
         },

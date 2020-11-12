@@ -24,7 +24,7 @@ const WishListCard = ({
         {/* ========== wishlist item image =========== */}
         <S.ImageWrapper className="img-wrapper">
           <S.Image
-            src={`${wishlistItem.imgSrc}.jpeg`}
+            src={`${wishlistItem.imgSm}`}
             alt={`${wishlistItem.name}`}
             className="img-app"
           />

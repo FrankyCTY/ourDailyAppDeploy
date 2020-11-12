@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 const MainPageAccessAppBtn = ({ app, index }) => {
 
 
-  const { name, appRoute, imgSrc, border } = app;
+  const { name, appRoute, imgSm, border } = app;
   return (
     <Link to={`/${appRoute}`} className={`link`}>
       <S.ApplicationItemContainer
@@ -16,7 +16,7 @@ const MainPageAccessAppBtn = ({ app, index }) => {
         stagger={(index + 1) * 0.1}
       >
         <S.Image
-          src={`${imgSrc}`}
+          src={`${imgSm}`}
           loading="lazy"
           className={`${border ? "border" : ""}`}
         />

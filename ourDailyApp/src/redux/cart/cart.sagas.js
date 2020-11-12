@@ -211,6 +211,7 @@ function* addAppToWishlistStart({appObj}) {
         // 2) add app to user wishlist via backend (plus delete from cart)
         yield call(addAppToWishlistBackEnd, appObj._id);
         yield put(addAppToWishListSuccess());
+        console.log("addAppToWishlistStart")
 
         // STOP SPINNER
         yield put(setIsTogglingWishlistAppFalse());

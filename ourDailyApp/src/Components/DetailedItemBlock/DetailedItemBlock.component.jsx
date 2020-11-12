@@ -21,7 +21,7 @@ const DetailedItemBlock = ({ cartItem, itemType, animationAppendTo, wishListed }
         onClick={() => router.push(`/shop/${cartItem.route}`)}
       >
         <img
-          src={`${cartItem.imgSrc}.jpeg`}
+          src={`${cartItem.imgSm}`}
           alt="cart item"
           className="img--item"
         />
