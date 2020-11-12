@@ -63,7 +63,7 @@ const ApplicationDetailPage = ({
         details: {},
       });
     };
-  }, [updateRoutePath, appData.name]);
+  }, [updateRoutePath, appData.name, appDataId, ownedApps]);
 
   return (
     <S.PageContentContainer className="app-content-main">

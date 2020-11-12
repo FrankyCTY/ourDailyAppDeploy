@@ -1,8 +1,4 @@
-import styled, {css} from "styled-components";
-
-const borderRadius =  css`
-
-`;
+import styled from "styled-components";
 
 const S = {};
 

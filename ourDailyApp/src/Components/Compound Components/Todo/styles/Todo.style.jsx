@@ -1,6 +1,7 @@
 import styled, {css} from "styled-components";
 import {ReactComponent as BackLogo} from '../../../../assets/svg/back.svg';
 import {ReactComponent as ModifyLogo} from '../../../../assets/svg/modify.svg';
+import {FormControl} from "@material-ui/core";
 import {ReactComponent as PinLogo} from '../../../../assets/svg/pin.svg';
 import {ReactComponent as BinLogo} from '../../../../assets/svg/bin.svg';
 import {ReactComponent as ReturnLogo} from '../../../../assets/svg/return.svg';
@@ -150,6 +151,39 @@ top: 10%;
 position: absolute;
 background: ${({theme}) => theme.attract_color};
 color: ${({theme}) => theme.general_text};
+`;
+
+S.SelectContainer = styled(FormControl)`
+& span {
+    font-size: 0.9rem;
+    margin-right: .4rem;
+}
+& .MuiInputBase-root {
+${textStyles};
+
+}
+
+& .MuiSelect-icon {
+${textStyles};
+
+}
+.MuiInput-underline::before,
+.MuiInput-underline:hover:not(.Mui-disabled)::before {
+border-bottom: 0;
+}
+
+// Select Menu List
+& #select {
+    ${textStyles};
+}
+& option {
+    background: ${({theme}) => theme.secondary_bg} !important;
+    transition: background 100ms ease-in-out;
+    &:hover {
+        background-color: red !important;
+        box-shadow: 0 0 10px 100px #fff inset;
+    }
+}
 `;
 
 S.CheckSvg = styled.i`

@@ -181,17 +181,17 @@ const AddTodoPopup = ({ toggleOpenPopup, openedCollection }) => {
       <Todo.Text className="lg:text-base">ADD NOTE</Todo.Text>
     </Popup.Header>
     <Popup.Body className="px-4 py-6">
-      <Todo.Text className="text-sm">Notes in here are saved in collections (a group of notes).</Todo.Text>
-      <Todo.AttractText className="text-sm mb-4 inline-block">Learn more about creating collections</Todo.AttractText>
+      <Todo.Text className="text-xs">Notes in here are saved in collections (a group of notes).</Todo.Text>
+      <Todo.AttractText className="text-xs mb-4 inline-block">Learn more about creating collections</Todo.AttractText>
       <Formik.Group className="mb-4">
-        <Formik.Label className="text-sm" htmlFor={"title"}>Note Title</Formik.Label>
+        <Formik.Label className="text-xs" htmlFor={"title"}>Note Title</Formik.Label>
         <Formik.Group>
           <Formik.Input className="text-xs" id="title" disabled={false} value={title} onChange={(e) => onInputChange(e, setTitle)}></Formik.Input>
         </Formik.Group>
       </Formik.Group>
 
       <Formik.Group>
-        <Formik.Label className="text-sm" htmlFor="body">Note body (Optional)</Formik.Label>
+        <Formik.Label className="text-xs" htmlFor="body">Note body (Optional)</Formik.Label>
         <Formik.Group>
           <Formik.Textarea className="text-xs w-full" disabled={false} rows="4"
             placeholder="e.g., Independent software developer focused on clean and elegant web designs. Avid reader. Active writer. Enthusiastic traveler."
@@ -229,7 +229,7 @@ const CreateCollectionPopup = ({ toggleOpenPopup }) => {
     </Popup.Header>
     <Popup.Body className="px-4 py-6">
       <Formik.Group className="mb-4">
-        <Formik.Label className="text-sm" htmlFor={"name"}>Name</Formik.Label>
+        <Formik.Label className="text-xs" htmlFor={"name"}>Name</Formik.Label>
         <Formik.Group>
           <Formik.Input className="text-xs" placeholder="Collection Name" disabled={false} value={name} onChange={(e) => { setName(e.target.value) }}></Formik.Input>
         </Formik.Group>
@@ -253,8 +253,8 @@ const DeleteTodoItemPopup = ({ toggleOpenPopup }) => {
   const renderDeletePopupList = () => {
     return checkTodoItemsMode
       ?
-      checkedTodoItemList.map(todoItemObj => <Todo.Text key={todoItemObj.id} className="text-sm mb-2">{todoItemObj.title}</Todo.Text>)
-      : <Todo.Text className="text-sm mb-2">{openedTodoItem.title}</Todo.Text>;
+      checkedTodoItemList.map(todoItemObj => <Todo.Text key={todoItemObj.id} className="text-sm mb-2 text-red-500">{todoItemObj.title}</Todo.Text>)
+      : <Todo.Text className="text-sm mb-2 text-red-500">{openedTodoItem.title}</Todo.Text>;
   }
 
   const onSubmit = () => {
@@ -286,7 +286,7 @@ const DeleteTodoItemPopup = ({ toggleOpenPopup }) => {
       <Todo.Text className="lg:text-base">Delete Note(s)</Todo.Text>
     </Popup.Header>
     <Popup.Body className="px-4 py-6">
-      <Todo.Text className="text-sm mb-2">Items selected: </Todo.Text>
+      <Todo.Text className="text-xs mb-2">Items selected: </Todo.Text>
       <div className="border-2 h-32 pl-2 py-2 overflow-auto">
         {renderDeletePopupList()}
       </div>
@@ -325,8 +325,8 @@ const DeleteCollectionPopup = ({ toggleOpenPopup }) => {
       <Todo.Text className="lg:text-base">Delete Collection</Todo.Text>
     </Popup.Header>
     <Popup.Body className="px-4 py-6">
-      <Todo.Text className="text-sm mb-2">You ae going to delete collection:</Todo.Text>
-      <Todo.Text className="text-sm mb-2 text-red-500">{openedCollection.name}</Todo.Text>
+      <Todo.Text className="text-xs mb-2">You ae going to delete collection:</Todo.Text>
+      <Todo.Text className="text-xs mb-2 text-red-500">{openedCollection.name}</Todo.Text>
     </Popup.Body>
     <Popup.Footer className="px-4 py-2 flex justify-end">
       <Formik.CancelBtn onClick={onCancelClick} className="text-xs capitalize text-white px-4 mr-2">Cancel</Formik.CancelBtn>

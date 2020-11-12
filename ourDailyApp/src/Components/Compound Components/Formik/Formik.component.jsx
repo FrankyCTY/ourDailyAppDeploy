@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import S from "./styles/Formik.style";
 
-import {MenuItem, NativeSelect} from "@material-ui/core";
+import {MenuItem, NativeSelect, Select} from "@material-ui/core";
 import "react-datepicker/dist/react-datepicker.css";
 import {UploadImageContext} from "../../../context/uploadAvatar.context";
 import userActions from "../../../redux/User/user.actions";
@@ -130,9 +130,14 @@ Formik.DropDown = function DropDown({value, onChange, DropDownItems, src, ...res
     //   className={classes.formControl}
     return (
     <S.FormSelectContainer {...restProps}>
-        <NativeSelect id="select" value={value}>
-            {DropDownItems && DropDownItems()}
-        </NativeSelect>
+        <Select
+            value={value}
+            onChange={onChange}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
+        >
+            {DropDownItems()}
+        </Select>
     </S.FormSelectContainer>
     )
 }

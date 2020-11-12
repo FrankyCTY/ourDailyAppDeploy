@@ -1,11 +1,11 @@
 import React from "react";
 import S from "./styles/Todo.style";
+import {MenuItem, Select} from "@material-ui/core";
 import useRouter from "../../../hooks/useRouter.hooks";
 import useDismiss from "../../../hooks/useDismiss.hooks";
 import {toggleEditTodoItemMode, modifyTodoCollectionSortMethod, setOpenedTodoCollection, fetchTodoItemsForACollectionStart} from "../../../redux/Todo/todo.actions";
 import {toggleTodoPopupOpen, setRenderTodoPopup} from "../../../redux/General/general.actions";
 import {useDispatch, useSelector} from "react-redux";
-import Formik from "../Formik/Formik.component";
 
 export default function Todo({ children, ...restProps }) {
   return <S.TodoContainer {...restProps}>{children}</S.TodoContainer>;
@@ -194,7 +194,7 @@ Todo.TodoHeader = function TodoHeader({
 
   const onSelectChange = (e) => {
     const {value} = e.target;
-
+    console.log("changing")
     switch(value) {
       case "Recent":
         onDropdownItemClick(e);
@@ -208,20 +208,18 @@ Todo.TodoHeader = function TodoHeader({
   }
   return (
     <S.TodoHeader {...restProps}>
-      {/* <Formik.DropDown 
-        DropDownItems={            
-          () => <>
-            <option  value="Recent" onClick={(e) => onDropdownItemClick(e)}>Recent</option>
-            <option  value="Old to Recent" onClick={(e) => onDropdownItemClick(e, "sort=+createdAt")}>Old to Recent</option>
-          </>
-        }
-      value={openedCollectionSortMethod || "Recent"} /> */}
-      <div>
-        <select onChange={onSelectChange}>
-          <option value="Recent" selected={openedCollectionSortMethod === "Recent"}>Recent</option>
-          <option value="Old to Recent" selected={openedCollectionSortMethod === "Old to Recent"}>Old to Recent</option>
-        </select>
-      </div>
+      <S.SelectContainer>
+        <Select
+            value={openedCollectionSortMethod || "Recent"}
+            defaultValue="Recent"
+            onChange={onSelectChange}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value="Recent">Recent</MenuItem>
+          <MenuItem value="Old to Recent">Old to Recent</MenuItem>
+        </Select>
+      </S.SelectContainer>
       <S.Group>
         <Todo.TitleText className="mr-2 text-base sm:text-2xl">{title}</Todo.TitleText>
         <S.TagBox>{tagBoxText}</S.TagBox>
