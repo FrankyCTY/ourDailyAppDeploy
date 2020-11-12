@@ -55,7 +55,7 @@ function TodoItemDetailsContainer({children}) {
     <Todo.Group className="flex justify-between mb-4">
       {/* <Todo.TitleText className="font-normal text-sm lg:text-lg">Build backend for todolist</Todo.TitleText> */}
       {renderTitle()}
-      {Object.keys(openedTodoItem).length !== 0 && <Todo.ToolBox nobg={true} svgSize="1rem" svgMargin="0.1rem 0.5rem"/>}
+      {(Object.keys(openedTodoItem).length !== 0 && !isEditMode) && <Todo.ToolBox nobg={true} svgSize="1rem" svgMargin="0.1rem 0.5rem"/>}
     </Todo.Group>
     {renderBody()}
 

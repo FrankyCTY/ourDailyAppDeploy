@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SettingsPage from "../../Pages/SettingsPage/Settings.page";
 import CommentsConverterPage from "../../Pages/CommentsConverterPage/CommentsConverterPage.component";
 import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import UserActions from "../../redux/User/user.actions";
 import useRouter from "../../hooks/useRouter.hooks";
 
@@ -50,7 +50,6 @@ const LoggedInRouter = () => {
   
 
 
-  const isUserLogged = useSelector((state) => state.auth_P.isLogged);
   const router = useRouter();
   const showUiComponents = !(router.pathName.toString().startsWith('/applications'))
 
@@ -58,32 +57,31 @@ const LoggedInRouter = () => {
     <>
     {showUiComponents&& <NavUIComponents/>}
     <Switch>
-        <ProtectedRoute exact isLogged={isUserLogged} path="/main">
+        <ProtectedRoute exact path="/main">
             <MainPage />
         </ProtectedRoute>
-        <ProtectedRoute isLogged={isUserLogged} path="/shop">
+        <ProtectedRoute path="/shop">
         <ShopRouter />
         </ProtectedRoute>
         <ProtectedRoute
         exact
-        isLogged={isUserLogged}
         path="/commentsConverter"
         >
         <CommentsConverterPage />
         </ProtectedRoute>
-        <Route exact isLogged={isUserLogged} path="/pigGame">
+        <Route exact path="/pigGame">
         <PigGamePageWithSpinner />
         </Route>
-        <ProtectedRoute isLogged={isUserLogged} path="/settings">
+        <ProtectedRoute  path="/settings">
         <SettingsPage />
         </ProtectedRoute>
-        <ProtectedRoute exact isLogged={isUserLogged} path="/cart">
+        <ProtectedRoute exact path="/cart">
         <CartPage />
         </ProtectedRoute>
-        <ProtectedRoute exact isLogged={isUserLogged} path="/wishlist">
+        <ProtectedRoute exact path="/wishlist">
         <WishListPage />
         </ProtectedRoute>
-        <ProtectedRoute isLogged={isUserLogged} path='/applications'>
+        <ProtectedRoute path='/applications'>
           <ApplicationRouter/>
         </ProtectedRoute>
         <Route

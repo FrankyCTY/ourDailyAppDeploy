@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export function IsUserRedirect({
   isLogged,
@@ -24,12 +25,13 @@ export function IsUserRedirect({
   );
 }
 
-export function ProtectedRoute({ isLogged, children, ...restProps }) {
+export function ProtectedRoute({ children, ...restProps }) {
+  const isUserLogged = useSelector((state) => state.auth_P.isLogged);
   return (
     <Route
       {...restProps}
       render={({ location }) => {
-        if (isLogged) {
+        if (isUserLogged) {
           return children;
         } else {
           return (
@@ -39,19 +41,4 @@ export function ProtectedRoute({ isLogged, children, ...restProps }) {
       }}
     />
   );
-}
-
-export function PaidAppRoute({isPaid, children, redirectUrl, ...restProps}) {
-  return (
-    <Route {...restProps}
-      render={() => {
-        if(isPaid) {
-          return children;
-        } else {
-          return (
-            <Redirect to={redirectUrl}/>
-          )
-        }
-      }}/>
-  )
 }

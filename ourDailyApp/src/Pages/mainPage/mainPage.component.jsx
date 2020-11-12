@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import S from "./mainPage.style";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,6 @@ import {FloatBtn} from "../../Components/Compound Components";
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
 
 const MainPage = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const { onThemeChange} = useTheme();
 
@@ -20,12 +19,6 @@ const MainPage = () => {
   const userDetails = useSelector((state) => state.auth_P.user);
   const userAvatar = useSelector(state => state.auth_P.userAvatar);
   const userBg = useSelector(state => state.theme.background);
-  // ============= Life Cycle Hooks =============
-
-  // useEffect(() => {
-  //   dispatch(fetchAccessAppBtnsStart());
-  // }, [dispatch]);
-
 
   return (
     <>

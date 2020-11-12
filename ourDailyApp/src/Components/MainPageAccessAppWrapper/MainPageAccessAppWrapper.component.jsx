@@ -13,7 +13,7 @@ const MainPageAccessAppWrapper = () => {
   const accessAppBtns = useSelector((state) => state.app.accessAppBtns);
   return (
     <S.MainPageAccessAppWrapper className="application-container">
-      <Loader SpinnerComponent={RippleSpinner} isLoading={!!!accessAppBtns}>
+      <Loader SpinnerComponent={RippleSpinner} isLoading={!accessAppBtns}>
         {() =>
           accessAppBtns.map((app, index) => (
             <MainPageAccessAppBtn key={index} app={app} index={index} />
