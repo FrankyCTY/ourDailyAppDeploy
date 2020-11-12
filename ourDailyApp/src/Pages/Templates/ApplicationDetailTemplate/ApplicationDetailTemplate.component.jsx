@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import S from "./ApplicationDetailTemplate.style";
 
 import { connect } from "react-redux";
@@ -9,6 +9,7 @@ import {
   selectCartItemExist,
   selectIsTogglingWishlistApp,
 } from "../../../redux/cart/cart.selectors";
+import {useSelector} from "react-redux";
 import { addAppToCartStart, addAppToWishListStart, removeAppToWishListStart } from "../../../redux/cart/cart.actions";
 import { updateRoutePath } from "../../../redux/routePath/routePath.actions";
 import addCartAnimation from "../../../utils/animations/addCardAnimation";
@@ -29,6 +30,14 @@ const ApplicationDetailPage = ({
   isTogglingWishlistApp,
 }) => {
   //=========================== Life Cycle Hooks =========================
+  const { videoSrc, tags, intro, features, id: appDataId, appRoute } = appData;
+  
+  const router = useRouter();
+
+  const ownedApps = useSelector(state => state.app.accessAppBtns);
+
+  const [isPaid, setIsPaid] = useState(false);
+  
   useEffect(() => {
     updateRoutePath({
       page: "applicationDetails",
@@ -37,6 +46,17 @@ const ApplicationDetailPage = ({
       },
     });
 
+    // Check if user can use this app
+    if(ownedApps) {
+      // 1) On refresh, wait for ownedApps to be populated and determine which path to redirect to
+      // 2) may be move it to hooks to reuse on other application
+      if(ownedApps.some(app => app.id === appDataId)) {
+        setIsPaid(true);
+      } else {
+        setIsPaid(false);
+      }
+    }
+
     return () => {
       updateRoutePath({
         page: "",
@@ -44,10 +64,6 @@ const ApplicationDetailPage = ({
       });
     };
   }, [updateRoutePath, appData.name]);
-
-
-  const { videoSrc, tags, intro, features } = appData;
-  const router = useRouter();
 
   return (
     <S.PageContentContainer className="app-content-main">
@@ -89,42 +105,53 @@ const ApplicationDetailPage = ({
 
       {/* ================================ Buttons ================================ */}
       {/* ================ wishlist part ================ */}
-      <S.BtnAddToWishlist
-        className="btn--addWishList"
-        disabled={isTogglingWishlistApp}
-        onClick={() => {
-          if(wishListed(appData._id)) {
-            removeAppToWishListStart(appData._id);
-          } else {
-            addAppToWishListStart(appData);
-          }
-        }}
-      >
-        {!isTogglingWishlistApp && "Wishlist"}
-        {isTogglingWishlistApp ? <ClassicLoader/> :
-        (<S.IconSvg
-          className={`iconfont icon-heart ${
-            wishListed(appData._id) ? "active" : ""
-          }`}
-        ></S.IconSvg>)}
-      </S.BtnAddToWishlist>
-
-      {/* ================ Add to Cart ================ */}
+      {isPaid ?
       <S.BtnAddToCart
-        className="btn--addToCart"
-        onClick={() => {
-          /* ================ animations ================ */
-          if (cartItemExist(appData._id)) {
-            router.push("/cart");
-          } else {
-            addCartAnimation(appData.imgSrc, ".application-detail-page");
-            addAppToCartStart(appData);
-          }
-        }}
+      className="btn--toApp"
+      onClick={() => {
+          router.push(`/${appRoute}`);
+      }}
       >
-        {cartItemExist(appData._id) ? "Go to cart" : "Add to cart"}
-        <S.IconSvg className={`iconfont icon-cart1`}></S.IconSvg>
+        Go To App
       </S.BtnAddToCart>
+      : <>
+        <S.BtnAddToWishlist
+          className="btn--addWishList"
+          disabled={isTogglingWishlistApp}
+          onClick={() => {
+            if(wishListed(appData._id)) {
+              removeAppToWishListStart(appData._id);
+            } else {
+              addAppToWishListStart(appData);
+            }
+          }}
+        >
+          {!isTogglingWishlistApp && "Wishlist"}
+          {isTogglingWishlistApp ? <ClassicLoader/> :
+          (<S.IconSvg
+            className={`iconfont icon-heart ${
+              wishListed(appData._id) ? "active" : ""
+            }`}
+          ></S.IconSvg>)}
+        </S.BtnAddToWishlist>
+
+        {/* ================ Add to Cart ================ */}
+        <S.BtnAddToCart
+          className="btn--addToCart"
+          onClick={() => {
+            /* ================ animations ================ */
+            if (cartItemExist(appData._id)) {
+              router.push("/cart");
+            } else {
+              addCartAnimation(appData.imgSrc, ".application-detail-page");
+              addAppToCartStart(appData);
+            }
+          }}
+        >
+          {cartItemExist(appData._id) ? "Go to cart" : "Add to cart"}
+          <S.IconSvg className={`iconfont icon-cart1`}></S.IconSvg>
+        </S.BtnAddToCart>
+      </>}
     </S.PageContentContainer>
   );
 };

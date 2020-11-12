@@ -192,6 +192,20 @@ Todo.TodoHeader = function TodoHeader({
 
   const openedCollectionSortMethod = useSelector(state => state.todo.openedCollection).sortMethod;
 
+  const onSelectChange = (e) => {
+    const {value} = e.target;
+
+    switch(value) {
+      case "Recent":
+        onDropdownItemClick(e);
+        break;
+      case "Old to Recent":
+        onDropdownItemClick(e, "sort=+createdAt");
+        break;
+      default:
+        break;
+    }
+  }
   return (
     <S.TodoHeader {...restProps}>
       {/* <Formik.DropDown 
@@ -203,9 +217,9 @@ Todo.TodoHeader = function TodoHeader({
         }
       value={openedCollectionSortMethod || "Recent"} /> */}
       <div>
-        <select>
-          <option value="Recent" onClick={(e) => onDropdownItemClick(e)} selected={openedCollectionSortMethod === "Recent"}>Recent</option>
-          <option value="Old to Recent" onClick={(e) => onDropdownItemClick(e, "sort=+createdAt")} selected={openedCollectionSortMethod === "Old to Recent"}>Old to Recent</option>
+        <select onChange={onSelectChange}>
+          <option value="Recent" selected={openedCollectionSortMethod === "Recent"}>Recent</option>
+          <option value="Old to Recent" selected={openedCollectionSortMethod === "Old to Recent"}>Old to Recent</option>
         </select>
       </div>
       <S.Group>

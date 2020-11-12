@@ -91,6 +91,7 @@ const TodoPage = () => {
 
 
   useEffect(() => {
+    if (collections.length === 0) dispatch(fetchTodoCollectionsStart());
     // Check if user can use this app
     if(ownedApps) {
       // 1) On refresh, wait for ownedApps to be populated and determine which path to redirect to
@@ -101,7 +102,6 @@ const TodoPage = () => {
         router.push('/shop/todolist');
       }
     }
-    if (collections.length === 0) dispatch(fetchTodoCollectionsStart());
   }, [dispatch, collections.length, ownedApps]);
 
   const renderToolBar = () => {
