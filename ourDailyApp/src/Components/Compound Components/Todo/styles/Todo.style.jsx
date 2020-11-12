@@ -76,7 +76,8 @@ S.ToolBox = styled.div`
   display: flex;
   background: ${({theme}) => theme.minor_text};
   padding: .2rem .3rem;
-  align-self: start;
+  align-items: start;
+  align-content: start;
   border-radius: 12px;
 
   & .modifySvg,
