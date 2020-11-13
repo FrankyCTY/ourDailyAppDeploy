@@ -126,7 +126,6 @@ min-height: 100vh;
 
 S.MobileNav = styled.div`
   display: flex;
-  align-items: center;
   margin-bottom: 1rem;
 `;
 

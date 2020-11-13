@@ -59,7 +59,7 @@ Todo.MobileNav = function MobileNav({
 }) {
   return (
     <S.MobileNav {...restProps}>
-      <div className="flex" onClick={onPrevLinkClick}>
+      <div className="flex items-start" onClick={onPrevLinkClick}>
         <S.BackLogo/>
         <S.NavText>{navText}</S.NavText>
       </div>
