@@ -98,10 +98,11 @@ S.EndingSpan = styled.span`
   text-align: center;
 `;
 
-S.LinkBtn = styled.button`
+S.LinkBtn = styled.a`
   outline: 0;
   border: 0;
   padding: 0.4em 1.5em;
+  display: inline-block;
   border-radius: 50px;
   border: 2px solid #0059a6;
   font-weight: bold;

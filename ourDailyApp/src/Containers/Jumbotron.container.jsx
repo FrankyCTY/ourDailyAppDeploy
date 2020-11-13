@@ -56,6 +56,7 @@ export default function JumbotronContainer() {
                 fadedistance="20"
                 delay={600}
                 startAnimate={startAnimate}
+                href={item.url}
               >
                 To Website
               </Jumbotron.linkBtn>
