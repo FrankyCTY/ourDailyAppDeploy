@@ -4,9 +4,10 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SettingsPage from "../../Pages/SettingsPage/Settings.page";
 import CommentsConverterPage from "../../Pages/CommentsConverterPage/CommentsConverterPage.component";
 import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserActions from "../../redux/User/user.actions";
 import useRouter from "../../hooks/useRouter.hooks";
+import { fetchApplicationsStart } from "../../redux/app/app.actions";
 
 import {ProtectedRoute } from "../../helpers/routes.helper";
 import componentWithPreload from "../../utils/lazyLoading/componentWithPreload";
@@ -30,9 +31,12 @@ export const routes = [
 const LoggedInRouter = () => {
 
   const dispatch = useDispatch();
+  const isLogged = useSelector(state => state.auth_P.isLogged);
+
 
   useEffect(() => {
-    dispatch(UserActions.getUserWebDataStart());
+    isLogged ? dispatch(UserActions.getUserWebDataStart())
+    : dispatch(fetchApplicationsStart());
   }, [dispatch]);
 
   const WishListPage = React.lazy(() =>
@@ -57,31 +61,32 @@ const LoggedInRouter = () => {
     <>
     {showUiComponents&& <NavUIComponents/>}
     <Switch>
-        <ProtectedRoute exact path="/main">
+        <Route exact path="/main">
             <MainPage />
-        </ProtectedRoute>
-        <ProtectedRoute path="/shop">
+        </Route>
+        <Route path="/shop">
         <ShopRouter />
-        </ProtectedRoute>
+        </Route>
         <ProtectedRoute
         exact
         path="/commentsConverter"
+        redirectUrl="/shop/commentsConverter"
         >
         <CommentsConverterPage />
         </ProtectedRoute>
-        <Route exact path="/pigGame">
+        <Route exact path="/pigGame" redirectUrl="/shop/piggame">
         <PigGamePageWithSpinner />
         </Route>
-        <ProtectedRoute  path="/settings">
+        <ProtectedRoute  path="/settings" redirectUrl="/auth">
         <SettingsPage />
         </ProtectedRoute>
-        <ProtectedRoute exact path="/cart">
+        <ProtectedRoute exact path="/cart" redirectUrl="/auth">
         <CartPage />
         </ProtectedRoute>
-        <ProtectedRoute exact path="/wishlist">
+        <ProtectedRoute exact path="/wishlist" redirectUrl="/main">
         <WishListPage />
         </ProtectedRoute>
-        <ProtectedRoute path='/applications'>
+        <ProtectedRoute path='/applications' redirectUrl="/shop/todolist">
           <ApplicationRouter/>
         </ProtectedRoute>
         <Route

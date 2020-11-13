@@ -9,17 +9,29 @@ import RippleSpinner from "../../Components/Molecules/Spinners/RippleSpinner/Rip
 
 import PropTypes from "prop-types";
 
-const MainPageAccessAppWrapper = () => {
+const MainPageAccessAppWrapper = ({isLogged}) => {
+
+  const applications = useSelector(state => state.app.applications);
   const accessAppBtns = useSelector((state) => state.app.accessAppBtns);
+
   return (
     <S.MainPageAccessAppWrapper className="application-container">
-      <Loader SpinnerComponent={RippleSpinner} isLoading={!accessAppBtns}>
+      {isLogged ?
+        <Loader SpinnerComponent={RippleSpinner} isLoading={!accessAppBtns}>
         {() =>
           accessAppBtns.map((app, index) => (
-            <MainPageAccessAppBtn key={index} app={app} index={index} />
+            <MainPageAccessAppBtn key={app.id} app={app} index={index} />
           ))
         }
       </Loader>
+        : 
+        <Loader SpinnerComponent={RippleSpinner} isLoading={!applications}>
+        {() =>
+          applications.map((app, index) => (
+            <MainPageAccessAppBtn key={app.id} app={app} index={index} />
+          ))
+        }
+      </Loader>}
     </S.MainPageAccessAppWrapper>
   );
 };

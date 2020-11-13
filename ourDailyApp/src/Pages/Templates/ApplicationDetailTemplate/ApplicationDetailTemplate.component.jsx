@@ -35,6 +35,7 @@ const ApplicationDetailPage = ({
   const router = useRouter();
 
   const ownedApps = useSelector(state => state.app.accessAppBtns);
+  const isLogged = useSelector(state => state.auth_P.isLogged);
 
   const [isPaid, setIsPaid] = useState(false);
   
@@ -64,6 +65,47 @@ const ApplicationDetailPage = ({
       });
     };
   }, [updateRoutePath, appData.name, appDataId, ownedApps]);
+
+const renderBtnsForUnPaidApp = () => {
+  return <>
+      <S.BtnAddToWishlist
+        className="btn--addWishList"
+        disabled={isTogglingWishlistApp}
+        onClick={() => {
+          if(wishListed(appData._id)) {
+            removeAppToWishListStart(appData._id);
+          } else {
+            addAppToWishListStart(appData);
+          }
+        }}
+      >
+        {!isTogglingWishlistApp && "Wishlist"}
+        {isTogglingWishlistApp ? <ClassicLoader/> :
+        (<S.IconSvg
+          className={`iconfont icon-heart ${
+            wishListed(appData._id) ? "active" : ""
+          }`}
+        ></S.IconSvg>)}
+      </S.BtnAddToWishlist>
+
+      {/* ================ Add to Cart ================ */}
+      <S.BtnAddToCart
+        className="btn--addToCart"
+        onClick={() => {
+          /* ================ animations ================ */
+          if (cartItemExist(appData._id)) {
+            router.push("/cart");
+          } else {
+            addCartAnimation(appData.imgSrc, ".application-detail-page");
+            addAppToCartStart(appData);
+          }
+        }}
+      >
+        {cartItemExist(appData._id) ? "Go to cart" : "Add to cart"}
+        <S.IconSvg className={`iconfont icon-cart1`}></S.IconSvg>
+      </S.BtnAddToCart>
+    </>
+}
 
   return (
     <S.PageContentContainer className="app-content-main">
@@ -105,7 +147,7 @@ const ApplicationDetailPage = ({
 
       {/* ================================ Buttons ================================ */}
       {/* ================ wishlist part ================ */}
-      {isPaid ?
+      { isLogged ? (isPaid ?
       <S.BtnAddToCart
       className="btn--toApp"
       onClick={() => {
@@ -114,44 +156,15 @@ const ApplicationDetailPage = ({
       >
         Go To App
       </S.BtnAddToCart>
-      : <>
-        <S.BtnAddToWishlist
-          className="btn--addWishList"
-          disabled={isTogglingWishlistApp}
-          onClick={() => {
-            if(wishListed(appData._id)) {
-              removeAppToWishListStart(appData._id);
-            } else {
-              addAppToWishListStart(appData);
-            }
-          }}
-        >
-          {!isTogglingWishlistApp && "Wishlist"}
-          {isTogglingWishlistApp ? <ClassicLoader/> :
-          (<S.IconSvg
-            className={`iconfont icon-heart ${
-              wishListed(appData._id) ? "active" : ""
-            }`}
-          ></S.IconSvg>)}
-        </S.BtnAddToWishlist>
-
-        {/* ================ Add to Cart ================ */}
-        <S.BtnAddToCart
-          className="btn--addToCart"
-          onClick={() => {
-            /* ================ animations ================ */
-            if (cartItemExist(appData._id)) {
-              router.push("/cart");
-            } else {
-              addCartAnimation(appData.imgSrc, ".application-detail-page");
-              addAppToCartStart(appData);
-            }
-          }}
-        >
-          {cartItemExist(appData._id) ? "Go to cart" : "Add to cart"}
-          <S.IconSvg className={`iconfont icon-cart1`}></S.IconSvg>
-        </S.BtnAddToCart>
-      </>}
+      : renderBtnsForUnPaidApp())
+      :       <S.BtnAddToCart
+      className="btn--toLogIn"
+      onClick={() => {
+          router.push(`/auth`);
+      }}
+      >
+        Log In To Pay
+      </S.BtnAddToCart>}
     </S.PageContentContainer>
   );
 };

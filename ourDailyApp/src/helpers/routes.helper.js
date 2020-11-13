@@ -25,7 +25,7 @@ export function IsUserRedirect({
   );
 }
 
-export function ProtectedRoute({ children, ...restProps }) {
+export function ProtectedRoute({ redirectUrl, children, ...restProps }) {
   const isUserLogged = useSelector((state) => state.auth_P.isLogged);
   return (
     <Route
@@ -35,7 +35,7 @@ export function ProtectedRoute({ children, ...restProps }) {
           return children;
         } else {
           return (
-            <Redirect to={{ pathname: "/auth", state: { from: location } }} />
+            <Redirect to={{ pathname: redirectUrl, state: { from: location } }} />
           );
         }
       }}

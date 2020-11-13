@@ -23,7 +23,6 @@ import {
 } from "../signUpForm/signUpform.actions";
 
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
-import {setTheme} from "../Theme/theme.actions";
 import {setIsLoggingInTRUE, setIsLoggingInFALSE} from "../logInForm/logInForm.actions";
 
 import globalErrHandler from "../../utils/globalErrHandler";
@@ -200,6 +199,8 @@ function* signOutStart() {
 
     // 2) Clean up cookie via backend
     yield call(signOutAndCleanCookie);
+
+    window.location.reload();
 
     yield put(signUpSuccess());
   } catch (error) {

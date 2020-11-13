@@ -18,7 +18,7 @@ import UserActions from "../../redux/User/user.actions";
 
 const SettingsPage = () => {
 
-  const width_above_1280 = useMediaQuery({ query: "(min-width: 1280px" });
+  const width_above_1280 = useMediaQuery({ query: "(min-width: 1280px)" });
 
   const router = useRouter();
 

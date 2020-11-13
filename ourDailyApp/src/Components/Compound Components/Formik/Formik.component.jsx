@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import S from "./styles/Formik.style";
 
-import {MenuItem, NativeSelect, Select} from "@material-ui/core";
+import {Select} from "@material-ui/core";
 import "react-datepicker/dist/react-datepicker.css";
 import {UploadImageContext} from "../../../context/uploadAvatar.context";
 import userActions from "../../../redux/User/user.actions";

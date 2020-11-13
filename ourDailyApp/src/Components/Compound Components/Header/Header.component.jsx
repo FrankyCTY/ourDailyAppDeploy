@@ -37,10 +37,7 @@ Header.Hero = function HeaderHero({ children, ...restProps }) {
           Have fun with the games and reduce your workload with our applications.
         </S.Text>
         <S.HeroButton
-          to="/auth/login"
-          onClick={() => {
-            dispatch(changeAuthPage("login"));
-          }}
+          to="/main"
         >
           Get Started
         </S.HeroButton>

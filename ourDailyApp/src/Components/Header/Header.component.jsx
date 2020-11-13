@@ -17,6 +17,8 @@ const Header = ({cartItemsQuantity}) => {
 
   const dispatch = useDispatch();
 
+  const isLogged = useSelector(state => state.auth_P.isLogged);
+
   const router = useRouter();
 
   return (
@@ -26,7 +28,7 @@ const Header = ({cartItemsQuantity}) => {
         <S.LogoWrapper>
           <img
             className="logo"
-            src={`${theme === "dark" ? "/images/assets/logo_white_small.png" : "/images/assets/logo_small.png"}`}
+            src={`${theme !== "light" ? "/images/assets/logo_white_small.png" : "/images/assets/logo_small.png"}`}
             alt=""
             role="presentation"
             onClick={() => {
@@ -38,9 +40,9 @@ const Header = ({cartItemsQuantity}) => {
 
         {/* ============================== Nav List ================================= */}
           
-        <S.NavListContainer className="list">
+        <S.NavListContainer className={`${isLogged ? "w-24" : ""}`}>
           {/* ====================== Cart Icon ====================== */}
-          <S.CartIconWrapper
+         { isLogged && <S.CartIconWrapper
             className="cart-icon-wrapper"
             onClick={() => {
               dispatch(toggleCartPopUp());
@@ -56,7 +58,7 @@ const Header = ({cartItemsQuantity}) => {
                 </S.CartItemsQuantityText>
               </S.CartItemsQuantityContainer>
             )}
-          </S.CartIconWrapper>
+          </S.CartIconWrapper>}
 
           {/* ====================== SVG btn -> Float Nav ====================== */}
 
@@ -71,13 +73,13 @@ const Header = ({cartItemsQuantity}) => {
           </S.NavIconContainer>
 
           {/* ====================== Logout btn ====================== */}
-            <S.LogoutBtnContainer onClick={() => {
+            {isLogged && <S.LogoutBtnContainer onClick={() => {
               dispatch(closeCartPopUp());
               dispatch(closeNav());
               dispatch(signOutStart());
             }}>
               <S.LogoutIcon className="iconfont icon-log-out"></S.LogoutIcon>
-            </S.LogoutBtnContainer>
+            </S.LogoutBtnContainer>}
 
         </S.NavListContainer>
       </S.HeaderNavContainer>

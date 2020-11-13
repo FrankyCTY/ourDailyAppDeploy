@@ -6,7 +6,7 @@ import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
 import TodoItemDetailsContainer from "../../Containers/TodoItemDetails.container";
 import useRouter from "../../hooks/useRouter.hooks";
 import {ReactComponent as CollectionLogo} from '../../assets/svg/collection.svg';
-
+import defaultUser from "../../assets/images/uploadAvatarPage/default.jpg";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -32,7 +32,7 @@ function TodoHeader() {
   const dispatch = useDispatch();
   const router = useRouter();
   const userAvatar = useSelector(state => state.auth_P.userAvatar);
-  const userName = useSelector((state) => state.auth_P.user.name);
+  const user = useSelector((state) => state.auth_P.user) || {};
   const searchTerm = useSelector(state => state.todo.searchTerm);
   
 
@@ -42,11 +42,11 @@ function TodoHeader() {
         <Todo.SearchBar onChange={(e) => dispatch(setTodoSearchTerm(e.target.value))} value={searchTerm}/>
         <div className="flex items-center">
           <ImageFrame 
-          className="mr-4 text-sm transform translate-y-1" src={_arrayBufferToBase64(userAvatar)}
+          className="mr-4 text-sm transform translate-y-1" src={_arrayBufferToBase64(userAvatar) || defaultUser}
           hasHoverEffect={false}
           size="2.5rem" halo={true} withExtraText={true}
           onClick={() => {router.push("/settings")}}/>
-          <Todo.Text className="lg:text-sm">{userName}</Todo.Text>
+          <Todo.Text className="lg:text-sm">{user.name || "Welcome"}</Todo.Text>
         </div>
       </div>
     </div>

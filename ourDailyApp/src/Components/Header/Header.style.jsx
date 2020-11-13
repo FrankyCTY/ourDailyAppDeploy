@@ -55,7 +55,7 @@ S.LogoWrapper = styled.div`
 /* ============================== Nav List ================================= */
 
 S.NavListContainer = styled.div`
-  width: 6em;
+  // width: 6em;
   display: flex;
   justify-content: space-between;
   align-items: center;

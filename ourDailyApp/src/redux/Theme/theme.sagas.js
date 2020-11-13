@@ -1,4 +1,4 @@
-import {takeLeading, call, put, all} from "redux-saga/effects";
+import {takeLeading, call, put, all, select} from "redux-saga/effects";
 import Url from "../../url";
 
 import ThemeActionTypes from "./theme.types";
@@ -26,8 +26,9 @@ function* fn_setThemeStart({theme}) {
 
         // 2) Change User Doc in DB
         // const res = yield call(setThemeInDb, theme, `/api/v1/users/changeTheme`);
-        const res = yield call(setThemeInDb, theme, `${Url}/users/changeTheme`);
-        console.log({res})
+        const isLogged = yield select(state => state.auth_P.isLogged);
+        console.log({isLogged})
+        if(isLogged) {const res = yield call(setThemeInDb, theme, `${Url}/users/changeTheme`);}
     } catch (error) {
         console.log("set theme failed", error);
     }

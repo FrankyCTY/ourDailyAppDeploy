@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useRouter from "../../hooks/useRouter.hooks";
 import { fetchApplicationsStart } from "../../redux/app/app.actions";
 
@@ -15,9 +15,11 @@ const ShopRouter = () => {
     )
   );
 
+  const isLogged = useSelector(state => state.auth_P.isLogged);
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchApplicationsStart());
+    isLogged && dispatch(fetchApplicationsStart());
   }, [dispatch]);
 
   const router = useRouter();
