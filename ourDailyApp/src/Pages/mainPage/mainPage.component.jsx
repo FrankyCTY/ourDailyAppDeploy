@@ -56,13 +56,13 @@ const MainPage = () => {
     </S.MainPageContainer>
     {<S.CustomizedBg background={`url(${_arrayBufferToBase64(userBg)})`}></S.CustomizedBg>}
         <FloatBtn>
-          <Tooltip title="Change Theme" placement="top">
-            <i>
+          {/* <Tooltip title="Change Theme" placement="top"> */}
+            {/* <i> */}
               <FloatBtn.FloatButton bg={"#0059A6"} onClick={onThemeChange}>
                   <FloatBtn.BtnIcon className="iconfont icon-DarkTheme"/>
               </FloatBtn.FloatButton>
-            </i>
-          </Tooltip>
+            {/* </i> */}
+          {/* </Tooltip> */}
         </FloatBtn>
   </>
   );

@@ -89,15 +89,15 @@ const Header = ({cartItemsQuantity}) => {
           </Tooltip>
 
           {/* ====================== Logout btn ====================== */}
-          <Tooltip title="Log Out">
-            {isLogged && <S.LogoutBtnContainer onClick={() => {
+         { isLogged &&  <Tooltip title="Log Out">
+            {<S.LogoutBtnContainer onClick={() => {
               dispatch(closeCartPopUp());
               dispatch(closeNav());
               dispatch(signOutStart());
             }}>
               <S.LogoutIcon className="iconfont icon-log-out"></S.LogoutIcon>
             </S.LogoutBtnContainer>}
-          </Tooltip>
+          </Tooltip>}
 
         </S.NavListContainer>
       </S.HeaderNavContainer>

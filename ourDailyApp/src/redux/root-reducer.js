@@ -33,8 +33,8 @@ const persistConfig = {
   key: "root",
   storage,
   // whitelist: ["auth_P"]
-  whitelist: ["cart_P", "auth_P", "theme_P"],
-  // whitelist: [],
+  // whitelist: ["cart_P", "auth_P", "theme_P"],
+  whitelist: [],
   // whitelist: ["cart_P", "pigGame"],
 };
 

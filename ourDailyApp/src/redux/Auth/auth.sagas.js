@@ -13,6 +13,7 @@ import {
   setUserDetails,
   setUserAvatar,
   signOut,
+  signOutSuccess,
 } from "./auth.actions";
 
 import { changeAuthPage } from "../AuthPage/AuthPage.actions";
@@ -24,10 +25,11 @@ import {
 
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
 import {setIsLoggingInTRUE, setIsLoggingInFALSE} from "../logInForm/logInForm.actions";
+import {fetchApplicationsStart} from "../app/app.actions";
 
 import globalErrHandler from "../../utils/globalErrHandler";
 
-import { signUpUser, checkAuthInfoFromDB, logInUser, getAvatar, signOutAndCleanCookie } from "./auth.requests";
+import { signUpUser, checkAuthInfoFromDB, logInUser, signOutAndCleanCookie } from "./auth.requests";
 
 import {populateUserData} from "./auth.sagaUtils";
 
@@ -200,11 +202,13 @@ function* signOutStart() {
     // 2) Clean up cookie via backend
     yield call(signOutAndCleanCookie);
 
-    window.location.reload();
+    // 3) Fetch applications for visitor
+    yield put(fetchApplicationsStart());
 
-    yield put(signUpSuccess());
+
+    yield put(signOutSuccess());
   } catch (error) {
-    yield put(signUpFailure());
+    // yield put(signOutFailure());
   }
 }
 
