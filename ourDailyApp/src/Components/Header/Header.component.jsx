@@ -10,11 +10,11 @@ import {signOutStart} from "../../redux/Auth/auth.actions";
 import S from "./Header.style";
 import { createStructuredSelector } from "reselect";
 import useAccessControl from "../../hooks/useAccessControl.hooks";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const Header = ({cartItemsQuantity}) => {
   const navHidden = useSelector((state) => state.nav.hidden);
   const theme = useSelector(state => state.theme_P.theme);
-  // const cartItemsQuantity = useSelector((state) => state.cart_P.cartItems, shallowEqual).length;
 
   const dispatch = useDispatch();
 
@@ -43,11 +43,19 @@ const Header = ({cartItemsQuantity}) => {
           
         <S.NavListContainer>
           {/* ====================== Admin Console ====================== */}
+          {adminView && <Tooltip title="Admin Console">
+            <S.LogoutIcon className="iconfont icon-realocksecure"></S.LogoutIcon>
+          </Tooltip>}
+          {/* ====================== Setting Icon ====================== */}
           {
-            adminView && <S.LogoutIcon className="iconfont icon-realocksecure"></S.LogoutIcon>
+            isLogged && 
+            <Tooltip title="Settings">
+              <S.LogoutIcon className="iconfont icon-t" onClick={() => router.push("/settings")}></S.LogoutIcon>
+            </Tooltip>
           }
           {/* ====================== Cart Icon ====================== */}
-         { isLogged && <S.CartIconWrapper
+         { isLogged && <Tooltip title="Cart Preview">
+           <S.CartIconWrapper
             className="cart-icon-wrapper"
             onClick={() => {
               dispatch(toggleCartPopUp());
@@ -63,21 +71,25 @@ const Header = ({cartItemsQuantity}) => {
                 </S.CartItemsQuantityText>
               </S.CartItemsQuantityContainer>
             )}
-          </S.CartIconWrapper>}
+          </S.CartIconWrapper>
+          </Tooltip>}
 
           {/* ====================== SVG btn -> Float Nav ====================== */}
 
-          <S.NavIconContainer
-            className={`${navHidden ? "" : "active"} svg-wrapper Component`}
-            onClick={() => {
-              dispatch(closeCartPopUp());
-              dispatch(toggleNavHidden());
-            }}
-          >
-            <S.NavIcon className="svg" />
-          </S.NavIconContainer>
+          <Tooltip title="Navigation Menu">
+            <S.NavIconContainer
+              className={`${navHidden ? "" : "active"} svg-wrapper Component`}
+              onClick={() => {
+                dispatch(closeCartPopUp());
+                dispatch(toggleNavHidden());
+              }}
+            >
+              <S.NavIcon className="svg" />
+            </S.NavIconContainer>
+          </Tooltip>
 
           {/* ====================== Logout btn ====================== */}
+          <Tooltip title="Log Out">
             {isLogged && <S.LogoutBtnContainer onClick={() => {
               dispatch(closeCartPopUp());
               dispatch(closeNav());
@@ -85,6 +97,7 @@ const Header = ({cartItemsQuantity}) => {
             }}>
               <S.LogoutIcon className="iconfont icon-log-out"></S.LogoutIcon>
             </S.LogoutBtnContainer>}
+          </Tooltip>
 
         </S.NavListContainer>
       </S.HeaderNavContainer>

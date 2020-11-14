@@ -6,8 +6,8 @@ import {capitalizeFirstLetter} from "../../../utils/stringManipulator";
 import useAccessControl from "../../../hooks/useAccessControl.hooks";
 import S from "./styles/floatBar.style";
 
-export default function FloatBar({ position = "top", children, ...otherProps }) {
-    return <S.FloatBarContainer position={position} {...otherProps}>{children}</S.FloatBarContainer>;
+export default function FloatBar({ direction="top", position="absolute", children, ...otherProps }) {
+    return <S.FloatBarContainer direction={direction} position={position} {...otherProps}>{children}</S.FloatBarContainer>;
 }
 
 // Sets
@@ -37,7 +37,7 @@ FloatBar.ViewAsFloatBar = function ViewAsFloatBar({viewAsRole, children}) {
   }
   
 
-  return <FloatBar position="top" className="flex items-center justify-between py-3 md:py-6">
+  return <FloatBar direction="bottom" position="fixed" className="flex items-center justify-between py-3 md:py-6">
     <Form.Text className="text-xs">You are viewing as:{renderRoleIcon()}{renderCurrentViewAs()}</Form.Text>
     <Form.LogInBtn className="mt-0" onClick={onSwitchViewAs}>Switch View</Form.LogInBtn>
     {children}

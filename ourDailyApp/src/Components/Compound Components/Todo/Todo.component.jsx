@@ -6,6 +6,7 @@ import useDismiss from "../../../hooks/useDismiss.hooks";
 import {toggleEditTodoItemMode, modifyTodoCollectionSortMethod, setOpenedTodoCollection, fetchTodoItemsForACollectionStart} from "../../../redux/Todo/todo.actions";
 import {toggleTodoPopupOpen, setRenderTodoPopup} from "../../../redux/General/general.actions";
 import {useDispatch, useSelector} from "react-redux";
+import Tooltip from "@material-ui/core/Tooltip";
 
 export default function Todo({ children, ...restProps }) {
   return <S.TodoContainer {...restProps}>{children}</S.TodoContainer>;
@@ -104,11 +105,19 @@ Todo.ToolBox = function ToolBox({
 }) {
 const dispatch = useDispatch();
 
-return <S.ToolBox nobg={nobg} {...restProps}>          
-<S.ModifySvg onClick={() => dispatch(toggleEditTodoItemMode())} svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="modifySvg"/>
-<S.PinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="pinSvg"/>
-<Todo.BinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
-{children}
+return <S.ToolBox nobg={nobg} {...restProps}>
+<Tooltip title="Edit Note">
+  <S.ModifySvg onClick={() => dispatch(toggleEditTodoItemMode())} svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="modifySvg"/>
+</Tooltip>
+<Tooltip title="Pin Note">
+  <S.PinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="pinSvg"/>
+</Tooltip>
+<Tooltip title="Delete Note">
+  <i>
+    <Todo.BinSvg svgsize={svgSize || "0.8rem"} svgmargin={svgMargin || "0.1rem 0.2rem"} className="binSvg"/>
+  </i>
+</Tooltip>
+  {children}
 </S.ToolBox>
 }
 

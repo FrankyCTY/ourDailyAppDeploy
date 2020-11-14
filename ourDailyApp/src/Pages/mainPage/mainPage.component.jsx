@@ -7,9 +7,10 @@ import useRouter from "../../hooks/useRouter.hooks";
 
 import MainPageAccessAppWrapper from "../../Components/MainPageAccessAppWrapper/MainPageAccessAppWrapper.component";
 import ImageFrame from "../../Components/ImageFrames/ImageFrame/ImageFrame.component";
-import {FloatBtn, PageNotFound} from "../../Components/Compound Components";
+import {FloatBtn, Form} from "../../Components/Compound Components";
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
 import defaultUser from "../../assets/images/uploadAvatarPage/default.jpg";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const MainPage = () => {
   const router = useRouter();
@@ -36,9 +37,9 @@ const MainPage = () => {
     halo={true} withExtraText={true}
     onClick={() => {router.push("/settings")}}
     >
-      <PageNotFound.Button variant="contained" className="text-orange-100" style={{background: "#0059A6"}} onClick={() => {
+      <Form.LogInBtn className="text-orange-100" onClick={() => {
           router.push("/auth");
-      }}>Log In Now</PageNotFound.Button>
+      }}>Log In Now</Form.LogInBtn>
     </ImageFrame>
   </S.ImageFrameWrapper>
   }
@@ -54,11 +55,15 @@ const MainPage = () => {
       </S.AccessAppBtnWrapper>
     </S.MainPageContainer>
     {<S.CustomizedBg background={`url(${_arrayBufferToBase64(userBg)})`}></S.CustomizedBg>}
-    <FloatBtn className="bottom-22% xl:bottom-18%">
-      <FloatBtn.FloatButton bg={"#0059A6"} onClick={onThemeChange}>
-          <FloatBtn.BtnIcon className="iconfont icon-DarkTheme"/>
-      </FloatBtn.FloatButton>
-    </FloatBtn>
+        <FloatBtn>
+          <Tooltip title="Change Theme" placement="top">
+            <i>
+              <FloatBtn.FloatButton bg={"#0059A6"} onClick={onThemeChange}>
+                  <FloatBtn.BtnIcon className="iconfont icon-DarkTheme"/>
+              </FloatBtn.FloatButton>
+            </i>
+          </Tooltip>
+        </FloatBtn>
   </>
   );
 };

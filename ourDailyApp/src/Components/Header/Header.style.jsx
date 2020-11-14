@@ -9,7 +9,7 @@ ${({theme}) => {
   return `color: ${theme.general_text}; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
 }}
 opacity: 0.8;
-margin-left: .5rem;
+margin-left: .8rem;
 font-size: 1.4rem;
 cursor: pointer;
 transition: all 250ms ease;

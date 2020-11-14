@@ -19,6 +19,7 @@ import {
   , toggleSideBarOpen, closeTodoSideBar, deleteTodoCollectionStart,
   createTodoItemStart, setOpenedTodoItem, deleteTodoItemsStart, toggleCheckTodoItemsMode
 } from "../../redux/Todo/todo.actions";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import useRecordClickTgt from "../../hooks/useRecordClickTgt.hooks";
 
@@ -29,14 +30,15 @@ const TodoPage = () => {
   const router = useRouter();
 
   
-  const renderMobileApp = useMediaQuery({ query: "(max-device-width: 640px)" });
-  const showMoreToolbar = useMediaQuery({ query: "(max-device-width: 1279px)" });
+  const renderMobileApp = useMediaQuery({ query: "(max-width: 640px)" });
+  const showMoreToolbar = useMediaQuery({ query: "(max-width: 1279px)" });
   
   const ownedApps = useSelector(state => state.app.accessAppBtns);
   const isFetchingCollections = useSelector(state => state.todo.isFetchingCollections);
   const todos = useSelector(state => state.todo.todos);
   const isSideBarOpened = useSelector(state => state.todo.isSideBarOpened);
   const openedCollection = useSelector(state => state.todo.openedCollection);
+  const hasOpenedCollection = Object.keys(openedCollection).length !== 0;
   const todoItemsToDisplay = useSelector(state => state.todo.todos[openedCollection.id]);
   const collections = useSelector(state => state.todo.collections);
   const searchTerm = useSelector(state => state.todo.searchTerm);
@@ -109,14 +111,37 @@ const TodoPage = () => {
 
   const renderToolBar = () => {
     return     <ToolBar className="expanded">
-      <CSSTransition in={showMoreToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
-        <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>
-      </CSSTransition>
-      <ToolBar.Btn onClick={onAddTodoBtnClick}><ToolBar.BtnIcon className="iconfont icon-plus" /></ToolBar.Btn>
-      <CSSTransition in={showMoreToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
-        <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x" /></ToolBar.Btn>
-      </CSSTransition>
-      <ToolBar.Btn onClick={() => dispatch(toggleCheckTodoItemsMode())}><ToolBar.BtnIcon className="iconfont icon-huabanfuben" /></ToolBar.Btn>
+      <Tooltip title="Search Notes" placement="top">
+        <div className="inline">
+          <CSSTransition in={showMoreToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
+              <ToolBar.Btn ><ToolBar.BtnIcon className="iconfont icon-Search" /></ToolBar.Btn>
+          </CSSTransition>
+        </div>
+      </Tooltip>
+
+      <Tooltip title="Add Note" placement="top">
+        <div className="inline">
+          <CSSTransition in={hasOpenedCollection} timeout={350} classNames="fade-primary" unmountOnExit>
+            <ToolBar.Btn onClick={onAddTodoBtnClick}><ToolBar.BtnIcon className="iconfont icon-plus" /></ToolBar.Btn>
+          </CSSTransition>
+        </div>
+      </Tooltip>
+
+      <Tooltip title="Open Sidebar" placement="top">
+        <div className="inline">
+          <CSSTransition in={showMoreToolbar} timeout={350} classNames="fade-primary" unmountOnExit>
+            <ToolBar.Btn onClick={() => dispatch(toggleSideBarOpen())}><ToolBar.BtnIcon className="iconfont icon-sidebardefaulticon2x" /></ToolBar.Btn>
+          </CSSTransition>
+        </div>
+      </Tooltip>
+
+      <Tooltip title="Select Note(s)" placement="top">
+        <div className="inline">
+          <CSSTransition in={hasOpenedCollection} timeout={350} classNames="fade-primary" unmountOnExit>
+            <ToolBar.Btn onClick={() => dispatch(toggleCheckTodoItemsMode())}><ToolBar.BtnIcon className="iconfont icon-huabanfuben" /></ToolBar.Btn>
+          </CSSTransition>
+        </div>
+      </Tooltip>
       {showCheckModeBinSvg && <ToolBar.Btn ><ToolBar.BtnIcon><Todo.BinSvg className="mx-auto" nobg="true" svgSize="1.1rem" /></ToolBar.BtnIcon></ToolBar.Btn>}
   </ToolBar>
   }

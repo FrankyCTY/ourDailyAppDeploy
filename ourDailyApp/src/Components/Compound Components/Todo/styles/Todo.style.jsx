@@ -245,9 +245,6 @@ border-radius: 100%;
 width: 2rem;
 height: 2rem;
 
-position: absolute;
-right: 0;
-top: 5px;
 & i {
   color: white;
 }

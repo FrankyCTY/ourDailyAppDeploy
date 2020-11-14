@@ -13,7 +13,7 @@ bottom: ${({bottom}) => {
     return "22%;";
   }
 }}
-right: 12vw;
+// right: 12vw;
 z-index: 4;
 
 @media screen and (min-width: 850px) {

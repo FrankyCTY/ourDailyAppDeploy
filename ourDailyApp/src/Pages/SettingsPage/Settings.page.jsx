@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./SettingsPage.scss";
 import ProfileContainer from "../../Containers/ProfileForm.container";
 import AppearanceContainer from "../../Containers/Appearance/Appearance.container";
+import { updateRoutePath } from "../../redux/routePath/routePath.actions";
 import ThemeContainer from "../../Containers/Theme/Theme.container";
 import { CSSTransition } from "react-transition-group";
 import SettingToolBar from "../../Containers/SettingToolBarContainer";
@@ -22,8 +23,24 @@ const SettingsPage = () => {
 
   const router = useRouter();
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(updateRoutePath({
+      page: "setting",
+      details: {},
+    }));
+
+    return () => {
+      dispatch(updateRoutePath({
+        page: "",
+        details: {},
+      }));
+    };
+  }, [updateRoutePath]);
+
   return (
-    <div className="py-16 md:pt-24">
+    <div className="py-16">
       <div className="flex justify-center mx-auto xl:w-4/5">
       {width_above_1280 ? <SideMenu className="mr-24" style={{height: "647px"}}>
           <SideMenu.SideMenuItem className={`${router.pathName === "/settings/profile" && "active"}`} onClick={() => router.push("/settings/profile")}>

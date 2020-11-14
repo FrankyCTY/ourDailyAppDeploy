@@ -7,6 +7,7 @@ import TodoItemDetailsContainer from "../../Containers/TodoItemDetails.container
 import useRouter from "../../hooks/useRouter.hooks";
 import {ReactComponent as CollectionLogo} from '../../assets/svg/collection.svg';
 import defaultUser from "../../assets/images/uploadAvatarPage/default.jpg";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -107,7 +108,11 @@ function TodoListSection({filteredTodos, activeTodoItem, onTodoItemClick, popupP
       <Todo.TodoHeader className="mb-4 flex-col-reverse items-start" 
       tagBoxText={filteredTodos.length} title={collectionName}
       >
-        <Todo.AddTodoBtn onClick={onAddTodoBtnClick}/>
+        <Tooltip title="Add Note">
+          <i className="absolute" style={{right:"0", top:"5px"}}>
+            <Todo.AddTodoBtn onClick={onAddTodoBtnClick}/>
+          </i>
+        </Tooltip>
       </Todo.TodoHeader>
       <div className="TodoList overflow-y-auto" style={{height: "calc(100vh - 175px)"}}>
         {renderTodoItems()}

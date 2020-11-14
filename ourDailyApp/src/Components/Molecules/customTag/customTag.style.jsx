@@ -16,12 +16,16 @@ S.CustomTagWrapper = styled.div`
   margin-top: 0.6em;
   background: ${({tagContent}) => {
     switch(tagContent) {
-      case "javascript":
-        return "orangered";
-        case "html":
-        return "limegreen";
+      case "Javascript":
+          return "orangered";
+        case "HTML":
+          return "limegreen";
+        case "React":
+          return "rgba(97, 219, 251)";
+        case "MongoDB":
+          return "rgba(77, 179, 61)";
         default: 
-        return "orange"
+          return "orange"
     }
   }};
 `;

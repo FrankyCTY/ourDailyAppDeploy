@@ -57,11 +57,11 @@ const LoggedInRouter = () => {
 
   const router = useRouter();
   const showUiComponents = !(router.pathName.toString().startsWith('/applications'))
-  const showViewAsFloarBar = role === "admin" && !(router.pathName.toString().startsWith('/applications'));
+  const showViewAsFloarBar = role === "admin" && !(router.pathName.toString().startsWith('/applications') || router.pathName.toString().startsWith('/settings'));
   return (
     <>
     {showUiComponents && <NavUIComponents/>}
-    { showViewAsFloarBar && <FloatBar.ViewAsFloatBar viewAsRole={viewAs}/>}
+    {showViewAsFloarBar && <FloatBar.ViewAsFloatBar  viewAsRole={viewAs}/>}
     <Switch>
         <Route exact path="/main">
             <MainPage />

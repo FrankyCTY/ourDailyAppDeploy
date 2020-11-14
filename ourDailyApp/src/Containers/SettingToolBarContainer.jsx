@@ -7,7 +7,7 @@ import { useMediaQuery } from "react-responsive";
 
 const SettingToolBar = () => {
 
-    const allowToExpand = useMediaQuery({ query: "(max-device-width: 480px" });
+    const allowToExpand = useMediaQuery({ query: "(max-device-width: 480px)" });
     const [shouldExpand, toggleShouldExpand] = useState(false);
     
     const router = useRouter();
