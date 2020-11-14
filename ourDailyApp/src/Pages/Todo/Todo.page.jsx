@@ -11,6 +11,7 @@ import useFuse from "../../hooks/useFuse.hooks";
 import { CSSTransition } from "react-transition-group";
 import useContextMenu from "../../hooks/useContextMenu.hooks";
 import useRouter from "../../hooks/useRouter.hooks";
+import useAccessControl from "../../hooks/useAccessControl.hooks";
 import { setTodoContextMenuTgt } from "../../redux/General/general.actions";
 import {
   createTodoCollectionStart, fetchTodoCollectionsStart,
@@ -26,6 +27,7 @@ const TodoPage = () => {
   const dispatch = useDispatch();
   
   const router = useRouter();
+
   
   const renderMobileApp = useMediaQuery({ query: "(max-device-width: 640px)" });
   const showMoreToolbar = useMediaQuery({ query: "(max-device-width: 1279px)" });
@@ -42,6 +44,7 @@ const TodoPage = () => {
   const contextMenuTgt = useSelector(state => state.general.contextMenuTgt);
 
   const [activeTodoItem, onRecordTodoItemClick] = useRecordClickTgt(null);
+  const {adminView} = useAccessControl();
 
   const { openPopup, toggleOpenPopup, renderPopup, setRenderPopup, onCreateCollectionClick, onAddTodoBtnClick } = useTodoPopup();
 
@@ -96,7 +99,7 @@ const TodoPage = () => {
     if(ownedApps) {
       // 1) On refresh, wait for ownedApps to be populated and determine which path to redirect to
       // 2) may be move it to hooks to reuse on other application
-      if(ownedApps.some(app => app.id === "5f8531563ea54f0d28e38bd8")) {
+      if(ownedApps.some(app => app.id === "5f8531563ea54f0d28e38bd8") || adminView) {
         return;
       } else {
         router.push('/shop/todolist');

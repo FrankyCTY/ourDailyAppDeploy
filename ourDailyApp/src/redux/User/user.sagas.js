@@ -151,7 +151,6 @@ function* onUpdateUserDetailsStart() {
 
       // 2) If user didn't get any error at this point
       // that means the user has proper JWT authorization
-      /* yield put(setIsLoggedTrue()); */
       
       const userSagaUtils = new UserSagaUtils();
       yield call(userSagaUtils.populateUserData, [response, userSagaUtils]);

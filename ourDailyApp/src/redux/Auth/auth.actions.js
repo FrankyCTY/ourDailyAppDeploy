@@ -95,3 +95,8 @@ export const isCheckingJwtTrue = () => ({
 export const isCheckingJwtFalse = () => ({
   type: AuthActionTypes.IS_CHECKING_JWT_FALSE
 })
+
+export const setViewAs = (role) => ({
+  type: AuthActionTypes.SET_VIEW_AS,
+  role,
+})

@@ -50,7 +50,7 @@ const MainPage = () => {
       {renderImageFrame()}
 
       <S.AccessAppBtnWrapper>
-        <MainPageAccessAppWrapper isLogged={isLogged}/>
+        <MainPageAccessAppWrapper/>
       </S.AccessAppBtnWrapper>
     </S.MainPageContainer>
     {<S.CustomizedBg background={`url(${_arrayBufferToBase64(userBg)})`}></S.CustomizedBg>}

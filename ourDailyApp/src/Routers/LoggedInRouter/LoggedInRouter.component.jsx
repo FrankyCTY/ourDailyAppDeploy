@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SettingsPage from "../../Pages/SettingsPage/Settings.page";
 import CommentsConverterPage from "../../Pages/CommentsConverterPage/CommentsConverterPage.component";
 import NoMatch from "../../Pages/NoMatchPage/NoMatchPage.component";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import UserActions from "../../redux/User/user.actions";
 import useRouter from "../../hooks/useRouter.hooks";
 import { fetchApplicationsStart } from "../../redux/app/app.actions";
@@ -12,8 +12,8 @@ import { fetchApplicationsStart } from "../../redux/app/app.actions";
 import {ProtectedRoute } from "../../helpers/routes.helper";
 import componentWithPreload from "../../utils/lazyLoading/componentWithPreload";
 import NavUIComponents from "../../Components/NavUIComponents/NavUIComponents.component";
-
-
+import {FloatBar} from "../../Components/Compound Components";
+import useAccessControl from "../../hooks/useAccessControl.hooks";
 
 const ShopRouter = componentWithPreload(() =>
 import("../ShopRouter/ShopRouter.component")
@@ -31,13 +31,14 @@ export const routes = [
 const LoggedInRouter = () => {
 
   const dispatch = useDispatch();
-  const isLogged = useSelector(state => state.auth_P.isLogged);
-
+  const {role, isLogged, viewAs} = useAccessControl();
 
   useEffect(() => {
     isLogged ? dispatch(UserActions.getUserWebDataStart())
     : dispatch(fetchApplicationsStart());
-  }, [dispatch]);
+
+    role === "admin" && dispatch(fetchApplicationsStart());
+  }, [dispatch, isLogged]);
 
   const WishListPage = React.lazy(() =>
     import("../../Pages/wishlistPage/wishlistPage.component")
@@ -56,10 +57,11 @@ const LoggedInRouter = () => {
 
   const router = useRouter();
   const showUiComponents = !(router.pathName.toString().startsWith('/applications'))
-
+  const showViewAsFloarBar = role === "admin" && !(router.pathName.toString().startsWith('/applications'));
   return (
     <>
-    {showUiComponents&& <NavUIComponents/>}
+    {showUiComponents && <NavUIComponents/>}
+    { showViewAsFloarBar && <FloatBar.ViewAsFloatBar viewAsRole={viewAs}/>}
     <Switch>
         <Route exact path="/main">
             <MainPage />

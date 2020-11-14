@@ -9,6 +9,7 @@ import { selectCartItemsQuantity } from "../../redux/cart/cart.selectors";
 import {signOutStart} from "../../redux/Auth/auth.actions";
 import S from "./Header.style";
 import { createStructuredSelector } from "reselect";
+import useAccessControl from "../../hooks/useAccessControl.hooks";
 
 const Header = ({cartItemsQuantity}) => {
   const navHidden = useSelector((state) => state.nav.hidden);
@@ -17,7 +18,7 @@ const Header = ({cartItemsQuantity}) => {
 
   const dispatch = useDispatch();
 
-  const isLogged = useSelector(state => state.auth_P.isLogged);
+  const {isLogged, adminView} = useAccessControl();
 
   const router = useRouter();
 
@@ -40,7 +41,11 @@ const Header = ({cartItemsQuantity}) => {
 
         {/* ============================== Nav List ================================= */}
           
-        <S.NavListContainer className={`${isLogged ? "w-24" : ""}`}>
+        <S.NavListContainer>
+          {/* ====================== Admin Console ====================== */}
+          {
+            adminView && <S.LogoutIcon className="iconfont icon-realocksecure"></S.LogoutIcon>
+          }
           {/* ====================== Cart Icon ====================== */}
          { isLogged && <S.CartIconWrapper
             className="cart-icon-wrapper"

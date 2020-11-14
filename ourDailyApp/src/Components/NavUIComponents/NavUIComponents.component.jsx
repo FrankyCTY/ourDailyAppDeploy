@@ -7,7 +7,6 @@ import ShopFloatingNav from "../ShopFloatingNav/ShopFloatingNav.component";
 import CartPreview from "../cartPreview/cartPreview.component";
 import RoutePath from "../RoutePath/RoutePath.component";
 
-
 // const RoutePath = React.lazy(() => import("../RoutePath/RoutePath.component"));
 
 const NavUIComponents = () => {

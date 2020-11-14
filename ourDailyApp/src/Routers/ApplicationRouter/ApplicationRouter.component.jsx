@@ -2,8 +2,9 @@ import React from 'react';
 
 import {Route, Switch} from "react-router-dom";
 import useRouter from "../../hooks/useRouter.hooks";
-import {PaidAppRoute} from "../../helpers/routes.helper";
-import TodoPage from "../../Pages/Todo/Todo.page";
+// import TodoPage from "../../Pages/Todo/Todo.page";
+
+const TodoPage = React.lazy(() => import ("../../Pages/Todo/Todo.page"));
 
 
 const ApplicationRouter = () => {

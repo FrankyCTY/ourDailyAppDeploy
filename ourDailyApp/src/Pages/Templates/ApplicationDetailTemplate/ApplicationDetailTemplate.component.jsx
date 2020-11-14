@@ -14,6 +14,8 @@ import { addAppToCartStart, addAppToWishListStart, removeAppToWishListStart } fr
 import { updateRoutePath } from "../../../redux/routePath/routePath.actions";
 import addCartAnimation from "../../../utils/animations/addCardAnimation";
 import ClassicLoader from "../../../Components/Molecules/Spinners/ClassicSpinner/ClassicSpinner.component";
+import { createStructuredSelector } from "reselect";
+import useAccessControl from "../../../hooks/useAccessControl.hooks";
 import PropTypes from "prop-types";
 
 import CustomTag from "../../../Components/Molecules/customTag/customTag.component";
@@ -34,8 +36,8 @@ const ApplicationDetailPage = ({
   
   const router = useRouter();
 
+  const {isLogged, adminView} = useAccessControl();
   const ownedApps = useSelector(state => state.app.accessAppBtns);
-  const isLogged = useSelector(state => state.auth_P.isLogged);
 
   const [isPaid, setIsPaid] = useState(false);
   
@@ -66,8 +68,19 @@ const ApplicationDetailPage = ({
     };
   }, [updateRoutePath, appData.name, appDataId, ownedApps]);
 
-const renderBtnsForUnPaidApp = () => {
-  return <>
+const btnsForLoggedIn = () => {
+  const renderGoToAppBtn = isPaid || adminView;
+  return renderGoToAppBtn ?
+  <S.BtnAddToCart
+  className="btn--toApp"
+  onClick={() => {
+      router.push(`/${appRoute}`);
+  }}
+  >
+    Go To App
+  </S.BtnAddToCart>
+  : 
+  <>
       <S.BtnAddToWishlist
         className="btn--addWishList"
         disabled={isTogglingWishlistApp}
@@ -147,17 +160,8 @@ const renderBtnsForUnPaidApp = () => {
 
       {/* ================================ Buttons ================================ */}
       {/* ================ wishlist part ================ */}
-      { isLogged ? (isPaid ?
-      <S.BtnAddToCart
-      className="btn--toApp"
-      onClick={() => {
-          router.push(`/${appRoute}`);
-      }}
-      >
-        Go To App
-      </S.BtnAddToCart>
-      : renderBtnsForUnPaidApp())
-      :       <S.BtnAddToCart
+      { isLogged ? btnsForLoggedIn()
+      : <S.BtnAddToCart
       className="btn--toLogIn"
       onClick={() => {
           router.push(`/auth`);

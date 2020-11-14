@@ -1,7 +1,4 @@
 import styled, {css} from "styled-components";
-
-// import TooltipWrapper from "../TooltipWrapper/TooltipWrapper.component";
-import ReactToolTip from "react-tooltip";
 import { ReactComponent as NavIcon } from "../../assets/nav.svg";
 
 import { rgba } from "polished";
@@ -12,6 +9,7 @@ ${({theme}) => {
   return `color: ${theme.general_text}; text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);`;
 }}
 opacity: 0.8;
+margin-left: .5rem;
 font-size: 1.4rem;
 cursor: pointer;
 transition: all 250ms ease;
@@ -55,7 +53,6 @@ S.LogoWrapper = styled.div`
 /* ============================== Nav List ================================= */
 
 S.NavListContainer = styled.div`
-  // width: 6em;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -99,15 +96,12 @@ S.CartItemsQuantityText = styled.span`
 
 S.NavIconContainer = styled.div`
   all: unset;
-  --size: 40px;
-  width: var(--size);
-  height: var(--size);
-
   display: grid;
   place-items: center;
 
   border-radius: 100%;
   cursor: pointer;
+  margin-left: .5rem;
 
   &:focus {
     outline: 0;

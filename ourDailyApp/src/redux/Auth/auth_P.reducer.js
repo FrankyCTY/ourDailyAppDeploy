@@ -4,6 +4,7 @@ const INITIATE_STATE = {
   isLogged: false,
   user: null,
   userAvatar: null,
+  viewAs: "original",
 };
 
 const authReducer_P = (state = INITIATE_STATE, action) => {
@@ -27,6 +28,11 @@ const authReducer_P = (state = INITIATE_STATE, action) => {
         return {
           ...state,
           userAvatar: action.imgBuffer
+        }
+      case AuthActionTypes.SET_VIEW_AS:
+        return {
+          ...state,
+          viewAs: action.role,
         }
     default:
       return state;
