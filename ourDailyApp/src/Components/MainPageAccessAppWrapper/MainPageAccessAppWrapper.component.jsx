@@ -43,7 +43,7 @@ const MainPageAccessAppWrapper = () => {
         <Loader SpinnerComponent={RippleSpinner} isLoading={!applications}>
         {() =>
           applications.map((app, index) => (
-            <MainPageAccessAppBtn key={app.id} app={app} index={index} />
+            <MainPageAccessAppBtn key={app.id} name={app.name} route={app.appRoute} img={app.imgSm} hasBorder={app.border} staggerIndex={index} />
           ))
         }
       </Loader>}
