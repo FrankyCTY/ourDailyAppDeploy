@@ -13,6 +13,7 @@ async function createStripeCheckoutSession(
   line_items,
   user,
 ) {
+  console.log("Dfoidsfhgjofbhgosb")
   const customer = await getOrCreateCustomer(user);
   console.log({customerId: customer.id})
   // const customer_email = user.email;
@@ -56,10 +57,10 @@ const webhookHandlers = {
     );
 
     const userMongoId = customer.metadata.mongoUID;
-    console.log({userMongoId});
 
-    // map the items objs and populate applications user has bought into user doc
-    await User.findByIdAndUpdate(userMongoId, {$push: {ownedApplications: {$each: prodIdArray}}});
+    // 1) map the items objs and populate applications user has bought into user doc
+    // 2) and Clear the cart items in User Doc
+    await User.findByIdAndUpdate(userMongoId, {$push: {ownedApplications: {$each: prodIdArray}}, applicationsInCart: []});
   },
   'checkout.session.async_payment_failed': async (data) => {
     console.log('checkout session failed');
