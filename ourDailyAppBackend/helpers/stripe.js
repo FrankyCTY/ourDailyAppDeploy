@@ -1,7 +1,7 @@
 const Stripe = require("stripe");
 const User = require("../models/user/user.model");
 
-const env = "prod";
+const env = "dev";
 const webapp_url = env === "prod" ? `http://localhost:3000` : `https://ourdailyapps.com/`;
 
 stripe = new Stripe(process.env.STRIPE_SECRET, {

@@ -2,24 +2,22 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import {useSelector} from "react-redux";
 
-export function IsUserRedirect({
-  isLogged,
+export function LoggedUserRedirect({
   loggedInPath,
   children,
   ...restProps
 }) {
+  const isUserLogged = useSelector((state) => state.auth_P.isLogged);
+
   return (
     <Route
       {...restProps}
       render={() => {
-        if (!isLogged) {
+        if (!isUserLogged) {
           return children;
+        } else {
+          return <Redirect to={loggedInPath} />;
         }
-
-        if (isLogged) {
-          return <Redirect to={{ pathname: loggedInPath }} />;
-        }
-        return null;
       }}
     />
   );

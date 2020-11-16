@@ -8,6 +8,7 @@ const CartPageItemsBoard = ({
   wishlistItems,
   cartItemsQuantity,
 }) => {
+
   return (
     <S.CartPageItemsBoard>
       {/* ============= Cart Items ============= */}

@@ -54,7 +54,7 @@ const RoutePath = ({ selectPage, selectDetails, history }) => {
       {selectPage === "wishlist" &&
         routerTextRender("HOME", "WISHLIST", "/main", "iconfont icon-wish")}
       {selectPage === "cart" &&
-        routerTextRender("HOME", "WISHLIST", "/main", "iconfont icon-cart")}
+        routerTextRender("HOME", "CART", "/main", "iconfont icon-cart")}
       {selectPage === "applicationDetails" &&
         routerTextRender("SHOP", selectDetails.title.toUpperCase(), "/shop")}
       {selectPage === "setting" &&

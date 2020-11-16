@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 import './App.css';
 
 import { Switch, Route } from "react-router-dom";
-import { IsUserRedirect } from "./helpers/routes.helper";
+import { LoggedUserRedirect } from "./helpers/routes.helper";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./utils/styled/globalStyle";
@@ -33,7 +33,6 @@ const PaymentRouter = React.lazy(() => import("./Routers/Payment/PaymentRouter.c
 export const stripePromise = loadStripe('pk_test_51HcNpdJYtYSmYHOamYmfJifaZwVKjd0vVngDH8X6fdVWBodmHoeCT6yRh5PEYIiBwjaTl8447ojEB5uhQ7U8Bzvx00nH4DFlXo');
 
 const App = () => {
-  const isUserLogged = useSelector((state) => state.auth_P.isLogged);
   // const isCheckingJwt = useSelector((state) => state.auth.isCheckingJwt);
 
   const theme = useSelector((state) => state.theme_P.theme);
@@ -66,14 +65,13 @@ const App = () => {
               <HomePage />
             </Route>
             <Route exact path="/404"><PageNotFoundPage/></Route>
-            <IsUserRedirect
-              isLogged={isUserLogged}
+            <LoggedUserRedirect
               path={"/auth"}
               loggedInPath={"/main"}
             >
               <AuthRouter />
-          </IsUserRedirect>
-          <ProtectedRoute isLogged={isUserLogged} path='/payment'>
+          </LoggedUserRedirect>
+          <ProtectedRoute path='/payment'>
             <PaymentRouter/>
           </ProtectedRoute>
           <Route path="/">

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import S from "./cartPage.style";
 
 import { updateRoutePath } from "../../redux/routePath/routePath.actions";
+import {Todo} from "../../Components/Compound Components";
 import { connect } from "react-redux";
 import {
   selectCartItems,
@@ -10,6 +11,7 @@ import {
   selectWishListItems,
 } from "../../redux/cart/cart.selectors";
 import { createStructuredSelector } from "reselect";
+import useAccessControl from "../../hooks/useAccessControl.hooks";
 
 import CartPageItemsBoard from "../../Components/ItemBoard/CartPageItemsBoard/CartPageItemsBoard.component";
 import PaymentSection from "../../Components/PaymentSection/PaymentSection.component";
@@ -35,22 +37,28 @@ const CartPage = ({
     };
   }, [updateRoutePath]);
 
-
+  const {adminView} = useAccessControl();
+  
   return (
     <S.CartPageContainer>
       {/* ========================== content main ========================== */}
       <S.ContentContainer className="gs-PageContentContainer">
-        <CartPageItemsBoard
-          cartItems={cartItems}
-          cartItemsQuantity={cartItemsQuantity}
-          wishlistItems={wishlistItems}
-        />
-
-        <PaymentSection
+        {adminView ? <div className="flex justify-center items-center w-screen h-full">
+          <Todo.TitleText className="text-sm md:text-2xl">Admins have full access to every products</Todo.TitleText>
+        </div>: <>
+          <CartPageItemsBoard
+            cartItems={cartItems}
+            cartItemsQuantity={cartItemsQuantity}
+            wishlistItems={wishlistItems}
+          />
+          <PaymentSection
           cartItemsQuantity={cartItemsQuantity}
           totalPrice={totalPrice}
           cartItems={cartItems}
-        />
+          />
+      </>
+}
+
       </S.ContentContainer>
     </S.CartPageContainer>
   );

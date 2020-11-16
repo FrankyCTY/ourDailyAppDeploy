@@ -5,21 +5,22 @@ import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
-const MainPageAccessAppBtn = ({ app, index }) => {
+const MainPageAccessAppBtn = ({ name, route, img, hasBorder, staggerIndex=1, isIcon=false, iconClassName=""}) => {
 
-
-  const { name, appRoute, imgSm, border } = app;
+  console.log({name})
   return (
-    <Link to={`/${appRoute}`} className={`link`}>
+    <Link to={`/${route}`} className={`link`}>
       <S.ApplicationItemContainer
         className="application-item"
-        stagger={(index + 1) * 0.1}
+        stagger={(staggerIndex + 1) * 0.1}
       >
-        <S.Image
-          src={`${imgSm}`}
+     { isIcon ? <i className={`iconfont ${iconClassName} text-4xl`}></i> : 
+     
+     <S.Image
+          src={`${img}`}
           loading="lazy"
-          className={`${border ? "border" : ""}`}
-        />
+          className={`${hasBorder ? "border" : ""}`}
+        />}
         <S.AppLinkText className="link-text">{name}</S.AppLinkText>
       </S.ApplicationItemContainer>
     </Link>
