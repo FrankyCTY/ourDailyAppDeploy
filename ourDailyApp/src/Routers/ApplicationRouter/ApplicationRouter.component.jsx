@@ -8,6 +8,9 @@ const TodoPage = React.lazy(() => import ("../../Pages/Todo/Todo.page"));
 
 const ApplicationRouter = () => {
 
+  const PigGamePageWithSpinner = React.lazy(() =>
+    import("../../games/Pig_game/pigGamePageWithSpinner.component")
+  );
 
   const router = useRouter();
   return (
@@ -20,6 +23,9 @@ const ApplicationRouter = () => {
         
         <Route exact path={`${router.matchPath}/todo`}>
           <TodoPage/>
+        </Route>
+        <Route exact path={`${router.matchPath}/piggame`} redirectUrl="/shop/piggame">
+        <PigGamePageWithSpinner />
         </Route>
       </Switch>
     </div>

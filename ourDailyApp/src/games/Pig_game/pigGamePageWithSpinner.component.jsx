@@ -2,68 +2,45 @@ import React, { useEffect } from "react";
 import S from "./pigGamePageWithSpinner.style";
 import "./pigGamePageWithSpinner.style.scss";
 
-import {
-  getPigGameState,
-  getPigGamePlayer2State,
-} from "../../firebase/firestore/getData";
+import {loadPigGameStart} from "../../redux/pigGame/pigGame.actions";
+import useAccessControl from "../../hooks/useAccessControl.hooks";
+import useRouter from "../../hooks/useRouter.hooks";
 
 // import { CSSTransition } from "react-transition-group";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { selectIsLoading } from "../../redux/pigGame/pigGame.selectors";
-import {
-  loadGameState,
-  loadingIsFinished,
-  setIsLoadingToTrue,
-  startNewGame,
-} from "../../redux/pigGame/pigGame.actions";
-import { loadPlayer2State } from "../../redux/pigGamePlayer2/pigGamePlayer2.actions";
 
 import PigGamePage from "./pigGamePage.component";
+import {useDispatch, useSelector} from "react-redux";
 
-const PigGamePageWithSpinner = ({
-  isLoading,
-  loadGameState,
-  loadingIsFinished,
-  startNewGame,
-  loadPlayer2State,
-}) => {
+const PigGamePageWithSpinner = () => {
+
+  const dispatch = useDispatch();
+  const {adminView} = useAccessControl();
+
+  const router = useRouter();
+
+  const isLoadingPiggame = useSelector(state => state.pigGame.isLoading);
+  const ownedApps = useSelector(state => state.app.accessAppBtns);
+
+  useEffect(() => {
+    // Check if user can use this app
+    if(ownedApps) {
+      // 1) On refresh, wait for ownedApps to be populated and determine which path to redirect to
+      // 2) may be move it to hooks to reuse on other application
+      if(ownedApps.some(app => app.id === "5fb3e2c1f9fb435984ff8038") || adminView) {
+        return;
+      } else {
+        router.push('/shop/todolist');
+      }
+    }
+  }, [dispatch, ownedApps]);
+
   useEffect(() => {
     // Load Game State to pigGameReducer
-    async function loadGame() {
-      const gameState = await getPigGameState();
+      dispatch(loadPigGameStart());
+  }, [dispatch]);
 
-      if (gameState !== null) {
-        loadGameState(gameState);
-      } else {
-        startNewGame();
-      }
-
-      // if (gamePlayer2State !== null) {
-      const gamePlayer2State = await getPigGamePlayer2State();
-      loadPlayer2State(gamePlayer2State);
-
-      // }
-
-      loadingIsFinished();
-    }
-    if (isLoading !== false) loadGame();
-
-    return () => {
-      //   const { isLoading, setIsLoadingToTrue } = this.props;
-      setIsLoadingToTrue();
-      console.log("PigGameWithSpinner Unmounted: ", isLoading);
-    };
-  }, [
-    isLoading,
-    loadGameState,
-    loadPlayer2State,
-    loadingIsFinished,
-    startNewGame,
-  ]);
-
-  return isLoading ? (
-    <S.Container>
+  return isLoadingPiggame ? (
+    <S.Container className="w-screen h-screen">
       <S.Dice>
         <S.Face_front>
           <div></div>
@@ -91,19 +68,4 @@ const PigGamePageWithSpinner = ({
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  isLoading: selectIsLoading,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  loadGameState: (gameState) => dispatch(loadGameState(gameState)),
-  loadPlayer2State: (player2State) => dispatch(loadPlayer2State(player2State)),
-  loadingIsFinished: () => dispatch(loadingIsFinished()),
-  setIsLoadingToTrue: () => dispatch(setIsLoadingToTrue()),
-  startNewGame: () => dispatch(startNewGame()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PigGamePageWithSpinner);
+export default PigGamePageWithSpinner;

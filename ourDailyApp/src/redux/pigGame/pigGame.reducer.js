@@ -30,6 +30,7 @@ const INITIAL_STATE = {
   prev_scores: [0, 0],
   error: null,
   isLoading: true,
+  gameId: null,
 };
 
 const pigGameReducer = (state = INITIAL_STATE, action) => {
@@ -54,7 +55,7 @@ const pigGameReducer = (state = INITIAL_STATE, action) => {
       return clearPlayerTotalScore(state);
     case PigGameActionTypes.CHECK_WINNER:
       return checkWinner(state);
-    case PigGameActionTypes.START_NEW_GAME:
+    case PigGameActionTypes.START_NEW_PIG_GAME_START:
       return {
         ...INITIAL_STATE,
         finalScore: state.finalScore,
@@ -99,10 +100,17 @@ const pigGameReducer = (state = INITIAL_STATE, action) => {
 
     case PigGameActionTypes.RESTORE_PREV_GAME_DATA:
       return action.payload;
-    case PigGameActionTypes.LOADING_FINISHED:
+    case PigGameActionTypes.SET_PIG_GAME_STATE:
+      return action.gameState;
+    case PigGameActionTypes.IS_LOADING_PIG_GAME_FALSE:
       return {
         ...state,
         isLoading: false,
+      };
+    case PigGameActionTypes.IS_LOADING_PIG_GAME_TRUE:
+      return {
+        ...state,
+        isLoading: true,
       };
     default:
       return state;

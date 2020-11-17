@@ -14,5 +14,5 @@ exports.applicationValidation = [
             }
         })
     }),
-    body("tags").isIn(["html", "css", "javascript", "chroma.js"]).withMessage("tags{SEPERATE}Unexpected tags are not allowed"),
+    body("tags").isIn(["HTML", "css", "Javascript", "chroma.js", "React", "MongoDB"]).withMessage("tags{SEPERATE}Unexpected tags are not allowed"),
 ]

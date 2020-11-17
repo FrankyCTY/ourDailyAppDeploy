@@ -5,18 +5,19 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import {
-  toggleInfoModal,
   turnInfoModalOff,
 } from "../../../redux/pigGameModals/pigGameModals.actions";
+import {Modal} from "react-bootstrap";
 import { selectShowInfoModal } from "../../../redux/pigGameModals/pigGameModals.selectors";
 
 
-const InfoModal = ({ showInfoModal, toggleInfoModal, turnInfoModalOff }) => {
+const InfoModal = ({ showInfoModal, turnInfoModalOff }) => {
   return (
     <S.InfoModal
       show={showInfoModal}
       onHide={() => {
         turnInfoModalOff();
+        
       }}
       centered
     >
@@ -24,10 +25,10 @@ const InfoModal = ({ showInfoModal, toggleInfoModal, turnInfoModalOff }) => {
         @import
         url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
       </style>
-      {/* <Modal.Header closeButton>
+      <Modal.Header closeButton>
         <S.ModalTitle>Pig Game</S.ModalTitle>
       </Modal.Header>
-      <Modal.Body> */}
+      <Modal.Body>
         {/* ======================== Rules ======================== */}
         <S.SubHeader>RULES: </S.SubHeader>
         <p>
@@ -48,13 +49,13 @@ const InfoModal = ({ showInfoModal, toggleInfoModal, turnInfoModalOff }) => {
           <span style={{ color: "#eb4d4d", fontWeight: "bold" }}>
             all the scores of him will back to 0 and
           </span>{" "}
-          <span style={{ color: "#eb4d4d", fontWeight: "bold" }}>
+          <span style={{ color: "#eb4d4d", fontWeight: "bold" }} className="mb-4">
             the other player will take turn.
           </span>
         </p>
         {/* ======================== Note ======================== */}
-        <S.SubHeader>Note: </S.SubHeader>
-        <p>The winner will be recorded only when the player 2 is logged in.</p>
+        <S.SubHeader className="mt-4">Note: </S.SubHeader>
+        <p className="mb-4">The winner will be recorded only when the player 2 is logged in.</p>
         <S.Button variant="primary" onClick={turnInfoModalOff}>
           Nailed it
         </S.Button>
@@ -68,7 +69,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleInfoModal: () => dispatch(toggleInfoModal()),
   turnInfoModalOff: () => dispatch(turnInfoModalOff()),
 });
 

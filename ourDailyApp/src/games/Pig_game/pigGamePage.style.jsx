@@ -189,14 +189,11 @@ S.PlayerInfoContainer = styled.div`
   border-radius: 200px;
 `;
 
-S.PlayerPic = styled.div`
+S.PlayerPic = styled.img`
   font-size: clamp(1.4rem, 2.3vw, 2.3rem);
   width: 1em;
   height: 1em;
   border-radius: 100%;
-  background: ${(props) => `url(${props.imgsrc})`};
-  background-position: center;
-  background-size: cover;
   margin-right: 0.4em;
   cursor: pointer;
 `;

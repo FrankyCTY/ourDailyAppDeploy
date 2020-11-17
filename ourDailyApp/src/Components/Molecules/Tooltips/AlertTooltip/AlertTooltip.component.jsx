@@ -4,7 +4,7 @@ import S from "./AlertTooltip.style";
 import useDismiss from "../../../../hooks/useDismiss.hooks";
 
 import { connect } from "react-redux";
-import { setClickedAlertSvg } from "../../../../redux/signUpForm/signUpform.actions";
+// import { setClickedAlertSvg } from "../../../../redux/signUpForm/signUpform.actions";
 
 const AlertTooltip = ({ alerts, place, setClickedAlertSvg, from }) => {
   const node = useRef();
@@ -27,8 +27,9 @@ const AlertTooltip = ({ alerts, place, setClickedAlertSvg, from }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setClickedAlertSvg: (target) => dispatch(setClickedAlertSvg(target)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   setClickedAlertSvg: (target) => dispatch(setClickedAlertSvg(target)),
+// });
 
-export default connect(null, mapDispatchToProps)(AlertTooltip);
+// export default connect(null, mapDispatchToProps)(AlertTooltip);
+export default AlertTooltip;

@@ -22,10 +22,10 @@ exports.getApplicationDetails = withCatchErrAsync(async (req, res, next) => {
 })
 
 exports.createApplicationDetails = withCatchErrAsync(async (req, res, next) => {
-    const {name, videoSrc, imgSrc, price, route, creator, tags, intro, features} = req.body;
+    const {name, videoSrc, imgSrc, imgSm, price, route, creator, tags, intro, features, appRoute} = req.body;
 
     const newApplication = await Application.create({
-        name, videoSrc, imgSrc, price, route, creator, tags, intro, features
+        name, videoSrc, imgSrc, imgSm, price, route, creator, tags, intro, features, appRoute
     })
 
     return res.status(200).json({

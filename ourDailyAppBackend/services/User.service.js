@@ -24,6 +24,7 @@ class UserService {
   }
 
   getUserImage = async (imageId, next) => {
+    console.log({imageId})
     let retry = false;
     // 1) Get image using my aws confidentials
     try {

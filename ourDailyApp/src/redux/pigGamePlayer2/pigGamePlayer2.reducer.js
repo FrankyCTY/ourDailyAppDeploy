@@ -1,7 +1,7 @@
 import PigGamePlayer2ActionTypes from "./pigGamePlayer2.types";
 
 const INITIAL_STATE = {
-  displayName: null,
+  displayName: "player2",
   photoURL: null,
   error: null,
   isLogged: false,
@@ -20,7 +20,7 @@ const pigGamePlayer2Reducer = (state = INITIAL_STATE, action) => {
     case PigGamePlayer2ActionTypes.SIGN_OUT_SUCCESS:
       return {
         ...state,
-        displayName: null,
+        displayName: INITIAL_STATE.displayName,
         photoURL: null,
         error: null,
         isLogged: false,

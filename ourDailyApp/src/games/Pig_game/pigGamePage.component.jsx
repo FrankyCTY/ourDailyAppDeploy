@@ -1,11 +1,11 @@
 import React from "react";
 import S from "./pigGamePage.style";
 
-// import { displayNameLengthFilter } from "../../utils/dataFilter";
 import { renderProfilePicture } from "../../utils/conditional";
 import { playerNameFontSize } from "./pigGameUtils";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import {useDispatch, useSelector} from "react-redux";
 import {
   selectDiceNumber,
   selectActivePlayer,
@@ -15,29 +15,23 @@ import {
   selectFinalScore,
   selectStrikes,
 } from "../../redux/pigGame/pigGame.selectors";
-import {
-  selectPlayer2DisplayName,
-  selectPlayer2PhotoURL,
-  selectIsLogged,
-} from "../../redux/pigGamePlayer2/pigGamePlayer2.selectors";
+
 import {
   toggleSignInModal,
   toggleInfoModal,
 } from "../../redux/pigGameModals/pigGameModals.actions";
-import {
-  selectCurrentUser,
-  // selectIsUserLogged,
-} from "../../redux/Auth/auth.selectors";
 import {
   rollDice,
   holdDice,
   startNewGame,
   changeFinalScore,
 } from "../../redux/pigGame/pigGame.actions";
+import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
 import { signOutStart } from "../../redux/pigGamePlayer2/pigGamePlayer2.actions";
+import useAccessControl from "../../hooks/useAccessControl.hooks";
 
-// import Player2SignInModal from "./Components/player2SignInModal.component";
-// import InfoModal from "./Components/infoModal.component";
+import Player2SignInModal from "./Components/player2SignInModal.component";
+import InfoModal from "./Components/infoModal.component";
 
 const PigGamePage = ({
   diceNumber,
@@ -50,25 +44,25 @@ const PigGamePage = ({
   selectWinner,
   finalScore,
   changeFinalScore,
-  selectCurrentUser,
-  toggleSignInModal,
-  displayName,
   photoURL,
-  toggleInfoModal,
   strikesNum,
   signOutStart,
-  isPlayer2Logged,
-  isMainUserLogged,
 }) => {
+
+  const dispatch = useDispatch();
+  const {user, isLogged} = useAccessControl();
+  const userAvatar = useSelector(state => state.auth_P.userAvatar);
+  const {displayName: player2Name, photoURL: player2Avatar, isLogged: isPlayer2Logged} = useSelector(state => state.pigGamePlayer2);
+
   return (
-    <S.PigGameContainer className="PigGame-Page gs-page ">
+    <S.PigGameContainer className="PigGame-Page h-screen w-screen">
       <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
       </style>
       {/* ================= Player TWO Sign In BTN and MODAL ================= */}
-      {/* <Player2SignInModal /> */}
-      {/* <InfoModal /> */}
+      <Player2SignInModal />
+      <InfoModal />
       <S.ModalsContainer>
         {isPlayer2Logged ? (
           <S.Player2SignOutBtn onClick={signOutStart}>
@@ -76,12 +70,12 @@ const PigGamePage = ({
             Player2 Log Out
           </S.Player2SignOutBtn>
         ) : (
-          <S.Player2SignInBtn onClick={toggleSignInModal}>
+          <S.Player2SignInBtn onClick={() => dispatch(toggleSignInModal())}>
             <S.playerIcon className="iconfont icon-player" />
             Player2 Log In
           </S.Player2SignInBtn>
         )}
-        <S.InfoBtn onClick={toggleInfoModal}>
+        <S.InfoBtn onClick={() => dispatch(toggleInfoModal())}>
           <S.InfoIcon className="iconfont icon-FontAwesomeinfo" />
         </S.InfoBtn>
       </S.ModalsContainer>
@@ -99,24 +93,21 @@ const PigGamePage = ({
           {/* ================= Player One Info Container ================= */}
           <S.PlayerInfoContainer>
             <S.PlayerPic
-            // imgsrc={
-            //   isMainUserLogged
-            //     ? renderProfilePicture(selectCurrentUser.photoURL)
-            //     : null
-            // }
+            src={_arrayBufferToBase64(userAvatar)}
+            className="mr-6"
             ></S.PlayerPic>
-            {/* <S.PlayerName
+            <S.PlayerName
               className={`${activePlayer === 1 && "active"} player-name`}
               fontSize={
-                isMainUserLogged
-                  ? playerNameFontSize(selectCurrentUser.displayName.length)
+                isLogged
+                  ? playerNameFontSize(user.name.length)
                   : 1
               }
             >
-              {isMainUserLogged
-                ? displayNameLengthFilter(selectCurrentUser.displayName, 8)
+              {isLogged
+                ? user.name
                 : "Player 1"}
-            </S.PlayerName> */}
+            </S.PlayerName>
           </S.PlayerInfoContainer>
           {selectWinner === "player1" && (
             <S.CrownLeft className="fireworks">
@@ -145,18 +136,21 @@ const PigGamePage = ({
           {/* ================= Player Two Info Container ================= */}
           <S.PlayerInfoContainer>
             <S.PlayerPic
-              imgsrc={isPlayer2Logged ? renderProfilePicture(photoURL) : null}
-            ></S.PlayerPic>
-            {/* <S.PlayerName
-              className={`${activePlayer === 2 && "active"} player-name`}
-              fontSize={
-                isPlayer2Logged ? playerNameFontSize(displayName.length) : 1
-              }
-            >
-              {isPlayer2Logged
-                ? displayNameLengthFilter(displayName, 12)
-                : "Player 2"}
-            </S.PlayerName> */}
+              src={_arrayBufferToBase64(player2Avatar)}
+              className="mr-6"
+              ></S.PlayerPic>
+              <S.PlayerName
+                className={`${activePlayer === 1 && "active"} player-name`}
+                fontSize={
+                  isLogged
+                    ? playerNameFontSize(player2Name.length)
+                    : 1
+                }
+              >
+                {isLogged
+                  ? player2Name
+                  : "Player 1"}
+            </S.PlayerName>
           </S.PlayerInfoContainer>
           {selectWinner === "player2" && (
             <S.CrownRight className="fireworks">
@@ -210,11 +204,7 @@ const mapStateToProps = createStructuredSelector({
   selectPlayer2Obj: selectPlayer2Obj,
   selectWinner: selectWinner,
   finalScore: selectFinalScore,
-  selectCurrentUser: selectCurrentUser,
-  isPlayer2Logged: selectIsLogged,
   strikesNum: selectStrikes,
-  displayName: selectPlayer2DisplayName,
-  photoURL: selectPlayer2PhotoURL,
   // isMainUserLogged: selectIsUserLogged,
 });
 
@@ -224,8 +214,6 @@ const mapDispatchToProps = (dispatch) => ({
   startNewGame: () => dispatch(startNewGame()),
   changeFinalScore: (newFinalScore) =>
     dispatch(changeFinalScore(newFinalScore)),
-  toggleSignInModal: () => dispatch(toggleSignInModal()),
-  toggleInfoModal: () => dispatch(toggleInfoModal()),
   signOutStart: () => dispatch(signOutStart()),
 });
 

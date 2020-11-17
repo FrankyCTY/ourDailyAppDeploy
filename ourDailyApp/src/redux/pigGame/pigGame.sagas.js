@@ -1,5 +1,6 @@
-import { takeLatest, all, call, put, select } from "redux-saga/effects";
+import { takeLatest, takeLeading, all, call, put, select } from "redux-saga/effects";
 import PigGameActionTypes from "./pigGame.types";
+import Url from "../../url";
 import {
   // startNewGame,
   changeDiceNumber,
@@ -14,9 +15,14 @@ import {
   playerAddTotalScore,
   checkWinner,
   resetPrevScore,
+  setPigGameState,
+  isLoadingPigGameTrue,
+  isLoadingPigGameFalse
 } from "./pigGame.actions";
 
-import { saveGameState } from "../../firebase/firestore/setData";
+import {signInSuccess} from "../pigGamePlayer2/pigGamePlayer2.actions";
+
+import {getGameState, saveGameState} from "./pigGame.requests";
 
 function* onRollDice() {
   yield takeLatest(PigGameActionTypes.ROLL_DICE, rollDice);
@@ -26,8 +32,8 @@ function* onHoldDice() {
   yield takeLatest(PigGameActionTypes.HOLD_DICE, holdDice);
 }
 
-function* onStartNewGame() {
-  yield takeLatest(PigGameActionTypes.START_NEW_GAME, saveNewGame);
+function* onLoadGameStateStart() {
+  yield takeLeading(PigGameActionTypes.LOAD_PIG_GAME_START, fn_loadGameStateStart);
 }
 
 export default function* pigGameSaga() {
@@ -35,16 +41,32 @@ export default function* pigGameSaga() {
     // call(onSignInStart),
     // call(onSignOutStart),
     call(onRollDice),
-    call(onStartNewGame),
+    call(onLoadGameStateStart),
     call(onHoldDice),
   ]);
 }
 
 // ================= More generator functions =================
 
-function* saveNewGame() {
-  const gameState = yield select((state) => state.pigGame);
-  yield call(saveGameState, gameState);
+function* fn_loadGameStateStart() {
+  try {
+    // Start Spinner
+    yield put(isLoadingPigGameTrue());
+
+    const res = yield call(getGameState, `${Url}/piggames`);
+    // 1) populate pig game state
+    yield put(setPigGameState({...res.data.data.gameState, gameId: res.data.data.gameState.id}));
+
+    // 2) populate pig game player 2 data
+    const player2Data = res.data.data.gameState.player2Id;
+    yield put(signInSuccess(player2Data.name, res.data.data.player2Avatar.data));
+
+    // Stop Spinner
+    yield put(isLoadingPigGameFalse());
+  } catch (error) {
+    // Stop Spinner
+    // yield put(isLoadingPigGameFalse());
+  }
 }
 
 function* rollDice() {
@@ -76,7 +98,7 @@ function* rollDice() {
       }
       // 5. Save Data to firestore
       const pigGameStateObj = yield select((state) => state.pigGame);
-      yield call(saveGameState, pigGameStateObj);
+      yield call(saveGameState, [pigGameStateObj, `${Url}/piggames`]);
     }
   } catch (error) {
     yield put(restorePrevGameData(prevGameState));
@@ -110,7 +132,7 @@ function* holdDice() {
       }
       // Save data to firestore
       gameState = yield select((state) => state.pigGame);
-      yield call(saveGameState, gameState);
+      yield call(saveGameState, [gameState, `${Url}/piggames`]);
     }
   } catch (error) {
     console.log(error);

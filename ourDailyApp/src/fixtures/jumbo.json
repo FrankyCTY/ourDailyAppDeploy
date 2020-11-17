@@ -30,7 +30,7 @@
     "id": 4,
     "title": "Franky Venus Auckland Trip",
     "subTitle": "Stream unlimited films and TV programmes on your phone, tablet, laptop and TV without paying more.",
-    "image": "/images/assets/ourTrip.jpg",
+    "image": "https://i.ibb.co/52Z3srC/frankyvenus.jpg",
     "alt": "Franky Venus Auckland Trip",
     "direction": "row-reverse",
     "url": "https://frankvenus.netlify.app"

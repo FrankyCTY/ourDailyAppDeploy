@@ -35,7 +35,7 @@ Formik.Label = function FormikLabel({children, ...restProps}) {
     return <S.FormikLabel {...restProps}>{children}</S.FormikLabel>
 }
 
-Formik.PasswordInput = function FormikPasswordInput({htmlFor, children, ...restProps}) {
+Formik.PasswordInput = function FormikPasswordInput({labelClassName, htmlFor, children, ...restProps}) {
 
     const [isHidePassword, toggleIsHidePassword] = useState(true);
 
@@ -44,7 +44,7 @@ Formik.PasswordInput = function FormikPasswordInput({htmlFor, children, ...restP
     }
 
     return     <Formik.Group>
-        <Formik.Label htmlFor={htmlFor}>{children}</Formik.Label>
+        <Formik.Label className={labelClassName} htmlFor={htmlFor}>{children}</Formik.Label>
         <Formik.Input type={`${isHidePassword ? "password" : "text"}`} {...restProps}/>
         {
             isHidePassword ? <Formik.InputDecoIcon className="iconfont icon-eye1" onClick={onEyeIconClick}/>
@@ -142,10 +142,10 @@ Formik.DropDown = function DropDown({value, onChange, DropDownItems, src, ...res
     )
 }
 
-Formik.InputGroup = function InputGroup({labelText, htmlFor, disabled, value, onChange, children, ...restProps}) {
+Formik.InputGroup = function InputGroup({labelClassName, labelText, htmlFor, disabled, value, onChange, children, ...restProps}) {
     return (
         <Formik.Group>
-            <Formik.Label htmlFor={htmlFor}>{labelText}</Formik.Label>
+            <Formik.Label className={labelClassName} htmlFor={htmlFor}>{labelText}</Formik.Label>
             <Formik.Group>
                 <Formik.Input disabled={disabled} value={value} onChange={onChange} {...restProps}></Formik.Input>
             </Formik.Group>

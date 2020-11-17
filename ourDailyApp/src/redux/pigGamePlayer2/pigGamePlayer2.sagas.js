@@ -11,21 +11,21 @@ import {
 import {
   setIsProcessingSignInTRUE,
   setIsProcessingSignInFALSE,
-  signInFormOnHide,
+  turnSignInModalOff,
 } from "../pigGameModals/pigGameModals.actions";
 
-import { getUserAuthInfo } from "./pigGamePlayer2.sagaUtils";
-import {
-  saveGameState,
-  savePigGamePlayer2State,
-} from "../../firebase/firestore/setData";
+import {logInPLayer2} from "./pigGamePlayer2.requests";
+
+import {saveGameState} from "../pigGame/pigGame.requests";
+
+import Url from "../../url";
 
 function* onSignInStart() {
-  yield takeLatest(PigGamePlayer2ActionTypes.SIGN_IN_START, signIn);
+  yield takeLatest(PigGamePlayer2ActionTypes.SIGN_IN_START, fn_SignInStart);
 }
 
 function* onSignOutStart() {
-  yield takeLatest(PigGamePlayer2ActionTypes.SIGN_OUT_START, signOut);
+  yield takeLatest(PigGamePlayer2ActionTypes.SIGN_OUT_START, fn_SignOutStart);
 }
 
 export default function* pigGamePlayer2Saga() {
@@ -34,34 +34,30 @@ export default function* pigGamePlayer2Saga() {
 
 // ================= More generator functions =================
 
-function* signIn({ email, password }) {
+function* fn_SignInStart({ email, password }) {
   try {
-    yield;
     // * Start spinner
+    console.log({email})
+    console.log({password})
     yield put(setIsProcessingSignInTRUE());
-    const user = yield call(getUserAuthInfo, email, password);
-    if (user) {
-      console.log("User!", user);
-      // 1. Reset game data
-      //   yield put(startNewGame());
-      // 2. Player 2 data -> reducer
-      const { displayName, photoURL } = user;
-      yield put(signInSuccess(displayName, photoURL));
 
-      // 3. Saving Data to backend
-      const pigGameState = yield select((state) => state.pigGame);
-      yield call(saveGameState, pigGameState);
-
-      const pigGamePlayer2State = yield select(
-        (state) => state.pigGamePlayer2
-      );
-      yield call(savePigGamePlayer2State, pigGamePlayer2State);
-
-      //4. Hide Modal
-      yield put(signInFormOnHide());
-    } else {
-      throw new Error("Sign In Form Error");
+    // 1. Return if player2 email = main user email
+    const mainUserEmail = yield select((state) => state.auth_P.user.email);
+    if(mainUserEmail === email) {
+      console.log("Rejected player2 logging in with main email")
+      throw Error();
     }
+
+    // 2. Log In Player2
+    const gameId = yield select((state) => state.pigGame.gameId);
+    const res = yield call(logInPLayer2, [{email, password}, `${Url}/piggames/${gameId}/player2LogIn`]) 
+    // 3. populate player 2 details into pig game player 2 reducer
+    const {name} = res.data.data.user;
+    const player2Avatar = res.data.data.avatar;
+    yield put(signInSuccess(name, player2Avatar.data));
+    // 4. Hide Modal
+    yield put(turnSignInModalOff());
+
     // * Stop spinner
     yield put(setIsProcessingSignInFALSE());
   } catch (error) {
@@ -69,22 +65,16 @@ function* signIn({ email, password }) {
     yield put(setIsProcessingSignInFALSE());
     yield put(signInFailure(error.message));
   }
-  console.log("signing in!");
 }
 
-function* signOut() {
-  try {
-    yield put(signOutSuccess());
-    // yield put(startNewGame());
-
-    // Save state to firestore
+function* fn_SignOutStart() {
+  try {   
+    // Save state to backend
     const pigGameState = yield select((state) => state.pigGame);
-    yield call(saveGameState, pigGameState);
-
-    const pigGamePlayer2State = yield select((state) => state.pigGamePlayer2);
-    yield call(savePigGamePlayer2State, pigGamePlayer2State);
+    yield call(saveGameState, [pigGameState, `${Url}/piggames`]);
+  
+    yield put(signOutSuccess());
   } catch (error) {
     yield put(signOutFailure(error.message));
   }
-  yield console.log("signing out!");
 }

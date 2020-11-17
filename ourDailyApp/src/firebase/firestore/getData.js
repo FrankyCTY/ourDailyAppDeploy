@@ -21,16 +21,3 @@ export const getPigGamePlayer2State = async () => {
     return null;
   }
 };
-
-// export const getMatchedUserArray = async (email, password) => {
-//   // 1. Look if the email exists in firestore
-//   const collectionRef = firestore.collection("user");
-//   const collectionSnapshot = await collectionRef.get();
-//   const usersDocs = collectionSnapshot.docs;
-
-//   const targetUserArray = usersDocs.filter((userDoc, index) => {
-//     return userDoc.data().email === email;
-//   });
-
-//   return targetUserArray;
-// };

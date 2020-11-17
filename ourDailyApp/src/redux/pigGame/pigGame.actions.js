@@ -37,7 +37,11 @@ export const checkWinner = () => ({
 });
 
 export const startNewGame = () => ({
-  type: PigGameActionTypes.START_NEW_GAME,
+  type: PigGameActionTypes.START_NEW_PIG_GAME_START,
+});
+
+export const loadPigGameStart = () => ({
+  type: PigGameActionTypes.LOAD_PIG_GAME_START,
 });
 
 export const changeFinalScore = (newFinalScore) => ({
@@ -57,10 +61,6 @@ export const loadGameState = (gameState) => ({
 
 export const loadingIsFinished = () => ({
   type: PigGameActionTypes.LOADING_FINISHED,
-});
-
-export const setIsLoadingToTrue = () => ({
-  type: PigGameActionTypes.SET_ISLOADING_TRUE,
 });
 
 export const resetPrevScore = () => ({
@@ -87,5 +87,18 @@ export const restorePrevGameData = (gameState) => ({
   type: PigGameActionTypes.RESTORE_PREV_GAME_DATA,
   payload: gameState,
 });
+
+export const setPigGameState = (gameState) => ({
+  type: PigGameActionTypes.SET_PIG_GAME_STATE,
+  gameState,
+})
+
+export const isLoadingPigGameTrue = () => ({
+  type: PigGameActionTypes.IS_LOADING_PIG_GAME_TRUE,
+})
+
+export const isLoadingPigGameFalse = () => ({
+  type: PigGameActionTypes.IS_LOADING_PIG_GAME_FALSE,
+})
 
 // ========= Thunk action flow =========

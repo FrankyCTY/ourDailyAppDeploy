@@ -34,7 +34,10 @@ export const signOutFailure = (error) => ({
   payload: error,
 });
 
-export const loadPlayer2State = (player2State) => ({
-  type: PigGamePlayer2ActionTypes.LOAD_PLAYER2_STATE,
-  payload: player2State,
-});
+// export const isPlayer2LoggedTrue = () => ({
+//   type: PigGamePlayer2ActionTypes.IS_PIGGAME_PLAYER2_LOGGED_TRUE,
+// })
+
+// export const isPlayer2LoggedFalse = () => ({
+//   type: PigGamePlayer2ActionTypes.IS_PIGGAME_PLAYER2_LOGGED_FALSE,
+// })

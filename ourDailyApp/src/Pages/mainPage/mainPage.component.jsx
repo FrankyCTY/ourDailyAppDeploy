@@ -10,7 +10,6 @@ import ImageFrame from "../../Components/ImageFrames/ImageFrame/ImageFrame.compo
 import {FloatBtn, Form} from "../../Components/Compound Components";
 import _arrayBufferToBase64 from "../../utils/bufferArrayToBase64";
 import defaultUser from "../../assets/images/uploadAvatarPage/default.jpg";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const MainPage = () => {
   const router = useRouter();

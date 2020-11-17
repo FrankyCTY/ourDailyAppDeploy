@@ -76,9 +76,9 @@ const LoggedInRouter = () => {
         >
         <CommentsConverterPage />
         </ProtectedRoute>
-        <Route exact path="/pigGame" redirectUrl="/shop/piggame">
+        {/* <Route exact path="/pigGame" redirectUrl="/shop/piggame">
         <PigGamePageWithSpinner />
-        </Route>
+        </Route> */}
         <ProtectedRoute  path="/settings" redirectUrl="/auth">
         <SettingsPage />
         </ProtectedRoute>

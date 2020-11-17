@@ -2,7 +2,7 @@ import React from "react";
 import S from "./FormInput.style";
 
 import { connect, useDispatch } from "react-redux";
-import { setClickedAlertSvg } from "../../../../redux/signUpForm/signUpform.actions";
+// import { setClickedAlertSvg } from "../../../../redux/signUpForm/signUpform.actions";
 
 import AlertTooltip from "../../../Molecules/Tooltips/AlertTooltip/AlertTooltip.component";
 
@@ -83,8 +83,9 @@ FormInput.defaultProps = {
   from: "signUpForm",
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setClickedAlertSvg: (target) => dispatch(setClickedAlertSvg(target)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   setClickedAlertSvg: (target) => dispatch(setClickedAlertSvg(target)),
+// });
 
-export default connect(null, mapDispatchToProps)(FormInput);
+// export default connect(null, mapDispatchToProps)(FormInput);
+export default FormInput;

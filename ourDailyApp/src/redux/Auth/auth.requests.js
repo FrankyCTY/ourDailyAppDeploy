@@ -6,7 +6,7 @@ export const signUpUser = async (signUpDetails) => {
   const res = await axios({
     method: "POST",
     // url: `/api/v1/users/signup`,
-    url: `${Url}users/signup`,
+    url: `${Url}/users/signup`,
     data: {
       ...signUpDetails,
     },
