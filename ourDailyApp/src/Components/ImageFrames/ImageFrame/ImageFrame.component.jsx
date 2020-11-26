@@ -4,6 +4,14 @@ import S from "./ImageFrame.style";
 import PropTypes from "prop-types";
 
 const ImageFrame = ({ children, size, hasHoverEffect, src, halo, withExtraText, ...restProps }) => {
+
+  React.useEffect(() => {
+    console.log("MOUNTED")
+    return () => {
+      console.log("Unmounted")
+    }
+  }, [])
+
   return (
     <React.Fragment>
       <S.ImageFrame styled_halo={halo} {...restProps} size={size}>

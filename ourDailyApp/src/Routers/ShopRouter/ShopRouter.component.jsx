@@ -19,7 +19,9 @@ const ShopRouter = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    isLogged && dispatch(fetchApplicationsStart());
+    console.log("shop router fetch")
+    // isLogged && dispatch(fetchApplicationsStart());
+    dispatch(fetchApplicationsStart());
   }, [dispatch]);
 
   const router = useRouter();

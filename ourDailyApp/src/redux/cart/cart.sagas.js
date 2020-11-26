@@ -1,4 +1,4 @@
-import {takeLeading, call, put, all, fork, cancel, take, cancelled, takeLatest} from "redux-saga/effects";
+import {takeLeading, call, put, all, fork, spawn, cancel, take, cancelled, takeLatest} from "redux-saga/effects";
 
 import CartActionTypes from "./cart.types";
 import {
@@ -42,40 +42,41 @@ function* onAddAppToCartStart() {
         // 2) implement add app logic
         const addAppToCartTask = yield fork(addAppToCartStart, {appObj});
         
-        // 3) check if add app to wishlist started
-        const action = yield take([CartActionTypes.ADD_APP_WISHLIST_START, CartActionTypes.REMOVE_APP_FROM_CART_START]);
-        // 4) cancel the add app logic if user clciked add app to checklist
-        if(action.type === CartActionTypes.ADD_APP_WISHLIST_START) {
-            console.log("cancelling addAppToCartTask");
-            yield cancel(addAppToCartTask);
-        }
-    }
-}
-
-function* onAddAppToWishlistStart() {
-    while(true) {
-        // 1) wait for add app start
-        const {appObj} = yield take(CartActionTypes.ADD_APP_WISHLIST_START);
-
-        // 2) implement add app to wishlist logic
-        const addAppToWishlistTask = yield fork(addAppToWishlistStart, {appObj});
-
-        // 3) check if add app to cart started
-        const action = yield take([CartActionTypes.ADD_APP_START, CartActionTypes.REMOVE_APP_WISHLIST_START]);
-        // 4) cancel the add app logic if user clciked add app to checklist
-        if(action.type === CartActionTypes.ADD_APP_START) {
-            console.log("cancelling addAppToWishlistTask");
-            yield cancel(addAppToWishlistTask);
-        }
+        // // 3) check if add app to wishlist started
+        // const action = yield take([CartActionTypes.ADD_APP_WISHLIST_START, CartActionTypes.REMOVE_APP_FROM_CART_START]);
+        // // 4) cancel the add app logic if user clicked add app to checklist
+        // if(action.type === CartActionTypes.ADD_APP_WISHLIST_START) {
+        //     console.log("cancelling addAppToCartTask");
+        //     yield cancel(addAppToCartTask);
+        // }
     }
 }
 
 // function* onAddAppToWishlistStart() {
-//     yield takeLeading(
-//         CartActionTypes.ADD_APP_WISHLIST_START,
-//         addAppToWishlistStart,
-//     )
+//     while(true) {
+//         // 1) wait for add app start
+//         console.log("adding item into wishlist")
+//         const {appObj} = yield take(CartActionTypes.ADD_APP_WISHLIST_START);
+
+//         // 2) implement add app to wishlist logic
+//         const addAppToWishlistTask = yield fork(addAppToWishlistStart, {appObj});
+
+//         // 3) check if add app to cart started
+//         const action = yield take([CartActionTypes.ADD_APP_START, CartActionTypes.REMOVE_APP_WISHLIST_START]);
+//         // 4) cancel the add app logic if user clciked add app to checklist
+//         if(action.type === CartActionTypes.ADD_APP_START) {
+//             console.log("cancelling addAppToWishlistTask");
+//             yield cancel(addAppToWishlistTask);
+//         }
+//     }
 // }
+
+function* onAddAppToWishlistStart() {
+    yield takeLeading(
+        CartActionTypes.ADD_APP_WISHLIST_START,
+        addAppToWishlistStart,
+    )
+}
 
 
 function* onGetCartAppsStart() {
@@ -202,7 +203,7 @@ function* gf_removeAppFromCartStart({appId, appPrice}) {
 
 function* addAppToWishlistStart({appObj}) {
     try {
-        
+        console.log("addAppToWishlistStart")
         // START SPINNER
         yield put(setIsTogglingWishlistAppTrue());
         // 1) Add app to wishlist within react state and

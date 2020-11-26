@@ -86,8 +86,10 @@ const btnsForLoggedIn = () => {
         disabled={isTogglingWishlistApp}
         onClick={() => {
           if(wishListed(appData._id)) {
+            console.log("It is already in the wishlist! ", appData._id)
             removeAppToWishListStart(appData._id);
           } else {
+            console.log("It is not in the wishlist! ", appData._id)
             addAppToWishListStart(appData);
           }
         }}

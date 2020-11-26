@@ -1,7 +1,7 @@
 const Stripe = require("stripe");
 const User = require("../models/user/user.model");
 
-const env = "prod";
+const env = "dev";
 const webapp_url = env === "dev" ? `http://localhost:3000` : `https://ourdailyapps.com`;
 
 stripe = new Stripe(process.env.STRIPE_SECRET, {
@@ -13,7 +13,6 @@ async function createStripeCheckoutSession(
   line_items,
   user,
 ) {
-  console.log("Dfoidsfhgjofbhgosb")
   const customer = await getOrCreateCustomer(user);
   console.log({customerId: customer.id})
   // const customer_email = user.email;
